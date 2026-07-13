@@ -1,0 +1,81 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "ubuntu-release",
+      "displayName": "Ubuntu Release",
+      "generator": "Ninja",
+      "binaryDir": "$env{HOME}/.cache/nids-partial-flow/build/ubuntu-release",
+      "cacheVariables": {
+        "BUILD_TESTING": true,
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "NIDS_BUILD_TOOLCHAIN_SMOKE": false
+      }
+    },
+    {
+      "name": "ubuntu-toolchain-smoke",
+      "displayName": "Ubuntu Toolchain Smoke",
+      "inherits": "ubuntu-release",
+      "binaryDir": "$env{HOME}/.cache/nids-partial-flow/build/ubuntu-toolchain-smoke",
+      "cacheVariables": {
+        "NIDS_BUILD_TOOLCHAIN_SMOKE": true
+      }
+    },
+    {
+      "name": "ubuntu-release-dpdk",
+      "displayName": "Ubuntu Release DPDK Adapter",
+      "inherits": "ubuntu-release",
+      "binaryDir": "$env{HOME}/.cache/nids-partial-flow/build/ubuntu-release-dpdk",
+      "cacheVariables": {
+        "NIDS_BUILD_DPDK": true,
+        "NIDS_BUILD_TOOLCHAIN_SMOKE": false
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ubuntu-release",
+      "configurePreset": "ubuntu-release",
+      "jobs": 2
+    },
+    {
+      "name": "ubuntu-toolchain-smoke",
+      "configurePreset": "ubuntu-toolchain-smoke",
+      "jobs": 2
+    },
+    {
+      "name": "ubuntu-release-dpdk",
+      "configurePreset": "ubuntu-release-dpdk",
+      "jobs": 2
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "ubuntu-release",
+      "configurePreset": "ubuntu-release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "ubuntu-toolchain-smoke",
+      "configurePreset": "ubuntu-toolchain-smoke",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "ubuntu-release-dpdk",
+      "configurePreset": "ubuntu-release-dpdk",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.5",
+  "kind": "project_acceptance",
+  "status": "passed",
+  "generated_at_utc": "2026-07-14T09:00:00Z",
+  "host": {
+    "system": "Linux",
+    "os_id": "ubuntu",
+    "os_version": "24.04",
+    "architecture": "x86_64",
+    "python": "3.12.3",
+    "effective_uid": 1000
+  },
+  "source": {
+    "path": "/mnt/hgfs/TTTN"
+  },
+  "lock": {
+    "path": "/mnt/hgfs/TTTN/config/toolchain.lock.json",
+    "sha256": "f22dcdbce1e83f4d01066b0781edad1f6477fed46793a950d1a423fa2238a004",
+    "dpdk_version": "25.11.2",
+    "onnxruntime_version": "1.27.1"
+  },
+  "build": {
+    "generator": "Ninja",
+    "configuration": "Release",
+    "runtime_smoke_enabled": true,
+    "temporary_workspace_outside_source": true,
+    "temporary_workspace_retained": false,
+    "offline_dependency_mode": true
+  },
+  "commands": [
+    {
+      "name": "configure",
+      "arguments": ["cmake", "-S", "/mnt/hgfs/TTTN", "-B", "/tmp/nids-t0.5-sample/build"],
+      "return_code": 0,
+      "stdout": "configured",
+      "stderr": "",
+      "duration_seconds": 0.1
+    },
+    {
+      "name": "build",
+      "arguments": ["cmake", "--build", "/tmp/nids-t0.5-sample/build"],
+      "return_code": 0,
+      "stdout": "built",
+      "stderr": "",
+      "duration_seconds": 0.2
+    },
+    {
+      "name": "ctest",
+      "arguments": ["ctest", "--test-dir", "/tmp/nids-t0.5-sample/build", "--verbose"],
+      "return_code": 0,
+      "stdout": "nids_core.version passed\ntoolchain_runtime passed\nDPDK 25.11.2\nONNX Runtime 1.27.1\n100% tests passed",
+      "stderr": "",
+      "duration_seconds": 0.1
+    },
+    {
+      "name": "python_unittest",
+      "arguments": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "return_code": 0,
+      "stdout": "",
+      "stderr": "OK",
+      "duration_seconds": 0.2
+    }
+  ],
+  "checks": [
+    {"name": "command.configure", "status": "passed"},
+    {"name": "command.build", "status": "passed"},
+    {"name": "command.ctest", "status": "passed"},
+    {"name": "command.python_unittest", "status": "passed"},
+    {"name": "ctest.toolchain_runtime", "status": "passed"},
+    {"name": "runtime.dpdk_version", "status": "passed", "expected": "25.11.2"},
+    {"name": "runtime.onnxruntime_version", "status": "passed", "expected": "1.27.1"}
+  ]
+}

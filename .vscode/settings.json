@@ -1,0 +1,28 @@
+{
+  // Phần C++ của dự án được build trên VM Ubuntu bằng toolchain trong
+  // $HOME/.local/nids-toolchain, không build trên Windows. Máy Windows không cài
+  // cmake, nên extension CMake Tools báo lỗi 'Bad CMake executable ""' mỗi lần
+  // lưu file. Tắt phần tự dò/tự cấu hình của nó cho riêng workspace này.
+  "cmake.configureOnOpen": false,
+  "cmake.configureOnEdit": false,
+  "cmake.automaticReconfigure": false,
+  "cmake.showConfigureWithDebuggerNotification": false,
+  "cmake.pinnedCommands": [],
+
+  // Không coi thư mục này là dự án CMake. Bỏ dòng dưới nếu sau này bạn cài cmake
+  // trên Windows và muốn build tại chỗ.
+  "cmake.sourceDirectory": "",
+
+  "files.associations": {
+    "*.jsonl": "jsonl"
+  },
+  "files.exclude": {
+    "**/__pycache__": true
+  },
+
+  // .env chứa App Password, không bao giờ hiện trong tìm kiếm hay gợi ý.
+  "search.exclude": {
+    ".env": true,
+    "run_log/**": true
+  }
+}

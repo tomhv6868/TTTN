@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "vmrun": "D:/VMWare/vmrun.exe",
+  "ssh": "C:/Windows/System32/OpenSSH/ssh.exe",
+  "timeouts": {
+    "discovery_seconds": 20,
+    "connect_seconds": 5,
+    "command_seconds": 30
+  },
+  "hosts": {
+    "kali": {
+      "alias": "nids-kali",
+      "vmx": "D:/kali/kali-linux-2025.4-vmware-amd64.vmwarevm/kali-linux-2025.4-vmware-amd64.vmx"
+    },
+    "ubuntu": {
+      "alias": "nids-ubuntu",
+      "vmx": "D:/ubuntuvm/Ubuntu 64-bit.vmx"
+    },
+    "windows": {
+      "alias": "nids-win",
+      "vmx": "D:/winserver2022/sv/Windows Server 2022.vmx"
+    }
+  }
+}

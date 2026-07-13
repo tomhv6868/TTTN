@@ -1,0 +1,66 @@
+/pcap/
+/run_log/*
+!/run_log/receipt-index.json
+/.agents/
+/AGENTS.md
+/scripts/*-inventory.json
+/docs/lab/lab-manifest.yaml
+/config/dpdk-smoke.json
+/config/lab-hosts.json
+
+*.doc
+*.docx
+toolchain-receipt.json
+!/config/*.example.json
+!/config/environment-contract.json
+!/config/cicids2017-golden-contract.json
+!/config/cicids2017-inventory-contract.json
+!/config/cicids2017-label-join-contract.json
+!/config/toolchain.lock.json
+!/config/t91-live-campaign.json
+CMakeLists.txt
+
+*.md
+!/docs/**/*.md
+
+__pycache__/
+*.py[cod]
+build*/
+.venv/
+
+# Bi mat gui canh bao email - khong bao gio commit
+.env
+.env.local
+
+# ---- Tai lieu dang nop / ban thao, khong phuc vu build ----
+/Legaccy/
+/backup/
+/docs/slides/
+/docs/generated/BCCK-text.txt
+
+# Ban thao phan bien / kich ban bao ve (co the lo noi dung noi bo)
+/docs/bao-ve-*
+/docs/phan-bien-*
+/docs/phe-binh-*
+/docs/generated/phan-bien-*
+/docs/gen-phan-bien-view.mjs
+/docs/dpdk-surface-map.html
+b13-c4-*.json
+
+# ---- Cong cu AI / agent ----
+/.claude/
+/.codex/
+/.agents/
+/.cursor/
+/.aider*
+/CLAUDE.md
+/docs/*handoff*.md
+*.bak
+*.bak.*
+
+# File tam va script mot lan, khong thuoc san pham
+/scripts/.tmp-*
+/scripts/dung-lai-lich-su-git.sh
+
+# README cua bo script demo (luat *.md o tren nuot mat)
+!/scripts/demo/README.md

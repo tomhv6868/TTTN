@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "role": "ubuntu",
+  "collected_at_utc": "2026-07-13T09:01:00Z",
+  "collection_status": "observed",
+  "host": {
+    "hostname": "sample-ubuntu",
+    "os": {"id": "ubuntu", "name": "Ubuntu (sample)", "version_id": "24.04"},
+    "kernel": "6.x-sample",
+    "architecture": "x86_64",
+    "virtualization": {"detected_type": "vmware", "dmi_product_name": "VMware Virtual Platform", "vmware_tools": {"available": true, "version": "sample"}}
+  },
+  "compute": {
+    "cpu": {"model": "Sample CPU", "logical_cpus": 4, "cores_per_socket": 4, "sockets": 1, "numa_nodes": 1},
+    "memory": {"total_bytes": 8589934592, "available_bytes": 4294967296}
+  },
+  "storage": {"root_filesystem": {"total_bytes": 85899345920, "used_bytes": 21474836480, "free_bytes": 64424509440}, "block_devices": []},
+  "network": {
+    "interfaces": [{"name": "ens33", "state": "UP", "mtu": 1500, "mac_address": "00:00:00:00:00:02", "addresses": [{"family": "inet", "local": "192.0.2.20", "prefix_length": 24, "scope": "global"}], "driver": "vmxnet3", "pci_address": "0000:03:00.0"}],
+    "default_routes": [{"dst": "default", "dev": "ens33", "gateway": "192.0.2.1"}],
+    "vmnet_mapping": "pending_user_mapping"
+  },
+  "dpdk_prerequisites": {"hugepages": {"total_pages": 0, "free_pages": 0, "page_size_kb": 2048, "numa": []}, "iommu": {"kernel_parameters": [], "group_count": 0}, "vfio": {"vfio_loaded": false, "vfio_pci_loaded": false}},
+  "permissions": {"effective_uid": 1000, "running_as_root": false, "sudo_command_available": true},
+  "toolchain_observed": {"python3": {"available": true, "version": "Python 3.x sample"}, "dpdk": {"available": false}},
+  "collection_warnings": []
+}

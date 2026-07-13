@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "windows_workspace": "D:\\TTTN",
+  "ubuntu_workspace": "/mnt/hgfs/TTTN",
+  "execution_host": {
+    "id": "ubuntu_vmware",
+    "hypervisor": "VMware Workstation 17",
+    "hostname": "tom",
+    "privilege": "non_root"
+  },
+  "wsl_policy": {
+    "is_execution_target": false,
+    "on_detection": "stop_and_report_wrong_execution_host",
+    "on_missing_dependency": "run_declared_verifier_on_ubuntu_vmware_then_stop"
+  },
+  "target": {
+    "os_id": "ubuntu",
+    "os_version": "24.04",
+    "architecture": "x86_64"
+  },
+  "toolchain": {
+    "prefix": "/home/tom/.local/nids-toolchain",
+    "compiler": {
+      "name": "g++",
+      "version": "13.3.0"
+    },
+    "cmake": "3.28.3",
+    "meson": "1.3.2",
+    "ninja": "1.11.1",
+    "pkg_config": "1.8.1",
+    "python": "3.12.3",
+    "dpdk": "25.11.2",
+    "libpcap": "1.10.4",
+    "onnxruntime": "1.27.1"
+  },
+  "vmware_topology": {
+    "attacker": "kali",
+    "victim": "windows_server_2022",
+    "sensor_and_model_host": "ubuntu",
+    "sensor_mode": "passive_single_port"
+  },
+  "management_network": {
+    "vmnet": "VMnet8",
+    "mode": "nat",
+    "cidr": "192.168.100.0/24",
+    "gateway": "192.168.100.2",
+    "ubuntu_address": "192.168.100.100"
+  },
+  "data_plane_network": {
+    "vmnet": "VMnet1",
+    "mode": "host_only",
+    "cidr": "192.168.252.0/24",
+    "kali_address": "192.168.252.10",
+    "windows_victim_address": "192.168.252.20",
+    "ubuntu_interface": "ens160",
+    "ubuntu_driver": "vmxnet3",
+    "ubuntu_address": null
+  },
+  "dependency_mutation_policy": {
+    "default_allowed": false,
+    "on_missing_or_drift": [
+      "run_current_task_environment_verifier",
+      "persist_verifier_output",
+      "stop",
+      "report_environment_drift_or_wrong_execution_host"
+    ],
+    "automatic_repair_allowed": false,
+    "task_override_requires": [
+      "dependency_mutation_allowed=true in current-task.json",
+      "an exact command in commands.privileged_allowlist",
+      "explicit user approval"
+    ]
+  },
+  "evidence": {
+    "toolchain_receipt": {
+      "path": "toolchain-receipt.json",
+      "sha256": "e5c64877339e455b72fb0c3b1c559c4f4ad8438d38070d13a2c54ae711463915",
+      "status": "passed"
+    },
+    "toolchain_lock": {
+      "path": "config/toolchain.lock.json",
+      "sha256": "f22dcdbce1e83f4d01066b0781edad1f6477fed46793a950d1a423fa2238a004"
+    },
+    "topology_acceptance": {
+      "path": "run_log/t0.4/acceptance.json",
+      "sha256": "4c53e99a832449e03e3c1d5761e51674c8f7345baad97d1969d6bacdf0644ad9",
+      "status": "passed"
+    },
+    "workspace_acceptance": {
+      "path": "run_log/t0.5/acceptance.json",
+      "sha256": "b4e8f0296c7a8b6fb43efbf772f1c702add91d3eab2da63e0c2681c599bf50d7",
+      "status": "passed"
+    }
+  }
+}

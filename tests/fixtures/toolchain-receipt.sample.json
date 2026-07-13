@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.2",
+  "sample": true,
+  "sample_notice": "Schema example only; this is not acceptance evidence or a recorded toolchain run.",
+  "status": "passed",
+  "generated_at_utc": "2026-07-15T07:08:41Z",
+  "lock": {
+    "file": "toolchain.lock.json",
+    "sha256": "f22dcdbce1e83f4d01066b0781edad1f6477fed46793a950d1a423fa2238a004",
+    "dpdk_version": "25.11.2",
+    "dpdk_build_options_sha256": "35450dbf1a7b08a7da6ebfeb99f2f829fe24f6fb049ac431ff7878eb1eabe25d",
+    "onnxruntime_version": "1.27.1"
+  },
+  "host": {
+    "hostname": "sample-ubuntu",
+    "os_id": "ubuntu",
+    "os_version": "24.04",
+    "kernel": "6.x-sample",
+    "architecture": "x86_64"
+  },
+  "toolchain": {
+    "g++": "13.3.0",
+    "cmake": "3.28.3",
+    "meson": "1.3.2",
+    "ninja": "1.11.1",
+    "pkg_config": "1.8.1",
+    "python": "3.12.3",
+    "dpdk": "25.11.2",
+    "onnxruntime": "1.27.1"
+  },
+  "apt_packages": {
+    "build-essential": "12.10ubuntu1",
+    "ca-certificates": "sample",
+    "cmake": "3.28.3-sample",
+    "curl": "sample",
+    "libarchive-dev": "sample",
+    "libelf-dev": "sample",
+    "libjansson-dev": "sample",
+    "libnuma-dev": "sample",
+    "libpcap-dev": "sample",
+    "meson": "1.3.2-sample",
+    "ninja-build": "1.11.1-sample",
+    "pkg-config": "sample",
+    "python3": "3.12.3-sample",
+    "python3-dev": "sample",
+    "python3-pip": "sample",
+    "python3-pyelftools": "sample",
+    "python3-venv": "sample",
+    "shellcheck": "sample",
+    "xz-utils": "sample"
+  },
+  "smoke": {
+    "binary": "nids_toolchain_smoke",
+    "return_code": 0,
+    "stdout": "DPDK 25.11.2\nONNX Runtime 1.27.1\nC++ standard 202002",
+    "stderr": ""
+  },
+  "checks": [
+    {
+      "name": "dpdk.install_marker",
+      "status": "passed",
+      "expected": {
+        "component": "dpdk",
+        "version": "25.11.2",
+        "source_sha256": "418bfe3212640ee95a1cb10af6ed360cad2387686fe2721f8a3a9cd02d5ef4f2",
+        "build_options_sha256": "35450dbf1a7b08a7da6ebfeb99f2f829fe24f6fb049ac431ff7878eb1eabe25d"
+      },
+      "observed": "sample marker matching the locked source and build options"
+    },
+    {
+      "name": "dpdk.testpmd_linkage",
+      "status": "passed",
+      "expected": "locked-prefix executable with all dynamic dependencies resolved",
+      "observed": {
+        "path": "/home/sample/.local/nids-toolchain/dpdk/25.11.2/bin/dpdk-testpmd",
+        "ldd_return_code": 0,
+        "missing_dependencies": []
+      }
+    },
+    {
+      "name": "dpdk.dumpcap_linkage",
+      "status": "passed",
+      "expected": "locked-prefix executable with all dynamic dependencies resolved",
+      "observed": {
+        "path": "/home/sample/.local/nids-toolchain/dpdk/25.11.2/bin/dpdk-dumpcap",
+        "ldd_return_code": 0,
+        "missing_dependencies": []
+      }
+    }
+  ]
+}
