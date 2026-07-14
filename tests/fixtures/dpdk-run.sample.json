@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.3",
+  "kind": "run",
+  "status": "passed",
+  "generated_at_utc": "2026-07-13T15:03:05Z",
+  "started_at_utc": "2026-07-13T15:02:00Z",
+  "ended_at_utc": "2026-07-13T15:03:03Z",
+  "duration_seconds": 60.1,
+  "requested_duration_seconds": 60,
+  "pci_address": "0000:03:00.0",
+  "data_mac": "00:0c:29:aa:bb:cc",
+  "command": [
+    "/opt/dpdk/bin/dpdk-testpmd",
+    "-l", "0-1",
+    "-n", "2",
+    "-a", "0000:03:00.0",
+    "-m", "256",
+    "--file-prefix=nids-t03",
+    "--huge-unlink=always",
+    "--",
+    "-i",
+    "--total-num-mbufs=8192",
+    "--port-topology=loop",
+    "--forward-mode=macswap",
+    "--stats-period=10"
+  ],
+  "return_code": 0,
+  "counters": {
+    "rx_packets": 6000,
+    "tx_packets": 6000,
+    "rx_missed": 0,
+    "rx_errors": 0,
+    "tx_errors": 0,
+    "rx_nombuf": 0
+  },
+  "management_ping_after": {"target": "192.168.100.2", "passed": true, "return_code": 0}
+}

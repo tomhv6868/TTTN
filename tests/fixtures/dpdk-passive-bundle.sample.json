@@ -1,0 +1,236 @@
+{
+  "artifact_hashes": {
+    "config": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "preflight": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "sender": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "receiver": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "sensor": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "rollback": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  "config": {
+    "schema_version": "1.0.0",
+    "task": "T0.4",
+    "kali": {
+      "data_interface": "eth1",
+      "data_ipv4": "192.168.252.10",
+      "expected_driver": "vmxnet3",
+      "udp_source_port": 40000
+    },
+    "windows_victim": {
+      "expected_mac": "00:0c:29:d5:43:8b",
+      "data_ipv4": "192.168.252.20",
+      "udp_port": 9000,
+      "firewall_rule_name": "NIDS-T04-UDP-9000"
+    },
+    "ubuntu_sensor": {
+      "data_interface": "ens160",
+      "expected_driver": "vmxnet3",
+      "expected_mac": "00:0c:29:eb:d8:c4"
+    },
+    "traffic": {
+      "packet_count": 200,
+      "packets_per_second": 10,
+      "payload_magic_ascii": "NIDST04!",
+      "payload_size_bytes": 12
+    },
+    "dpdk": {
+      "file_prefix": "nids-t04",
+      "huge_unlink": "always",
+      "total_num_mbufs": 8192,
+      "forward_mode": "rxonly"
+    },
+    "acceptance": {
+      "minimum_packet_count": 190,
+      "require_sensor_tx_zero": true,
+      "require_error_counters_zero": true,
+      "require_rollback": true
+    }
+  },
+  "preflight": {
+    "schema_version": "1.0.0",
+    "task": "T0.3",
+    "kind": "preflight",
+    "status": "passed",
+    "purpose": "T0.4_passive_resource",
+    "data_interface": "ens160",
+    "passive_config": {
+      "file": "dpdk-passive.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "config": {
+      "file": "dpdk-smoke.json",
+      "sha256": "9999999999999999999999999999999999999999999999999999999999999999"
+    },
+    "discovery": {
+      "interfaces": {
+        "ens160": {
+          "has_default_route": false,
+          "driver": "vmxnet3",
+          "pci_address": "0000:03:00.0",
+          "mac": "00:0c:29:eb:d8:c4"
+        }
+      },
+      "hugepages": {
+        "current_count": 0
+      }
+    },
+    "checks": [
+      {"name": "management.default_route", "status": "passed"},
+      {"name": "management.ping", "status": "passed"},
+      {"name": "data.no_default_route", "status": "passed"},
+      {"name": "data.driver", "status": "passed"},
+      {"name": "data.pci", "status": "passed"},
+      {"name": "iommu.available", "status": "passed"},
+      {"name": "iommu.group_policy", "status": "passed"},
+      {"name": "hugepages.supported", "status": "passed"},
+      {"name": "toolchain.testpmd", "status": "passed"},
+      {"name": "toolchain.devbind", "status": "passed"}
+    ]
+  },
+  "sender": {
+    "schema_version": "1.0.0",
+    "task": "T0.4",
+    "kind": "kali_sender",
+    "status": "passed",
+    "generated_at_utc": "2026-07-14T02:00:25Z",
+    "started_at_utc": "2026-07-14T02:00:05Z",
+    "ended_at_utc": "2026-07-14T02:00:25Z",
+    "duration_seconds": 20.0,
+    "interface": {
+      "name": "eth1",
+      "mac": "00:0c:29:44:55:66",
+      "driver": "vmxnet3",
+      "has_default_route": false,
+      "ipv4_addresses": ["192.168.252.10/24"]
+    },
+    "source": {"ipv4": "192.168.252.10", "udp_port": 40000},
+    "destination": {"ipv4": "192.168.252.20", "mac": "00:0c:29:d5:43:8b", "udp_port": 9000},
+    "traffic": {
+      "requested_packets": 200,
+      "packets_per_second": 10,
+      "payload_magic_ascii": "NIDST04!",
+      "payload_size_bytes": 12
+    },
+    "sent_packets": 200,
+    "send_errors": 0,
+    "sequence_range": {"first": 0, "last": 199},
+    "config": {
+      "file": "dpdk-passive.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "error": null
+  },
+  "receiver": {
+    "schema_version": "1.0.0",
+    "task": "T0.4",
+    "kind": "windows_receiver",
+    "status": "passed",
+    "generated_at_utc": "2026-07-14T02:00:26Z",
+    "started_at_utc": "2026-07-14T02:00:00Z",
+    "ended_at_utc": "2026-07-14T02:00:26Z",
+    "duration_seconds": 26.0,
+    "listen": {"ip": "192.168.252.20", "port": 9000},
+    "expected_sender": {"ip": "192.168.252.10", "port": 40000},
+    "received_datagrams": 200,
+    "matching_datagrams": 200,
+    "unique_sequences": 200,
+    "invalid_datagrams": 0,
+    "first_match_at_utc": "2026-07-14T02:00:05Z",
+    "last_match_at_utc": "2026-07-14T02:00:25Z",
+    "firewall": {
+      "name": "NIDS-T04-UDP-9000",
+      "created": true,
+      "removed": true
+    },
+    "config": {
+      "file": "dpdk-passive.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "error": null
+  },
+  "sensor": {
+    "schema_version": "1.0.0",
+    "task": "T0.4",
+    "kind": "sensor_probe",
+    "status": "passed",
+    "generated_at_utc": "2026-07-14T02:00:28Z",
+    "started_at_utc": "2026-07-14T02:00:01Z",
+    "ended_at_utc": "2026-07-14T02:00:28Z",
+    "duration_seconds": 27.0,
+    "config": {
+      "file": "dpdk-passive.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "resource_state": {
+      "file": "t0.4-state.json",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "command": [
+      "/opt/dpdk/bin/dpdk-testpmd",
+      "-m", "256",
+      "--file-prefix=nids-t04",
+      "--huge-unlink=always",
+      "--",
+      "-i",
+      "--total-num-mbufs=8192",
+      "--forward-mode=rxonly"
+    ],
+    "interactive_commands": ["set promisc all on", "start", "stop", "quit"],
+    "link_up": true,
+    "promiscuous_enabled": true,
+    "expected_frames": {
+      "source_mac": "00:0c:29:44:55:66",
+      "destination_mac": "00:0c:29:d5:43:8b",
+      "ethertype": "0x0800",
+      "packet_count": 200,
+      "minimum_count": 190
+    },
+    "matching_frames": 200,
+    "first_match_at_utc": "2026-07-14T02:00:05Z",
+    "last_match_at_utc": "2026-07-14T02:00:25Z",
+    "frame_samples": [
+      {"source_mac": "00:0c:29:44:55:66", "destination_mac": "00:0c:29:d5:43:8b", "ethertype": "0x0800"}
+    ],
+    "counters": {
+      "rx_packets": 200,
+      "rx_missed": 0,
+      "rx_errors": 0,
+      "rx_nombuf": 0,
+      "port_tx_packets": 0,
+      "fwd_rx_packets": 200,
+      "fwd_tx_packets": 0,
+      "tx_errors": 0
+    },
+    "management_ping_after": {"target": "192.168.100.2", "passed": true, "return_code": 0},
+    "prefix_cleanup": {
+      "file_prefix": "nids-t04",
+      "hugepage_files_removed": 0,
+      "runtime_path_removed": true
+    },
+    "log": {
+      "file": "t0.4-testpmd.log",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  },
+  "rollback": {
+    "schema_version": "1.0.0",
+    "task": "T0.3",
+    "kind": "rollback",
+    "status": "passed",
+    "generated_at_utc": "2026-07-14T02:01:00Z",
+    "checks": [
+      {"name": "iommu_bridges.restored", "status": "passed"},
+      {"name": "driver.restored", "status": "passed"},
+      {"name": "interface.restored", "status": "passed"},
+      {"name": "dpdk_prefix.cleaned", "status": "passed"},
+      {"name": "hugepages.restored", "status": "passed"},
+      {"name": "management.reachable", "status": "passed"}
+    ],
+    "restored": {
+      "driver": "vmxnet3",
+      "interface": "ens160",
+      "hugepage_count": 0,
+      "management_gateway": "192.168.100.2"
+    }
+  }
+}

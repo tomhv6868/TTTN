@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.3",
+  "kind": "rollback",
+  "status": "passed",
+  "generated_at_utc": "2026-07-13T15:04:00Z",
+  "checks": [
+    {"name": "iommu_bridges.restored", "status": "passed"},
+    {"name": "driver.restored", "status": "passed"},
+    {"name": "interface.restored", "status": "passed"},
+    {"name": "dpdk_prefix.cleaned", "status": "passed"},
+    {"name": "hugepages.restored", "status": "passed"},
+    {"name": "hugepages.mount_restored", "status": "passed"},
+    {"name": "management.reachable", "status": "passed"}
+  ],
+  "restored": {
+    "driver": "vmxnet3",
+    "interface": "ens37",
+    "iommu_bridges": [],
+    "hugepage_count": 0,
+    "management_gateway": "192.168.100.2"
+  }
+}

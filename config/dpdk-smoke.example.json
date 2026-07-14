@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.3",
+  "topology": {
+    "hypervisor": "VMware Workstation 17",
+    "management_network": {
+      "name": "VMnet8",
+      "mode": "NAT",
+      "subnet": "192.168.100.0/24"
+    },
+    "data_network": {
+      "name": "VMnet1",
+      "mode": "host-only",
+      "subnet": "192.168.252.0/24"
+    }
+  },
+  "ubuntu": {
+    "management_interface": "ens33",
+    "management_gateway": "192.168.100.2",
+    "expected_data_driver": "vmxnet3",
+    "toolchain_root": "~/.local/nids-toolchain"
+  },
+  "kali": {
+    "management_interface": "eth0",
+    "data_ipv4": "192.168.252.10/24"
+  },
+  "runtime": {
+    "hugepage_size_kb": 2048,
+    "hugepage_count": 128,
+    "dpdk_memory_mb": 256,
+    "file_prefix": "nids-t03",
+    "huge_unlink": "always",
+    "total_num_mbufs": 8192,
+    "lcores": "0-1",
+    "memory_channels": 2,
+    "duration_seconds": 60,
+    "forward_mode": "macswap"
+  },
+  "safety": {
+    "require_iommu": true,
+    "allow_no_iommu": false,
+    "iommu_group_policy": "singleton_or_vmware_root_ports",
+    "allowed_iommu_bridge_companion": {
+      "vendor": "15ad",
+      "device": "07a0",
+      "class_base_subclass": "0604",
+      "driver": "pcieport"
+    },
+    "preserve_management_connectivity": true,
+    "persistent_boot_changes": false
+  }
+}

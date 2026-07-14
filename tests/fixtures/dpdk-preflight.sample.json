@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.3",
+  "kind": "preflight",
+  "status": "passed",
+  "generated_at_utc": "2026-07-13T15:01:00Z",
+  "data_interface": "ens37",
+  "configuration": {
+    "schema_version": "1.0.0",
+    "task": "T0.3",
+    "topology": {
+      "hypervisor": "VMware Workstation 17",
+      "management_network": {"name": "VMnet8", "mode": "NAT", "subnet": "192.168.100.0/24"},
+      "data_network": {"name": "VMnet1", "mode": "host-only", "subnet": "192.168.252.0/24"}
+    },
+    "ubuntu": {
+      "management_interface": "ens33",
+      "management_gateway": "192.168.100.2",
+      "expected_data_driver": "vmxnet3",
+      "toolchain_root": "~/.local/nids-toolchain"
+    },
+    "kali": {"management_interface": "eth0", "data_ipv4": "192.168.252.10/24"},
+    "runtime": {
+      "hugepage_size_kb": 2048,
+      "hugepage_count": 128,
+      "dpdk_memory_mb": 256,
+      "file_prefix": "nids-t03",
+      "huge_unlink": "always",
+      "total_num_mbufs": 8192,
+      "lcores": "0-1",
+      "memory_channels": 2,
+      "duration_seconds": 60,
+      "forward_mode": "macswap"
+    },
+    "safety": {
+      "require_iommu": true,
+      "allow_no_iommu": false,
+      "iommu_group_policy": "singleton_or_vmware_root_ports",
+      "allowed_iommu_bridge_companion": {
+        "vendor": "15ad",
+        "device": "07a0",
+        "class_base_subclass": "0604",
+        "driver": "pcieport"
+      },
+      "preserve_management_connectivity": true,
+      "persistent_boot_changes": false
+    }
+  },
+  "config": {"file": "dpdk-smoke.json", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "discovery": {
+    "host": {"hostname": "ubuntu-nids", "os": {"ID": "ubuntu", "VERSION_ID": "24.04"}, "architecture": "x86_64"},
+    "interfaces": {
+      "ens33": {"has_default_route": true, "driver": "e1000", "pci_address": "0000:02:01.0", "mac": "00:0c:29:11:22:33"},
+      "ens37": {
+        "has_default_route": false,
+        "driver": "vmxnet3",
+        "pci_address": "0000:03:00.0",
+        "mac": "00:0c:29:aa:bb:cc",
+        "iommu_group": "19",
+        "iommu_group_devices": ["0000:03:00.0"],
+        "iommu_group_device_details": [
+          {
+            "pci_address": "0000:03:00.0",
+            "class_code": "020000",
+            "class_base_subclass": "0200",
+            "vendor": "15ad",
+            "device": "07b0",
+            "driver": "vmxnet3",
+            "network_interfaces": ["ens37"]
+          }
+        ]
+      }
+    },
+    "iommu": {"groups_present": true},
+    "hugepages": {"supported": true, "current_count": 0},
+    "toolchain": {"testpmd_present": true, "devbind_present": true},
+    "management_ping": {"passed": true}
+  },
+  "checks": [
+    {"name": "host.os", "status": "passed"},
+    {"name": "host.version", "status": "passed"},
+    {"name": "host.architecture", "status": "passed"},
+    {"name": "management.present", "status": "passed"},
+    {"name": "management.default_route", "status": "passed"},
+    {"name": "management.ping", "status": "passed"},
+    {"name": "data.distinct", "status": "passed"},
+    {"name": "data.present", "status": "passed"},
+    {"name": "data.no_default_route", "status": "passed"},
+    {"name": "data.driver", "status": "passed"},
+    {"name": "data.pci", "status": "passed"},
+    {"name": "iommu.available", "status": "passed"},
+    {"name": "iommu.group_policy", "status": "passed"},
+    {"name": "hugepages.supported", "status": "passed"},
+    {"name": "toolchain.testpmd", "status": "passed"},
+    {"name": "toolchain.devbind", "status": "passed"}
+  ]
+}

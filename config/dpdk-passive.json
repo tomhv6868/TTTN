@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.4",
+  "topology": {
+    "management_network": {
+      "name": "VMnet8",
+      "mode": "NAT",
+      "subnet": "192.168.100.0/24"
+    },
+    "data_network": {
+      "name": "VMnet1",
+      "mode": "host-only",
+      "subnet": "192.168.252.0/24"
+    }
+  },
+  "kali": {
+    "data_interface": "eth1",
+    "data_ipv4": "192.168.252.128",
+    "expected_driver": "vmxnet3",
+    "udp_source_port": 40000
+  },
+  "windows_victim": {
+    "hostname": "WIN-SALLRN2MPJ9",
+    "interface_index": 14,
+    "interface_alias": "Ethernet1",
+    "expected_driver_pattern": "Intel(R) 82574L Gigabit Network Connection #2",
+    "expected_mac": "00:0c:29:13:8d:4f",
+    "data_ipv4": "192.168.252.20",
+    "prefix_length": 24,
+    "udp_port": 9000,
+    "firewall_rule_name": "NIDS-T04-UDP-9000"
+  },
+  "ubuntu_sensor": {
+    "management_interface": "ens33",
+    "management_gateway": "192.168.100.2",
+    "data_interface": "ens160",
+    "expected_driver": "vmxnet3",
+    "expected_mac": "00:0c:29:30:b9:d3"
+  },
+  "traffic": {
+    "packet_count": 200,
+    "packets_per_second": 10,
+    "payload_magic_ascii": "NIDST04!",
+    "payload_size_bytes": 12,
+    "receiver_timeout_seconds": 45
+  },
+  "dpdk": {
+    "file_prefix": "nids-t04",
+    "huge_unlink": "always",
+    "hugepage_size_kb": 2048,
+    "hugepage_count": 128,
+    "memory_mb": 256,
+    "lcores": "0-1",
+    "memory_channels": 2,
+    "total_num_mbufs": 8192,
+    "forward_mode": "rxonly",
+    "verbose_level": 1
+  },
+  "acceptance": {
+    "minimum_delivery_ratio": 0.95,
+    "minimum_packet_count": 190,
+    "require_sensor_tx_zero": true,
+    "require_error_counters_zero": true,
+    "require_rollback": true
+  },
+  "artifacts": {
+    "windows_unc_root": "\\\\vmware-host\\Shared Folders\\TTTN\\run_log\\t0.4",
+    "workspace_root": "run_log/t0.4"
+  }
+}

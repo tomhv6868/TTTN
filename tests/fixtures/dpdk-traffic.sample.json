@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T0.3",
+  "kind": "traffic",
+  "status": "passed",
+  "generated_at_utc": "2026-07-13T15:03:02Z",
+  "started_at_utc": "2026-07-13T15:02:01Z",
+  "ended_at_utc": "2026-07-13T15:03:01Z",
+  "duration_seconds": 60.0,
+  "requested_duration_seconds": 60,
+  "packets_per_second": 100,
+  "sent_packets": 6000,
+  "send_errors": 0,
+  "interface": {"name": "eth1", "mac": "00:0c:29:44:55:66", "driver": "vmxnet3", "has_default_route": false},
+  "source_ip": "192.168.252.10",
+  "destination_ip": "192.168.252.20",
+  "destination_mac": "00:0c:29:aa:bb:cc",
+  "subnet": "192.168.252.0/24"
+}
