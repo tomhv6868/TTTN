@@ -1,0 +1,99 @@
+{
+  "schema_id": "nids.packet_sequence.v1",
+  "schema_version": "1.0.0",
+  "task": "T1.3",
+  "kind": "packet_sequence_schema",
+  "description": "Storage and derivation contract for packet-sequence models; it is not part of the 54-value MVP feature vector.",
+  "scope": {
+    "current_model_input": false,
+    "future_target": "SPIN-IDS-compatible packet sequence adapter",
+    "prefix_packet_limit": 9,
+    "flow_generation_boundaries_required": true
+  },
+  "sequence_policy": {
+    "ordering": "capture order within one flow generation",
+    "packet_ordinal_origin": 1,
+    "packets_sorted_by_timestamp": false,
+    "delta_time": "current_timestamp_ns - previous_flow_packet_timestamp_ns",
+    "first_packet_delta_time_ns": 0,
+    "signed_delta_time_preserved": true,
+    "timestamp_overflow": "fail-fast",
+    "direction": "forward source is established by the first packet of the flow generation"
+  },
+  "storage_policy": {
+    "raw_frame_required_at_ingest": true,
+    "raw_frame_persistence": "retain an immutable source-capture reference or an immutable byte copy",
+    "source_capture_reference_fields": [
+      "capture_id",
+      "packet_index"
+    ],
+    "raw_bytes_in_flow_state": false,
+    "flow_state_retains_packet_history": false,
+    "pcapng_source_is_authoritative_offline": true,
+    "dpdk_capture_is_bounded_verification_storage": true
+  },
+  "range_policy": {
+    "type": "ByteRange(offset, length)",
+    "coordinate_space": "raw_frame bytes",
+    "end_exclusive": true,
+    "all_ranges_must_be_in_bounds": true,
+    "vlan_range_may_be_absent": true,
+    "payload_range_may_have_zero_length": true
+  },
+  "record_fields": [
+    {"name": "capture_id", "logical_type": "string", "role": "join_only", "source": "capture manifest", "semantics": "stable identifier of the immutable PCAPNG or bounded DPDK capture"},
+    {"name": "packet_index", "logical_type": "uint64", "role": "join_only", "source": "capture adapter", "semantics": "zero-based packet position in the source capture"},
+    {"name": "flow_generation_id", "logical_type": "opaque_id", "role": "join_only", "source": "FlowTable", "semantics": "identifies one tuple generation without becoming model input"},
+    {"name": "flow_packet_ordinal", "logical_type": "uint32", "role": "sequence_input", "source": "FlowTable", "semantics": "one-based packet position in capture order within the flow generation"},
+    {"name": "direction", "logical_type": "enum(forward,reverse)", "role": "sequence_input", "source": "nids::flow_direction", "semantics": "direction relative to the first packet of this flow generation"},
+    {"name": "timestamp_ns", "logical_type": "int64", "role": "storage_only", "source": "PacketView.timestamp_ns", "semantics": "exact source timestamp retained for audit and deterministic delta derivation"},
+    {"name": "delta_time_ns", "logical_type": "int64", "role": "sequence_input", "source": "nids::signed_iat_ns", "semantics": "signed delta from the preceding packet in this flow generation; zero for the first packet"},
+    {"name": "clock_domain", "logical_type": "enum(unix_epoch,monotonic)", "role": "validation_only", "source": "PacketView.clock_domain", "semantics": "must remain constant within one flow stream"},
+    {"name": "captured_length", "logical_type": "uint32", "role": "derivation_input", "source": "PacketView.captured_length()", "semantics": "number of bytes available in raw_frame"},
+    {"name": "wire_length", "logical_type": "uint32", "role": "derivation_input", "source": "PacketView.wire_length", "semantics": "reported frame length on the wire"},
+    {"name": "link_layer", "logical_type": "enum(ethernet)", "role": "validation_only", "source": "PacketView.link_layer", "semantics": "v1 accepts Ethernet only"},
+    {"name": "transport_protocol", "logical_type": "enum(TCP,UDP)", "role": "derivation_input", "source": "PacketView.transport", "semantics": "auxiliary protocol selector; excluded from the current flow model vector"},
+    {"name": "raw_frame", "logical_type": "bytes", "role": "derivation_input", "source": "PacketView.raw_bytes", "semantics": "complete captured frame bytes including headers and payload; persisted by reference or immutable copy"},
+    {"name": "ethernet_header_range", "logical_type": "ByteRange", "role": "derivation_input", "source": "PacketView.ethernet.header", "semantics": "Ethernet header location in raw_frame"},
+    {"name": "vlan_header_range", "logical_type": "optional<ByteRange>", "role": "derivation_input", "source": "PacketView.vlan.header", "semantics": "optional VLAN header location in raw_frame"},
+    {"name": "ipv4_header_range", "logical_type": "ByteRange", "role": "derivation_input", "source": "PacketView.ipv4.header", "semantics": "complete IPv4 header including options"},
+    {"name": "transport_header_range", "logical_type": "ByteRange", "role": "derivation_input", "source": "PacketView.transport.header", "semantics": "complete TCP or UDP header including TCP options"},
+    {"name": "payload_range", "logical_type": "ByteRange", "role": "derivation_input", "source": "PacketView.payload", "semantics": "transport payload location; zero length is valid"}
+  ],
+  "model_exclusion": {
+    "never_direct_model_inputs": [
+      "capture_id",
+      "packet_index",
+      "flow_generation_id",
+      "timestamp_ns",
+      "clock_domain",
+      "raw IPv4 address bytes",
+      "raw TCP or UDP port bytes"
+    ],
+    "canonical_storage_is_not_destructively_redacted": true,
+    "redaction_or_byte_selection_occurs_in_versioned_adapter": true
+  },
+  "spin_compatibility": {
+    "status": "preparation_only",
+    "implemented_in_t1_3": false,
+    "guaranteed_inputs": [
+      "up to the first 9 raw frames",
+      "capture order",
+      "forward or reverse direction",
+      "signed delta time",
+      "header and payload ranges"
+    ],
+    "future_adapter_contract": {
+      "separate_version_required": true,
+      "selected_byte_width": 1486,
+      "direction_channels": {
+        "forward": "red",
+        "reverse": "green",
+        "reserved": "blue"
+      },
+      "byte_padding": 0,
+      "delta_time_normalization": "fit on training partition only and persist with the model artifact",
+      "paper_reproduction_sorting": "offline experiment only; shared runtime semantics remain capture order"
+    }
+  }
+}

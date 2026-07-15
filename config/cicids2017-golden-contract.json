@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.2",
+  "dataset": "CIC-IDS2017",
+  "prerequisite": {
+    "path": "run_log/t3.1/acceptance.json",
+    "task": "T3.1",
+    "status": "passed",
+    "sha256": "4a08454a0818b2665e2efd8c628db0e70f74f9f61da949185ec92cb9468522cd"
+  },
+  "sources": {
+    "pcap": {
+      "path": "pcap/Friday-WorkingHours.pcap",
+      "container_format": "pcapng",
+      "magic_hex": "0a0d0d0a",
+      "size_bytes": 8839309056,
+      "sha256": "beff0dcce1eebc9b2454582f4dc8ed0ba0112b2c619a710bf03af93147254cd0",
+      "packet_count": 9997874,
+      "linktype": 1,
+      "scapy_version": "2.7.0"
+    },
+    "labels": {
+      "path": "pcap/TrafficLabelling_/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "archive_member": "TrafficLabelling /Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "encoding": "cp1252",
+      "size_bytes": 96101069,
+      "sha256": "1f779b4f0d78f9225554c4de53b5a2c07912b60dcd136ee4c5c1d0d2496b7cc4",
+      "header_field_count": 85,
+      "data_record_count": 225745,
+      "all_empty_record_count": 0,
+      "all_empty_record_policy": "skip_only_if_every_field_is_empty",
+      "nonempty_malformed_record_policy": "fail",
+      "duplicate_trimmed_headers": {
+        "Fwd Header Length": 2
+      },
+      "required_columns": [
+        "Flow ID",
+        "Source IP",
+        "Source Port",
+        "Destination IP",
+        "Destination Port",
+        "Protocol",
+        "Timestamp",
+        "Flow Duration",
+        "Total Fwd Packets",
+        "Total Backward Packets",
+        "Label"
+      ]
+    }
+  },
+  "selection": {
+    "flow_key": "canonical_bidirectional_ipv4_5tuple",
+    "csv_row_uniqueness": "directed IPv4 5-tuple, flow duration, forward/backward packet counts, and label occur exactly once among nonempty CSV records",
+    "source_window": "consecutive packets for the canonical flow key with exact direction counts and first-to-last duration",
+    "source_window_cardinality": 1,
+    "duration_unit": "microseconds_exact",
+    "prefix_packet_count": 9,
+    "checkpoints": [3, 5, 7, 9],
+    "timestamp_timezone_join": "not_used"
+  },
+  "samples": [
+    {
+      "id": "benign-tcp-f9",
+      "category": "benign_tcp",
+      "output_name": "benign-tcp-f9.pcap",
+      "csv_line": 91,
+      "row": {
+        "Flow ID": "192.168.10.3-192.168.10.14-445-57702-6",
+        "Source IP": "192.168.10.14",
+        "Source Port": "57702",
+        "Destination IP": "192.168.10.3",
+        "Destination Port": "445",
+        "Protocol": "6",
+        "Timestamp": "7/7/2017 3:30",
+        "Flow Duration": "10706606",
+        "Total Fwd Packets": "29",
+        "Total Backward Packets": "24",
+        "Label": "BENIGN"
+      }
+    },
+    {
+      "id": "benign-udp-f9",
+      "category": "benign_udp",
+      "output_name": "benign-udp-f9.pcap",
+      "csv_line": 979,
+      "row": {
+        "Flow ID": "192.168.10.3-192.168.10.5-53-63154-17",
+        "Source IP": "192.168.10.5",
+        "Source Port": "63154",
+        "Destination IP": "192.168.10.3",
+        "Destination Port": "53",
+        "Protocol": "17",
+        "Timestamp": "7/7/2017 3:30",
+        "Flow Duration": "7143447",
+        "Total Fwd Packets": "6",
+        "Total Backward Packets": "4",
+        "Label": "BENIGN"
+      }
+    },
+    {
+      "id": "attack-tcp-f9",
+      "category": "attack_tcp",
+      "output_name": "attack-tcp-f9.pcap",
+      "csv_line": 18901,
+      "row": {
+        "Flow ID": "172.16.0.1-192.168.10.50-49533-80-6",
+        "Source IP": "172.16.0.1",
+        "Source Port": "49533",
+        "Destination IP": "192.168.10.50",
+        "Destination Port": "80",
+        "Protocol": "6",
+        "Timestamp": "7/7/2017 3:56",
+        "Flow Duration": "13724",
+        "Total Fwd Packets": "3",
+        "Total Backward Packets": "6",
+        "Label": "DDoS"
+      }
+    }
+  ],
+  "output": {
+    "directory": "run_log/t3.2",
+    "build_receipt": "run_log/t3.2/build.json",
+    "acceptance_receipt": "run_log/t3.2/acceptance.json",
+    "format": "classic_pcap_nanosecond",
+    "magic_hex": "4d3cb2a1",
+    "byte_order": "little",
+    "timestamp_resolution": "nanoseconds",
+    "snaplen": 262144,
+    "linktype": 1,
+    "preserve_source_packet_bytes": true,
+    "preserve_source_timestamps": true,
+    "preserve_source_wire_lengths": true
+  },
+  "repository_payload_policy": {
+    "raw_payload_tracked": false,
+    "raw_payload_allowed_directory": "run_log/t3.2",
+    "committed_artifacts": "contract_selector_metadata_and_hashes_only"
+  },
+  "shared_parser": {
+    "required_for_acceptance": true,
+    "target": "nids_t32_golden_dataset_test",
+    "reader": "nids::read_pcap_file",
+    "parser": "nids::parse_packet",
+    "expected_record_count_per_file": 9,
+    "expected_accepted_count_per_file": 9
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.1",
+  "dataset": {
+    "id": "CIC-IDS2017",
+    "publisher": "Canadian Institute for Cybersecurity, University of New Brunswick",
+    "official_landing_page": "https://www.unb.ca/cic/datasets/ids-2017.html",
+    "official_download_endpoint": "https://cicresearch.ca/CICDataset/CIC-IDS-2017/",
+    "landing_page_reviewed_at_utc": "2026-07-15T00:00:00Z",
+    "capture_period": {
+      "start": "2017-07-03T09:00:00",
+      "end": "2017-07-07T17:00:00",
+      "timezone": "publisher_local_time_unspecified"
+    }
+  },
+  "license_evidence": {
+    "source": "https://www.unb.ca/cic/datasets/ids-2017.html#license",
+    "classification": "research_availability_and_citation_request",
+    "publicly_available_for_researchers": true,
+    "citation_requested": true,
+    "spdx_identifier": null,
+    "redistribution_grant_verified": false
+  },
+  "checksum_policy": {
+    "algorithm": "sha256",
+    "publisher_digest_status": "not_published_on_cited_landing_page",
+    "verification_mode": "local_content_identity",
+    "publisher_digest_match": "not_performed"
+  },
+  "pcap": {
+    "directory": "pcap",
+    "container_format": "pcapng",
+    "magic_hex": "0a0d0d0a",
+    "expected_files": [
+      "Friday-WorkingHours.pcap",
+      "Monday-WorkingHours.pcap",
+      "Thursday-WorkingHours.pcap",
+      "Tuesday-WorkingHours.pcap",
+      "Wednesday-workingHours.pcap"
+    ]
+  },
+  "labels": {
+    "archive": "GeneratedLabelledFlows.zip",
+    "role": "primary_label_join_source",
+    "expected_csv_basenames": [
+      "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+      "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+      "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+      "Monday-WorkingHours.pcap_ISCX.csv",
+      "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+      "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+      "Tuesday-WorkingHours.pcap_ISCX.csv",
+      "Wednesday-workingHours.pcap_ISCX.csv"
+    ],
+    "required_columns": [
+      "Flow ID",
+      "Source IP",
+      "Source Port",
+      "Destination IP",
+      "Destination Port",
+      "Protocol",
+      "Timestamp",
+      "Label"
+    ]
+  },
+  "prerequisites": {
+    "phase2_acceptance": "run_log/t2.6/acceptance.json",
+    "prior_full_scan": "run_log/t1.2/flow-survey.json"
+  },
+  "exclusions": {
+    "nf_uq_nids_may_substitute": false,
+    "machine_learning_csv_required_for_label_join": false
+  }
+}
