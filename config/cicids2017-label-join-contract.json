@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.3",
+  "dataset": "CIC-IDS2017",
+  "source_evidence": {
+    "inventory_receipt": {
+      "path": "run_log/t3.1/acceptance.json",
+      "sha256": "4a08454a0818b2665e2efd8c628db0e70f74f9f61da949185ec92cb9468522cd",
+      "task": "T3.1",
+      "status": "passed"
+    },
+    "official_schedule": {
+      "url": "https://www.unb.ca/cic/datasets/ids-2017.html",
+      "reviewed_at_utc": "2026-07-16T00:00:00Z",
+      "timezone_published": false
+    }
+  },
+  "join": {
+    "tuple": "canonical_bidirectional_ipv4_5tuple",
+    "protocols": {"6": "tcp", "17": "udp"},
+    "candidate_timezone": {
+      "iana_name": "America/Moncton",
+      "status": "inference_to_be_audited_not_publisher_metadata",
+      "expected_utc_offset_seconds_for_capture_dates": -10800,
+      "validation_dates": ["2017-07-03", "2017-07-04", "2017-07-05", "2017-07-06", "2017-07-07"]
+    },
+    "timestamp_formats": ["%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"],
+    "timestamp_resolution_ns": {"second": 1000000000, "minute": 60000000000},
+    "bare_hour_ambiguity": "hours_01_through_11_create_as_written_and_plus_12h_variants",
+    "duration_unit": "microseconds",
+    "tolerance_sweep_seconds": [0, 1, 5, 10, 30, 60],
+    "maximum_candidate_tolerance_seconds": 60,
+    "decision": "exactly_one_mutual_eligible_candidate",
+    "audit_conflicts_are_eligible": false,
+    "unmatched_or_ambiguous_policy": "quarantine_without_auto_label",
+    "unsupported_label_protocol_policy": {
+      "values": [0],
+      "action": "quarantine_without_join_or_training",
+      "reason": "unsupported_protocol",
+      "retain_source_label": true,
+      "other_values": "fail"
+    },
+    "invalid_flow_duration_policy": {
+      "negative_values": "quarantine",
+      "action": "quarantine_without_join_or_training",
+      "reason": "invalid_flow_duration",
+      "retain_source_value": true,
+      "retain_source_label": true,
+      "non_decimal_values": "fail"
+    }
+  },
+  "csv_schema": {
+    "encoding": "cp1252",
+    "header_field_count": 85,
+    "required_columns": [
+      "Flow ID", "Source IP", "Source Port", "Destination IP",
+      "Destination Port", "Protocol", "Timestamp", "Flow Duration",
+      "Total Fwd Packets", "Total Backward Packets", "Label"
+    ],
+    "duplicate_trimmed_headers": {"Fwd Header Length": 2},
+    "all_empty_record_policy": "skip_only_if_all_85_fields_are_empty",
+    "nonempty_malformed_record_policy": "fail"
+  },
+  "captures": [
+    {
+      "id": "monday-working-hours",
+      "pcap": {"path": "pcap/Monday-WorkingHours.pcap", "size_bytes": 10822507416, "sha256": "f6eac599358f216b074338813a1cf7be3cc4e91d116e13efc0dc71f2cca11972"},
+      "csv": [
+        {"path": "pcap/TrafficLabelling_/Monday-WorkingHours.pcap_ISCX.csv", "size_bytes": 268649908, "sha256": "96f26aea87d513073769b48ce204c2921791149e1c6225f7db65a3fed7973820", "physical_record_count": 529918, "all_empty_record_count": 0, "nonempty_record_count": 529918, "protocol_counts": {"0": 317, "6": 305423, "17": 224178}, "negative_duration_count": 15, "label_counts": {"BENIGN": 529918}}
+      ]
+    },
+    {
+      "id": "tuesday-working-hours",
+      "pcap": {"path": "pcap/Tuesday-WorkingHours.pcap", "size_bytes": 11048283608, "sha256": "080c2250154c5a174c03660ed0f75a3858d41a27511ba716e780d7bcb1ec4c57"},
+      "csv": [
+        {"path": "pcap/TrafficLabelling_/Tuesday-WorkingHours.pcap_ISCX.csv", "size_bytes": 174696560, "sha256": "ae9c88e10c41a8eb1ff454ae98bc513454925097d0b0b57180f94e79de445815", "physical_record_count": 445909, "all_empty_record_count": 0, "nonempty_record_count": 445909, "protocol_counts": {"0": 316, "6": 245781, "17": 199812}, "negative_duration_count": 17, "label_counts": {"BENIGN": 432074, "FTP-Patator": 7938, "SSH-Patator": 5897}}
+      ]
+    },
+    {
+      "id": "wednesday-working-hours",
+      "pcap": {"path": "pcap/Wednesday-workingHours.pcap", "size_bytes": 13420789612, "sha256": "cd2674db7559a53f24bc03be3239b315700174ccaef72d10f5edc4c1a08f6186"},
+      "csv": [
+        {"path": "pcap/TrafficLabelling_/Wednesday-workingHours.pcap_ISCX.csv", "size_bytes": 285642925, "sha256": "ed538e85b84181e8897dedb3d37d365982f44b27eccd67c477581a8b65f3d170", "physical_record_count": 692703, "all_empty_record_count": 0, "nonempty_record_count": 692703, "protocol_counts": {"0": 330, "6": 489450, "17": 202923}, "negative_duration_count": 21, "label_counts": {"BENIGN": 440031, "DoS GoldenEye": 10293, "DoS Hulk": 231073, "DoS Slowhttptest": 5499, "DoS slowloris": 5796, "Heartbleed": 11}}
+      ]
+    },
+    {
+      "id": "thursday-working-hours",
+      "pcap": {"path": "pcap/Thursday-WorkingHours.pcap", "size_bytes": 8302500180, "sha256": "38f8b1bb276849bf1721f7c4de22bebfa7f59a74e52286d4c0a37edbb118fe01"},
+      "csv": [
+        {"path": "pcap/TrafficLabelling_/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv", "size_bytes": 92030223, "sha256": "e3deaff483d18b53b100a441dff9b8919416df8876b4edcc0f0d1e4bf48397d0", "physical_record_count": 458968, "all_empty_record_count": 288602, "nonempty_record_count": 170366, "protocol_counts": {"0": 141, "6": 88455, "17": 81770}, "negative_duration_count": 11, "label_counts": {"BENIGN": 168186, "Web Attack – Brute Force": 1507, "Web Attack – Sql Injection": 21, "Web Attack – XSS": 652}},
+        {"path": "pcap/TrafficLabelling_/Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv", "size_bytes": 108723183, "sha256": "d74238e054023c8bd4d8056650463cadb25c100fb0e26ebd4272c07b5c022c4b", "physical_record_count": 288602, "all_empty_record_count": 0, "nonempty_record_count": 288602, "protocol_counts": {"0": 285, "6": 186169, "17": 102148}, "negative_duration_count": 4, "label_counts": {"BENIGN": 288566, "Infiltration": 36}}
+      ]
+    },
+    {
+      "id": "friday-working-hours",
+      "pcap": {"path": "pcap/Friday-WorkingHours.pcap", "size_bytes": 8839309056, "sha256": "beff0dcce1eebc9b2454582f4dc8ed0ba0112b2c619a710bf03af93147254cd0"},
+      "csv": [
+        {"path": "pcap/TrafficLabelling_/Friday-WorkingHours-Morning.pcap_ISCX.csv", "size_bytes": 75386737, "sha256": "c061cd98f39d8054aeaed6244a5129a20b3985983d0d022b860ae8aa07fe8d21", "physical_record_count": 191033, "all_empty_record_count": 0, "nonempty_record_count": 191033, "protocol_counts": {"0": 152, "6": 95199, "17": 95682}, "negative_duration_count": 9, "label_counts": {"BENIGN": 189067, "Bot": 1966}},
+        {"path": "pcap/TrafficLabelling_/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv", "size_bytes": 101874777, "sha256": "7e2ddaa80a5849ba629463296b6128436c161b4a32e8034bb5beae06b0c45e08", "physical_record_count": 286467, "all_empty_record_count": 0, "nonempty_record_count": 286467, "protocol_counts": {"0": 101, "6": 226257, "17": 60109}, "negative_duration_count": 36, "label_counts": {"BENIGN": 127537, "PortScan": 158930}},
+        {"path": "pcap/TrafficLabelling_/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv", "size_bytes": 96101069, "sha256": "1f779b4f0d78f9225554c4de53b5a2c07912b60dcd136ee4c5c1d0d2496b7cc4", "physical_record_count": 225745, "all_empty_record_count": 0, "nonempty_record_count": 225745, "protocol_counts": {"0": 54, "6": 192820, "17": 32871}, "negative_duration_count": 2, "label_counts": {"BENIGN": 97718, "DDoS": 128027}}
+      ]
+    }
+  ],
+  "attack_audit": {
+    "benign_label": "BENIGN",
+    "policy": "official_schedule_and_roles_audit_attack_rows_only_without_overriding_csv_label",
+    "schedule_audit_tolerance_seconds": 0,
+    "schedule_published_minute_end_inclusive": true,
+    "role_direction": "unordered_canonical_endpoints_against_official_attack_path",
+    "role_endpoint_set_semantics": "attackers_may_include_documented_firewall_or_nat_hops_needed_to_audit_observed_capture_endpoints",
+    "events": [
+      {"id": "tue-ftp", "labels": ["FTP-Patator"], "intervals": [["2017-07-04T09:20:00", "2017-07-04T10:20:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "tue-ssh", "labels": ["SSH-Patator"], "intervals": [["2017-07-04T14:00:00", "2017-07-04T15:00:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "wed-slowloris", "labels": ["DoS slowloris"], "intervals": [["2017-07-05T09:47:00", "2017-07-05T10:10:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "wed-slowhttptest", "labels": ["DoS Slowhttptest"], "intervals": [["2017-07-05T10:14:00", "2017-07-05T10:35:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "wed-hulk", "labels": ["DoS Hulk"], "intervals": [["2017-07-05T10:43:00", "2017-07-05T11:00:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "wed-goldeneye", "labels": ["DoS GoldenEye"], "intervals": [["2017-07-05T11:10:00", "2017-07-05T11:23:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "wed-heartbleed", "labels": ["Heartbleed"], "intervals": [["2017-07-05T15:12:00", "2017-07-05T15:32:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1", "172.16.0.11"], "victims": ["205.174.165.66", "192.168.10.51"]},
+      {"id": "thu-web-bruteforce", "labels": ["Web Attack – Brute Force"], "intervals": [["2017-07-06T09:20:00", "2017-07-06T10:00:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "thu-web-xss", "labels": ["Web Attack – XSS"], "intervals": [["2017-07-06T10:15:00", "2017-07-06T10:35:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "thu-web-sql", "labels": ["Web Attack – Sql Injection"], "intervals": [["2017-07-06T10:40:00", "2017-07-06T10:42:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "thu-infiltration-kali-vista", "labels": ["Infiltration"], "intervals": [["2017-07-06T14:19:00", "2017-07-06T14:19:00"], ["2017-07-06T14:20:00", "2017-07-06T14:21:00"], ["2017-07-06T14:33:00", "2017-07-06T14:35:00"], ["2017-07-06T15:04:00", "2017-07-06T15:45:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73"], "victims": ["192.168.10.8"]},
+      {"id": "thu-infiltration-kali-mac", "labels": ["Infiltration"], "intervals": [["2017-07-06T14:53:00", "2017-07-06T15:00:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73"], "victims": ["192.168.10.25"]},
+      {"id": "thu-infiltration-vista-scan", "labels": ["Infiltration"], "intervals": [["2017-07-06T15:04:00", "2017-07-06T15:45:00"]], "role_assertion": "asserted", "attackers": ["192.168.10.8"], "victims": ["192.168.10.3", "192.168.10.5", "192.168.10.9", "192.168.10.12", "192.168.10.14", "192.168.10.15", "192.168.10.16", "192.168.10.17", "192.168.10.19", "192.168.10.25", "192.168.10.50", "192.168.10.51"]},
+      {"id": "fri-bot", "labels": ["Bot"], "intervals": [["2017-07-07T10:02:00", "2017-07-07T11:02:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73"], "victims": ["192.168.10.5", "192.168.10.8", "192.168.10.9", "192.168.10.14", "192.168.10.15"]},
+      {"id": "fri-portscan", "labels": ["PortScan"], "intervals": [["2017-07-07T13:55:00", "2017-07-07T13:57:00"], ["2017-07-07T13:58:00", "2017-07-07T14:00:00"], ["2017-07-07T14:01:00", "2017-07-07T14:04:00"], ["2017-07-07T14:05:00", "2017-07-07T14:07:00"], ["2017-07-07T14:08:00", "2017-07-07T14:10:00"], ["2017-07-07T14:11:00", "2017-07-07T14:13:00"], ["2017-07-07T14:14:00", "2017-07-07T14:16:00"], ["2017-07-07T14:17:00", "2017-07-07T14:19:00"], ["2017-07-07T14:20:00", "2017-07-07T14:21:00"], ["2017-07-07T14:22:00", "2017-07-07T14:24:00"], ["2017-07-07T14:33:00", "2017-07-07T14:33:00"], ["2017-07-07T14:35:00", "2017-07-07T14:35:00"], ["2017-07-07T14:51:00", "2017-07-07T14:53:00"], ["2017-07-07T14:54:00", "2017-07-07T14:56:00"], ["2017-07-07T14:57:00", "2017-07-07T14:59:00"], ["2017-07-07T15:00:00", "2017-07-07T15:02:00"], ["2017-07-07T15:03:00", "2017-07-07T15:05:00"], ["2017-07-07T15:06:00", "2017-07-07T15:07:00"], ["2017-07-07T15:08:00", "2017-07-07T15:10:00"], ["2017-07-07T15:11:00", "2017-07-07T15:12:00"], ["2017-07-07T15:13:00", "2017-07-07T15:15:00"], ["2017-07-07T15:16:00", "2017-07-07T15:18:00"], ["2017-07-07T15:19:00", "2017-07-07T15:21:00"], ["2017-07-07T15:22:00", "2017-07-07T15:24:00"], ["2017-07-07T15:25:00", "2017-07-07T15:25:00"], ["2017-07-07T15:26:00", "2017-07-07T15:27:00"], ["2017-07-07T15:28:00", "2017-07-07T15:29:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.73", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]},
+      {"id": "fri-ddos", "labels": ["DDoS"], "intervals": [["2017-07-07T15:56:00", "2017-07-07T16:16:00"]], "role_assertion": "asserted", "attackers": ["205.174.165.69", "205.174.165.70", "205.174.165.71", "205.174.165.80", "172.16.0.1"], "victims": ["205.174.165.68", "192.168.10.50"]}
+    ]
+  },
+  "exporter": {
+    "target": "nids_t33_flow_export",
+    "schema_version": 1,
+    "flow_kind": "flow",
+    "summary_kind": "summary",
+    "parser_exclusion_policy": {
+      "action": "exclude_from_flow_reconstruction_and_label_join",
+      "accounting": "exact_by_capture_from_locked_t1_2_full_scan",
+      "allowed_categories": ["non_ipv4", "ipv4_fragmented", "unsupported_transport"],
+      "evidence": {
+        "path": "run_log/t1.2/flow-survey.json",
+        "sha256": "e92a3183caf1c2075da6f071eeaebf026787047a882985b45529a40ce2826afc",
+        "task": "T1.2",
+        "status": "passed",
+        "file_receipts": {
+          "monday-working-hours": {"path": "run_log/t1.2/flow-survey/monday-workinghours.json", "sha256": "058977878141e674d3f9185cd0f7b9e2b35817046ded6182cd1de8ae402675fe"},
+          "tuesday-working-hours": {"path": "run_log/t1.2/flow-survey/tuesday-workinghours.json", "sha256": "002d7f08b75fd0679155d24323b03a03b19229e62e5a954846f145ef27a76a64"},
+          "wednesday-working-hours": {"path": "run_log/t1.2/flow-survey/wednesday-workinghours.json", "sha256": "007a6cfee0d2f3275fd014de74bca257a340494cd3b232c7215a8466444c76a7"},
+          "thursday-working-hours": {"path": "run_log/t1.2/flow-survey/thursday-workinghours.json", "sha256": "3bdb3d4b16ce5abdec511a6affaa4e2af03ba862acf1caacb0527f55fb6e36a1"},
+          "friday-working-hours": {"path": "run_log/t1.2/flow-survey/friday-workinghours.json", "sha256": "46c81d1a72fba9b6c49b308a6892a1951dbcd51bebb914a6db66611fd44d4a7b"}
+        }
+      },
+      "expected_by_capture": {
+        "monday-working-hours": {"non_ipv4": 83479, "ipv4_fragmented": 520, "unsupported_transport": 724, "total": 84723},
+        "tuesday-working-hours": {"non_ipv4": 82218, "ipv4_fragmented": 532, "unsupported_transport": 484, "total": 83234},
+        "wednesday-working-hours": {"non_ipv4": 83323, "ipv4_fragmented": 428, "unsupported_transport": 386, "total": 84137},
+        "thursday-working-hours": {"non_ipv4": 81302, "ipv4_fragmented": 188, "unsupported_transport": 1559, "total": 83049},
+        "friday-working-hours": {"non_ipv4": 82194, "ipv4_fragmented": 392, "unsupported_transport": 1144, "total": 83730}
+      }
+    },
+    "ingest_errors_allowed": 0
+  },
+  "execution_pipeline": {
+    "mode": "checkpointed_hybrid",
+    "flow_export_host": "ubuntu_24_04_vmware",
+    "portable_join_host": "windows_native",
+    "resume_policy": "validate_content_addressed_checkpoint_before_skip",
+    "flow_shards": {
+      "directory": "run_log/t3.3/checkpoints/flow-shards",
+      "database_name": "flow-shard.sqlite3",
+      "receipt_name": "receipt.json",
+      "checkpoint_granularity": "one_capture",
+      "source_rehash_scope": "selected_capture_before_export",
+      "atomic_publish": "same_parent_directory_rename_after_local_build_and_copy",
+      "application_id": 1311983187,
+      "user_version": 1,
+      "page_size": 4096,
+      "progress_interval_flows": 250000,
+      "estimated_cache_size_bytes": 3221225472
+    },
+    "windows_join": {
+      "directory": "run_log/t3.3/checkpoints/windows-join",
+      "database_name": "label-join.work.sqlite3",
+      "checkpoint_table": "pipeline_stage",
+      "capture_stage_order": ["flow", "labels", "edges"],
+      "tolerance_stage_order_seconds": [0, 1, 5, 10, 30, 60],
+      "transaction_policy": "one_stage_per_transaction",
+      "source_rehash_scope": "csv_files_for_selected_label_stage",
+      "index_build_policy": "create_empty_indexes_before_bulk_import",
+      "heartbeat_seconds": 15,
+      "default_max_stages": 1,
+      "finalize_stage_owner": "phase_c"
+    },
+    "windows_runtime": {
+      "python_major_minor": "3.13",
+      "sqlite_minimum": "3.45.3",
+      "required_timezone": "America/Moncton"
+    },
+    "progress_contract": {
+      "required_fields": ["stage", "completed_units", "total_units", "elapsed_seconds", "artifact_path"],
+      "capture_progress_fields": ["capture_id", "exported_flows", "flows_per_second"],
+      "silent_multi_hour_stage_allowed": false
+    }
+  },
+  "sqlite": {
+    "artifact": "run_log/t3.3/label-join.sqlite3",
+    "build_receipt": "run_log/t3.3/build.json",
+    "acceptance_receipt": "run_log/t3.3/acceptance.json",
+    "application_id": 1313424467,
+    "user_version": 304,
+    "page_size": 4096,
+    "journal_mode_during_build": "WAL",
+    "final_journal_mode": "DELETE",
+    "scratch_policy": "local_ubuntu_filesystem_outside_vmware_shared_tree",
+    "raw_packet_or_payload_storage": false
+  }
+}

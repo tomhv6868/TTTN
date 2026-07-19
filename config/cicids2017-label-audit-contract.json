@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.4",
+  "dataset": "CIC-IDS2017",
+  "objective": "Audit whether the fail-closed T3.3 label join is suitable for producing a model dataset without changing labels or flow boundaries.",
+  "prerequisite": {
+    "acceptance": {
+      "path": "run_log/t3.3/acceptance.json",
+      "sha256": "53863c46496baac75666ce709ae1921a2523dd994ad03ff57921c18db690f791",
+      "task": "T3.3",
+      "status": "passed"
+    },
+    "build": {
+      "path": "run_log/t3.3/build.json",
+      "sha256": "024f60bbfcf3668c400556449a1505fe26a52381de31e311ce3be3dd15ff5ccb",
+      "status": "passed"
+    },
+    "database": {
+      "path": "run_log/t3.3/label-join.sqlite3",
+      "size_bytes": 2656702464,
+      "sha256": "a97054a39fe25c8c96e42b2f335069d964b65b898e77783167cd9aa61eb097ca",
+      "application_id": 1313424467,
+      "user_version": 304
+    }
+  },
+  "comparison_evidence": {
+    "t1_2_flow_survey": {
+      "path": "run_log/t1.2/flow-survey.json",
+      "sha256": "e92a3183caf1c2075da6f071eeaebf026787047a882985b45529a40ce2826afc",
+      "task": "T1.2",
+      "status": "passed",
+      "idle_timeout_profile_seconds": 60
+    }
+  },
+  "audit": {
+    "execution_host": "windows_native",
+    "database_access": "read_only_immutable",
+    "tolerance_seconds": [0, 1, 5, 10, 30, 60],
+    "detailed_tolerance_policy": "recommend_the_tolerance_with_the_highest_mutual_unique_match_count_then_require_user_approval",
+    "status_dimensions": ["matched", "unmatched", "ambiguous", "audit_conflict"],
+    "required_breakdowns": [
+      "flow_status_by_capture",
+      "label_status_by_capture_and_class",
+      "class_coverage_by_tolerance",
+      "ambiguity_topology",
+      "matched_pair_agreement"
+    ],
+    "matched_pair_agreement": {
+      "duration_delta_buckets_microseconds": [1000, 1000000, 60000000],
+      "packet_count_delta_buckets": [0, 1, 10],
+      "align_direction_by_label_source_endpoint": true
+    },
+    "examples": {
+      "maximum_per_category": 5,
+      "include_payload": false,
+      "include_raw_packet_bytes": false,
+      "include_endpoints": false
+    },
+    "source_mutation_allowed": false,
+    "automatic_relabeling_allowed": false,
+    "automatic_flow_boundary_changes_allowed": false
+  },
+  "gate": {
+    "initial_status": "pending_user_decision",
+    "allowed_decisions": ["accepted", "accepted_with_exclusions", "rejected"],
+    "selected_tolerance_seconds": null,
+    "minimum_overall_match_rate": null,
+    "minimum_per_family_match_count": null,
+    "minimum_per_family_coverage_rate": null,
+    "approval_required_before_t3_5": true,
+    "rejected_action": "return_to_t3_3_contract_review",
+    "accepted_with_exclusions_action": "record_exact_in_scope_and_case_study_families"
+  },
+  "outputs": {
+    "audit_receipt": "run_log/t3.4/audit.json",
+    "report": "docs/dataset/cicids2017-label-audit.vi.md",
+    "acceptance_receipt": "run_log/t3.4/acceptance.json"
+  }
+}

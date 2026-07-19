@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.4R1",
+  "dataset": "CIC-IDS2017",
+  "objective": "Independently audit the immutable T3.3R1 class-consensus projection, quantify its provenance and multiplicity risks, and present a fail-closed user gate before any T3.5 dataset export.",
+  "prerequisite": {
+    "acceptance": {
+      "path": "run_log/t3.3r1/acceptance.json",
+      "sha256": "651d26a03bb9806f5944050124fd77d4e82426ab753d6103059cb6a1ff19d396",
+      "task": "T3.3R1",
+      "status": "passed"
+    },
+    "build": {
+      "path": "run_log/t3.3r1/build.json",
+      "sha256": "7067447eafea59005eb5ec7fb4420be5ad7d25360b64b452b5be5eb49567ea13",
+      "task": "T3.3R1",
+      "status": "passed"
+    },
+    "derived_database": {
+      "path": "run_log/t3.3r1/class-consensus.sqlite3",
+      "size_bytes": 333119488,
+      "sha256": "cb31f170a183e5cc1e8bb63a443cd2a2a6f0889e59e46fd41fef902b59c57b31",
+      "application_id": 1313035057,
+      "user_version": 331,
+      "access": "read_only_immutable"
+    },
+    "source_database": {
+      "path": "run_log/t3.3/label-join.sqlite3",
+      "size_bytes": 2656702464,
+      "sha256": "a97054a39fe25c8c96e42b2f335069d964b65b898e77783167cd9aa61eb097ca",
+      "application_id": 1313424467,
+      "user_version": 304,
+      "access": "read_only_immutable"
+    }
+  },
+  "audit": {
+    "execution_host": "windows_native",
+    "database_access": "read_only_immutable",
+    "source_mutation_allowed": false,
+    "independent_validation": {
+      "required": true,
+      "integrity_checks": [
+        "sqlite_integrity_check",
+        "database_size_and_sha256",
+        "application_id",
+        "user_version"
+      ],
+      "schema_checks": [
+        "required_tables_columns_and_constraints",
+        "one_outcome_per_source_flow",
+        "assignment_and_quarantine_are_disjoint"
+      ],
+      "metadata_checks": [
+        "contract_and_prerequisite_hashes",
+        "selected_tolerance_seconds_is_zero",
+        "source_database_identity",
+        "producer_identity"
+      ],
+      "provenance_checks": [
+        "assignment_method_is_mutual_unique_or_class_consensus",
+        "candidate_count_matches_distinct_candidate_label_ids",
+        "candidate_class_count_matches_candidate_classes",
+        "mutual_unique_has_exactly_one_eligible_candidate",
+        "class_consensus_is_not_mutual_unique_and_has_at_least_one_candidate_and_exactly_one_candidate_class",
+        "quarantined_flows_have_no_assignment"
+      ]
+    },
+    "required_breakdowns": [
+      "assignment_coverage_overall",
+      "assignment_coverage_by_capture",
+      "assignment_counts_by_class",
+      "assignment_coverage_by_method",
+      "assignment_coverage_by_capture_class_and_method",
+      "source_label_row_representation_by_class",
+      "flow_quarantine_distribution",
+      "source_label_quarantine_distribution",
+      "eligible_candidate_count_degree_buckets",
+      "class_consensus_risk_signals",
+      "candidate_agreement_by_method_and_class"
+    ],
+    "candidate_count_degree_buckets": [
+      "1",
+      "2",
+      "3_to_5",
+      "6_to_10",
+      "11_to_100",
+      "greater_than_100"
+    ],
+    "class_consensus_risk_signals": {
+      "one_label_many_flows_multiplicity": {
+        "unit": "source_label_id",
+        "population": "all_eligible_source_candidate_pairs_before_assignment_or_quarantine",
+        "required_statistics": [
+          "eligible_source_labels",
+          "minimum_eligible_flows_per_source_label",
+          "maximum_eligible_flows_per_source_label",
+          "mean_eligible_flows_per_source_label",
+          "fanout_buckets",
+          "top_bounded_examples"
+        ],
+        "fanout_buckets": [
+          "1",
+          "2",
+          "3_to_5",
+          "6_to_10",
+          "11_to_100",
+          "greater_than_100"
+        ]
+      },
+      "source_label_row_representation": {
+        "unit": "distinct_valid_source_label_rows",
+        "denominator": "label_row",
+        "numerator": "distinct_label_ids_participating_in_at_least_one_assigned_flow",
+        "interpretation": "representation_diagnostic_only_not_accuracy_or_recall",
+        "source_quarantined_label_rows_reported_separately": true
+      },
+      "candidate_count_distribution": {
+        "unit": "assigned_flow",
+        "separate_by_assignment_method": true,
+        "include_per_class_distribution": true
+      },
+      "class_consensus_sharing_risk": {
+        "label_degree_population": "all_eligible_source_candidate_pairs_before_assignment_or_quarantine",
+        "profiles": [
+          "singleton_shared_label",
+          "multiple_rows_all_exclusive",
+          "multiple_rows_all_shared",
+          "multiple_rows_mixed_sharing"
+        ],
+        "interpretation": "multiplicity_risk_not_independent_label_evidence"
+      },
+      "flow_count_vs_source_label_rows": {
+        "required": true,
+        "dimensions": [
+          "overall",
+          "by_class"
+        ],
+        "interpretation": "diagnostic_non_parity_only",
+        "explicit_statement": "Assigned flow counts and source label-row counts measure different units and are not required to be equal; positive or negative deltas are not by themselves evidence of correctness or error."
+      },
+      "candidate_agreement": {
+        "unit": "assigned_flow",
+        "representative_source_label_row_selected": false,
+        "rule": "For each assigned flow, evaluate every eligible candidate and report whether any candidate exactly agrees; use minimum absolute deltas only as diagnostics, never as a relabeling rule.",
+        "separate_by_assignment_method": true,
+        "include_per_class_distribution": true,
+        "duration_delta_buckets_microseconds": [
+          0,
+          1000,
+          1000000,
+          60000000
+        ],
+        "packet_count_delta_buckets": [
+          0,
+          1,
+          10
+        ],
+        "align_direction_by_label_source_endpoint": true
+      }
+    },
+    "family_scope": {
+      "scope": "all_observed_label_classes",
+      "include_zero_assignment_families": true,
+      "implicit_family_exclusions_allowed": false,
+      "automatic_family_merging_allowed": false,
+      "automatic_class_normalization_allowed": false
+    },
+    "examples": {
+      "maximum_per_category": 5,
+      "categories": [
+        "highest_candidate_count",
+        "highest_source_label_fanout",
+        "mixed_candidate_classes",
+        "no_eligible_candidate",
+        "audit_conflict"
+      ],
+      "include_payload": false,
+      "include_raw_packet_bytes": false,
+      "include_endpoints": false
+    },
+    "automatic_relabeling_allowed": false,
+    "automatic_flow_boundary_changes_allowed": false,
+    "automatic_family_exclusion_allowed": false
+  },
+  "gate": {
+    "initial_status": "pending_user_decision",
+    "allowed_decisions": [
+      "accepted",
+      "accepted_with_exclusions",
+      "rejected"
+    ],
+    "minimum_overall_assignment_rate": null,
+    "minimum_per_family_assignment_count": null,
+    "minimum_per_family_assignment_rate": null,
+    "maximum_class_consensus_share": null,
+    "maximum_source_label_fanout": null,
+    "maximum_quarantine_rate": null,
+    "approved_family_scope": null,
+    "user_approval_required": true,
+    "t3_5_authorized": false,
+    "approval_required_before_t3_5": true,
+    "rejected_action": "return_to_t3_3r1_contract_review",
+    "accepted_with_exclusions_action": "record_exact_in_scope_and_case_study_families_without_silent_exclusion"
+  },
+  "outputs": {
+    "audit_receipt": "run_log/t3.4r1/audit.json",
+    "report": "docs/dataset/cicids2017-class-consensus-audit.vi.md",
+    "acceptance_receipt": "run_log/t3.4r1/acceptance.json"
+  }
+}

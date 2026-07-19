@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.3R1",
+  "dataset": "CIC-IDS2017",
+  "objective": "Produce a derived, provenance-preserving flow-to-class assignment from the immutable T3.3 join graph without changing source labels, source flow boundaries, or accepted historical evidence.",
+  "prerequisites": {
+    "t3_3_acceptance": {
+      "path": "run_log/t3.3/acceptance.json",
+      "sha256": "53863c46496baac75666ce709ae1921a2523dd994ad03ff57921c18db690f791",
+      "task": "T3.3",
+      "status": "passed"
+    },
+    "t3_3_database": {
+      "path": "run_log/t3.3/label-join.sqlite3",
+      "size_bytes": 2656702464,
+      "sha256": "a97054a39fe25c8c96e42b2f335069d964b65b898e77783167cd9aa61eb097ca",
+      "application_id": 1313424467,
+      "user_version": 304,
+      "access": "read_only_immutable"
+    },
+    "t3_4_acceptance": {
+      "path": "run_log/t3.4/acceptance.json",
+      "sha256": "21a455936eeca3283815cc41c9b7db69a1056bc1387c366328d19346102539e0",
+      "task": "T3.4",
+      "status": "passed",
+      "selected_tolerance_seconds": 0,
+      "mutual_unique_join_for_t3_5": "rejected",
+      "next_action": "return_to_t3_3_contract_review"
+    },
+    "t3_4_audit": {
+      "path": "run_log/t3.4/audit.json",
+      "sha256": "2a5584a96c0c912906aaafe4847dcaaaa1d4647b2e70241c8debb6f81013b54a",
+      "task": "T3.4",
+      "status": "passed"
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "source_database_uri_mode": "ro",
+    "source_database_immutable": true,
+    "selected_tolerance_seconds": 0,
+    "source_mutation_allowed": false,
+    "source_label_mutation_allowed": false,
+    "source_flow_boundary_changes_allowed": false,
+    "historical_evidence_rewrite_allowed": false
+  },
+  "assignment": {
+    "unit": "flow",
+    "target": "label_class",
+    "eligible_candidate_definition": "an edge at tolerance_seconds=0 that is eligible under the locked T3.3 join contract; audit-conflict edges and quarantined label rows are not eligible",
+    "decision_order": [
+      "mutual_unique",
+      "class_consensus",
+      "quarantine"
+    ],
+    "mutual_unique": {
+      "rule": "preserve every T3.3 exactly-one-mutual-eligible-candidate assignment",
+      "assignment_method": "mutual_unique",
+      "preserve_source_label_id": true
+    },
+    "class_consensus": {
+      "rule": "assign only when a flow has one or more eligible candidate label rows and COUNT(DISTINCT candidate label class) equals exactly one",
+      "assignment_method": "class_consensus",
+      "applies_after_mutual_unique": true,
+      "candidate_rows_may_exceed_one": true,
+      "candidate_flow_multiplicity_does_not_change_the_class_decision": true,
+      "representative_source_label_row_allowed": false
+    },
+    "required_provenance": [
+      "flow_id",
+      "capture_id",
+      "assigned_class",
+      "assignment_method",
+      "eligible_candidate_count",
+      "distinct_eligible_candidate_class_count",
+      "eligible_candidate_label_ids"
+    ],
+    "quarantine": {
+      "mixed_eligible_candidate_classes": "quarantine_without_assignment",
+      "no_eligible_candidates": "quarantine_without_assignment",
+      "raw_candidates_but_no_eligible_candidates": "quarantine_without_assignment",
+      "conflicting_edges_do_not_poison_an_otherwise_eligible_assignment": true,
+      "required_reason_codes": [
+        "mixed_candidate_classes",
+        "no_eligible_candidate",
+        "audit_conflict"
+      ],
+      "source_label_quarantine_accounting": [
+        "unsupported_protocol",
+        "invalid_flow_duration"
+      ]
+    },
+    "family_scope": {
+      "scope": "all_observed_label_classes",
+      "implicit_family_exclusions_allowed": false,
+      "automatic_family_merging_allowed": false,
+      "automatic_class_normalization_allowed": false
+    }
+  },
+  "derived_database": {
+    "path": "run_log/t3.3r1/class-consensus.sqlite3",
+    "build_policy": "create_new_artifact_without_copying_or_modifying_the_source_database",
+    "atomic_publish": true,
+    "raw_packet_or_payload_storage": false,
+    "required_tables": [
+      "flow_assignment",
+      "assignment_candidate",
+      "quarantine",
+      "build_metadata"
+    ],
+    "required_constraints": [
+      "one_assignment_or_quarantine_outcome_per_source_flow",
+      "no_flow_has_both_assignment_and_quarantine",
+      "every_assignment_candidate_references_an_eligible_tolerance_zero_edge",
+      "mutual_unique_and_class_consensus_methods_remain_distinguishable"
+    ]
+  },
+  "validation": {
+    "independent_recomputation_required": true,
+    "recompute_from": "immutable_t3_3_database_tables_not_derived_assignment_rows",
+    "source_sha256_before_and_after_must_match": true,
+    "source_sqlite_integrity_check_required": true,
+    "derived_sqlite_integrity_check_required": true,
+    "required_accounting": [
+      "source_flow_total_equals_assigned_plus_quarantined",
+      "assigned_total_equals_mutual_unique_plus_class_consensus",
+      "per_capture_source_flow_total_equals_assigned_plus_quarantined",
+      "per_class_counts_include_every_observed_attack_family_even_when_zero"
+    ],
+    "required_negative_checks": [
+      "reject_mixed_candidate_classes",
+      "reject_zero_eligible_candidates",
+      "reject_assignment_when_only_conflicting_raw_candidates_exist",
+      "reject_source_or_prerequisite_hash_drift",
+      "reject_implicit_family_exclusion",
+      "reject_assignment_method_or_candidate_provenance_drift"
+    ]
+  },
+  "gate": {
+    "t3_5_authorized": false,
+    "next_task": "T3.4R1",
+    "t3_4r1_acceptance_required_before_t3_5": true,
+    "user_approval_required_for_t3_4r1_thresholds_and_family_scope": true
+  },
+  "outputs": {
+    "database": "run_log/t3.3r1/class-consensus.sqlite3",
+    "build_receipt": "run_log/t3.3r1/build.json",
+    "acceptance_receipt": "run_log/t3.3r1/acceptance.json"
+  }
+}
