@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.5",
+  "dataset": "CIC-IDS2017",
+  "artifact_version": "dataset-v1",
+  "objective": "Replay the locked CIC-IDS2017 PCAPs through the shared parser, FlowTable, and feature engine; publish deterministic F3/F5/F7/F9 Parquet snapshots without silent family exclusion or future-packet leakage.",
+  "prerequisites": {
+    "t3_4r1_acceptance": {
+      "path": "run_log/t3.4r1/acceptance.json",
+      "sha256": "1bd291a180a7e2f46a935dfc634766f11578bb08c0172781918441e662c784bf",
+      "task": "T3.4R1",
+      "status": "passed",
+      "gate_decision": "accepted_with_exclusions",
+      "t3_5_authorized": true
+    },
+    "t3_3_acceptance": {
+      "path": "run_log/t3.3/acceptance.json",
+      "sha256": "53863c46496baac75666ce709ae1921a2523dd994ad03ff57921c18db690f791",
+      "task": "T3.3",
+      "status": "passed"
+    },
+    "t3_3r1_acceptance": {
+      "path": "run_log/t3.3r1/acceptance.json",
+      "sha256": "651d26a03bb9806f5944050124fd77d4e82426ab753d6103059cb6a1ff19d396",
+      "task": "T3.3R1",
+      "status": "passed"
+    },
+    "t2_6_acceptance": {
+      "path": "run_log/t2.6/acceptance.json",
+      "sha256": "0a69d11ed5897216b8ef31816aad33c02e2935a2ffe138e470d7fee24909fcfe",
+      "task": "T2.6",
+      "status": "passed"
+    },
+    "source_database": {
+      "path": "run_log/t3.3/label-join.sqlite3",
+      "size_bytes": 2656702464,
+      "sha256": "a97054a39fe25c8c96e42b2f335069d964b65b898e77783167cd9aa61eb097ca",
+      "application_id": 1313424467,
+      "user_version": 304,
+      "access": "read_only_immutable"
+    },
+    "assignment_database": {
+      "path": "run_log/t3.3r1/class-consensus.sqlite3",
+      "size_bytes": 333119488,
+      "sha256": "cb31f170a183e5cc1e8bb63a443cd2a2a6f0889e59e46fd41fef902b59c57b31",
+      "application_id": 1313035057,
+      "user_version": 331,
+      "access": "read_only_immutable"
+    },
+    "label_join_contract": {
+      "path": "config/cicids2017-label-join-contract.json",
+      "sha256": "d70875928b520acf3d4a3513c70b8dcfbfeff8b93608679de53c5449ac0f676c"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "schema_id": "nids.flow_features.v1",
+      "schema_version": "1.0.0",
+      "feature_count": 54,
+      "encoded_type": "float64"
+    },
+    "checkpoint_contract_source": {
+      "path": "cpp/include/nids/checkpoint.hpp",
+      "sha256": "aa0eed9d4764477f19a20452893ed4e5d707ef9f125e7bc9ecd66d8407a6d56b"
+    }
+  },
+  "captures": [
+    {
+      "id": "monday-working-hours",
+      "pcap": {
+        "path": "pcap/Monday-WorkingHours.pcap",
+        "size_bytes": 10822507416,
+        "sha256": "f6eac599358f216b074338813a1cf7be3cc4e91d116e13efc0dc71f2cca11972"
+      }
+    },
+    {
+      "id": "tuesday-working-hours",
+      "pcap": {
+        "path": "pcap/Tuesday-WorkingHours.pcap",
+        "size_bytes": 11048283608,
+        "sha256": "080c2250154c5a174c03660ed0f75a3858d41a27511ba716e780d7bcb1ec4c57"
+      }
+    },
+    {
+      "id": "wednesday-working-hours",
+      "pcap": {
+        "path": "pcap/Wednesday-workingHours.pcap",
+        "size_bytes": 13420789612,
+        "sha256": "cd2674db7559a53f24bc03be3239b315700174ccaef72d10f5edc4c1a08f6186"
+      }
+    },
+    {
+      "id": "thursday-working-hours",
+      "pcap": {
+        "path": "pcap/Thursday-WorkingHours.pcap",
+        "size_bytes": 8302500180,
+        "sha256": "38f8b1bb276849bf1721f7c4de22bebfa7f59a74e52286d4c0a37edbb118fe01"
+      }
+    },
+    {
+      "id": "friday-working-hours",
+      "pcap": {
+        "path": "pcap/Friday-WorkingHours.pcap",
+        "size_bytes": 8839309056,
+        "sha256": "beff0dcce1eebc9b2454582f4dc8ed0ba0112b2c619a710bf03af93147254cd0"
+      }
+    }
+  ],
+  "execution_pipeline": {
+    "mode": "checkpointed_hybrid",
+    "replay_host": "ubuntu_24_04_vmware",
+    "replay_workspace": "/mnt/hgfs/TTTN",
+    "parquet_packaging_host": "windows_native",
+    "dependency_mutation_allowed": false,
+    "parquet_runtime": {
+      "python_major_minor": "3.13",
+      "pyarrow_exact_version": "23.0.1",
+      "preflight_required": true
+    },
+    "resume_policy": "validate_content_addressed_capture_receipt_before_skip",
+    "scratch_policy": "ubuntu_local_scratch_then_atomic_copy_to_workspace",
+    "progress_heartbeat_seconds": 15,
+    "silent_multi_hour_stage_allowed": false
+  },
+  "replay": {
+    "shared_components": [
+      "pcap_adapter",
+      "packet_parser",
+      "flow_table",
+      "feature_engine"
+    ],
+    "checkpoint_schedule": [
+      {"name": "F3", "packet_count": 3},
+      {"name": "F5", "packet_count": 5},
+      {"name": "F7", "packet_count": 7},
+      {"name": "F9", "packet_count": 9}
+    ],
+    "triggering_packet_included": true,
+    "emit_only_reached_checkpoints": true,
+    "synthetic_terminal_checkpoint_allowed": false,
+    "checkpoint_error_policy": "abort_capture",
+    "parser_and_flow_ingest_drift_allowed": false,
+    "temporary_replay_key": ["capture_id", "generation"],
+    "sqlite_flow_id_source": "source_database.flow.flow_id",
+    "generation_must_not_be_used_as_flow_id": true,
+    "runtime_flow_instance_id_must_not_be_used_as_sqlite_flow_id": true,
+    "close_record_exact_comparison_fields": [
+      "capture_id",
+      "export_ordinal",
+      "protocol",
+      "low_ip",
+      "low_port",
+      "high_ip",
+      "high_port",
+      "forward_source_ip",
+      "forward_source_port",
+      "generation",
+      "creation_timestamp_ns",
+      "last_capture_timestamp_ns",
+      "last_event_timestamp_ns",
+      "packet_count",
+      "forward_packet_count",
+      "reverse_packet_count",
+      "close_reason"
+    ],
+    "float_serialization": "max_digits10_json_to_ieee754_little_endian_float64_blob",
+    "staging": {
+      "directory": "run_log/t3.5/checkpoints/snapshot-shards",
+      "database_name": "snapshot-shard.sqlite3",
+      "receipt_name": "receipt.json",
+      "checkpoint_granularity": "one_capture",
+      "application_id": 1311986515,
+      "user_version": 1,
+      "raw_packets_or_payload_stored": false
+    }
+  },
+  "parquet": {
+    "root": "run_log/t3.5/dataset-v1",
+    "layout": "checkpoint={checkpoint}/capture_id={capture_id}/part-00000.parquet",
+    "capture_commit_receipt": "run_log/t3.5/dataset-v1/capture-receipts/{capture_id}.json",
+    "parts": 20,
+    "rows_sorted_by": ["flow_id"],
+    "compression": "zstd",
+    "compression_level": 3,
+    "writer_batch_rows": 16384,
+    "row_group_rows": 65536,
+    "dictionary_columns": ["capture_id", "assigned_class", "assignment_method"],
+    "write_statistics": true,
+    "atomic_publish": "temporary_sibling_then_replace_and_capture_receipt_commit_marker"
+  },
+  "row_schema": {
+    "metadata_columns": [
+      {"name": "flow_id", "type": "uint64"},
+      {"name": "capture_id", "type": "string"},
+      {"name": "checkpoint", "type": "uint8"},
+      {"name": "flow_start_timestamp_ns", "type": "int64"},
+      {"name": "checkpoint_timestamp_ns", "type": "int64"},
+      {"name": "assigned_class", "type": "string"},
+      {"name": "label_binary", "type": "bool", "rule": "assigned_class != 'BENIGN'"},
+      {"name": "assignment_method", "type": "string"}
+    ],
+    "feature_columns": "exact ordered names from prerequisites.feature_schema",
+    "feature_column_type": "float64",
+    "feature_columns_non_null_and_finite": true,
+    "model_input_allowlist": "exactly_the_54_feature_columns",
+    "positional_model_column_selection_allowed": false,
+    "forbidden_columns": [
+      "generation",
+      "export_ordinal",
+      "protocol",
+      "low_ip",
+      "low_port",
+      "high_ip",
+      "high_port",
+      "forward_source_ip",
+      "forward_source_port",
+      "candidate_label_ids",
+      "final_flow_duration",
+      "final_packet_count",
+      "attack_schedule",
+      "raw_packet",
+      "payload"
+    ]
+  },
+  "expected_accounting": {
+    "assigned_flows": 2366094,
+    "assigned_flows_below_f3": 861884,
+    "assigned_final_packet_count": {
+      "1": 220398,
+      "2": 641486
+    },
+    "by_checkpoint": {
+      "F3": 1504210,
+      "F5": 829439,
+      "F7": 744359,
+      "F9": 705146
+    },
+    "by_capture_and_checkpoint": {
+      "friday-working-hours": {"F3": 291193, "F5": 165852, "F7": 149183, "F9": 143315},
+      "monday-working-hours": {"F3": 296307, "F5": 150698, "F7": 133184, "F9": 125057},
+      "thursday-working-hours": {"F3": 249292, "F5": 109722, "F7": 92198, "F9": 85877},
+      "tuesday-working-hours": {"F3": 250346, "F5": 121494, "F7": 105503, "F9": 97633},
+      "wednesday-working-hours": {"F3": 417072, "F5": 281673, "F7": 264291, "F9": 253264}
+    },
+    "by_method_and_checkpoint": {
+      "mutual_unique": {"F3": 736231, "F5": 109260, "F7": 56982, "F9": 35091},
+      "class_consensus": {"F3": 767979, "F5": 720179, "F7": 687377, "F9": 670055}
+    },
+    "explicit_zero_snapshot_class": "Heartbleed",
+    "required_warning_metrics": {
+      "PortScan": {"assigned": 158976, "F3": 1043, "F5": 85, "F7": 85, "F9": 85},
+      "DoS Slowhttptest": {"assigned": 5304, "F3": 4467, "F5": 4227, "F7": 3249, "F9": 259}
+    }
+  },
+  "validation": {
+    "source_database_hash_stable": true,
+    "assignment_database_hash_stable": true,
+    "exact_replay_close_set_and_fields": true,
+    "expected_row_rule": "one row at Fk iff the assigned source flow packet_count is at least k",
+    "exact_row_set_per_checkpoint": true,
+    "unique_flow_id_within_checkpoint": true,
+    "same_flow_id_across_different_checkpoints_allowed": true,
+    "nested_flow_sets": "F9 subset F7 subset F5 subset F3",
+    "checkpoint_feature_packet_count_must_equal_checkpoint": true,
+    "all_parquet_row_groups_scanned": true,
+    "part_hash_size_row_count_and_schema_hash_required": true,
+    "manifest_recomputed_independently": true,
+    "required_distributions": [
+      "checkpoint",
+      "capture_and_checkpoint",
+      "class_and_checkpoint",
+      "assignment_method_and_checkpoint",
+      "capture_class_method_and_checkpoint",
+      "binary_label_and_checkpoint",
+      "short_flow_final_packet_count"
+    ],
+    "implicit_family_exclusion_allowed": false
+  },
+  "family_policy": {
+    "snapshot": "include_every_assigned_flow_that_reaches_the_checkpoint",
+    "provisional_model_evaluation_classes": [
+      "BENIGN",
+      "DDoS",
+      "DoS GoldenEye",
+      "DoS Hulk",
+      "DoS Slowhttptest",
+      "DoS slowloris",
+      "FTP-Patator",
+      "PortScan",
+      "SSH-Patator"
+    ],
+    "case_study_or_t3_7_review_classes": [
+      "Bot",
+      "Heartbleed",
+      "Infiltration",
+      "Web Attack – Brute Force",
+      "Web Attack – Sql Injection",
+      "Web Attack – XSS"
+    ],
+    "t3_7_retains_final_rare_family_gate": true
+  },
+  "outputs": {
+    "manifest": "run_log/t3.5/manifest.json",
+    "build_receipt": "run_log/t3.5/build.json",
+    "report": "docs/dataset/cicids2017-snapshot.vi.md",
+    "acceptance_receipt": "run_log/t3.5/acceptance.json"
+  },
+  "gate": {
+    "initial_status": "in_progress",
+    "t3_6_authorized": false,
+    "user_approval_required_after_full_validation": true
+  }
+}
