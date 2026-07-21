@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.1",
+  "dataset": "CIC-IDS2017",
+  "artifact": {
+    "id": "nids.preprocessing.v1",
+    "version": "1.0.0",
+    "format": "inline_versioned_json_acceptance_bundle",
+    "output": "run_log/t4.1/acceptance.json",
+    "overwrite_allowed": false
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "schema_id": "nids.flow_features.v1",
+      "feature_count": 54,
+      "encoded_type": "float64"
+    },
+    "snapshot_contract": {
+      "path": "config/cicids2017-snapshot-contract.json",
+      "size_bytes": 11086,
+      "sha256": "5b3fef6e8539b78227810c44facb6e8583d8b7417b76a65685f1be84e0e93a08"
+    },
+    "split_contract": {
+      "path": "config/cicids2017-split-contract.json",
+      "size_bytes": 5331,
+      "sha256": "e7e7bdb373e36062a979edd2f8fbfee766eedf3aee776feda8e3cbe815b2b6b2"
+    },
+    "snapshot_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "parts": 20,
+      "rows": 3783154
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "t3_7_technical_acceptance": {
+      "path": "run_log/t3.7/acceptance.json",
+      "size_bytes": 1818,
+      "sha256": "c376b3314bd42cf42bec1fd701754c8f5a4ee3f487b6187425b3bb138217a391",
+      "status": "passed"
+    },
+    "t3_7_manual_acceptance": {
+      "path": "run_log/t3.7/user-acceptance.json",
+      "size_bytes": 622,
+      "sha256": "5c429bdff0570cb96316da56320a1df7d2b509f68b158e223a9deda509eb9fbc",
+      "status": "passed",
+      "decision": "accepted",
+      "t4_1_authorized": true
+    },
+    "rare_family_audit": {
+      "path": "run_log/t3.7/rare-family-audit.json",
+      "size_bytes": 33142,
+      "sha256": "942d6b482834d57a69956ff833226a8dda2cdcbae60d334295d9db273175fa4e"
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "dependency_mutation_allowed": false,
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5",
+      "scikit_learn": "1.7.2",
+      "joblib": "1.5.2"
+    },
+    "hooks_in_scope": false,
+    "pcap_replay_required": false,
+    "model_training_allowed": false
+  },
+  "input": {
+    "checkpoints": ["F3", "F5", "F7", "F9"],
+    "join_key": ["capture_id", "flow_id"],
+    "partition_column": "partition",
+    "fit_partition": "train",
+    "feature_selection": "exact_names_from_snapshot_manifest_model_feature_columns",
+    "positional_selection_allowed": false,
+    "metadata_columns_allowed_in_model_matrix": false
+  },
+  "profiles": {
+    "supervised_known": {
+      "selector": "partition == 'train'",
+      "consumer_scope": ["T4.2", "T4.5", "T4.6"],
+      "loafo_reuse_allowed": false
+    },
+    "anomaly_benign": {
+      "selector": "partition == 'train' and assigned_class == 'BENIGN'",
+      "consumer_scope": ["T4.3", "T4.4", "T4.5", "T4.7"]
+    }
+  },
+  "preprocessing": {
+    "input_dtype": "float64",
+    "imputer": {
+      "algorithm": "sklearn.impute.SimpleImputer",
+      "strategy": "median",
+      "missing_value": "NaN",
+      "positive_or_negative_infinity": "fail_fast"
+    },
+    "constant_features": {
+      "definition": "zero population variance after imputation on the profile training population",
+      "action": "drop_and_persist_mask",
+      "near_constant_action": "retain"
+    },
+    "scaler": {
+      "algorithm": "sklearn.preprocessing.StandardScaler",
+      "with_mean": true,
+      "with_std": true,
+      "fit_dtype": "float64"
+    },
+    "output_dtype": "float32",
+    "operation_order": ["median_imputation", "constant_feature_mask", "standard_scaling", "float32_cast"]
+  },
+  "expected_rows": {
+    "supervised_known": {
+      "F3": 1042365,
+      "F5": 577974,
+      "F7": 517508,
+      "F9": 492050
+    },
+    "anomaly_benign": {
+      "F3": 895686,
+      "F5": 433330,
+      "F7": 373746,
+      "F9": 350086
+    }
+  },
+  "expected_constant_features": {
+    "supervised_known": {
+      "F3": ["packet_count", "reverse_iat_std_us"],
+      "F5": ["packet_count"],
+      "F7": ["packet_count"],
+      "F9": ["packet_count"]
+    },
+    "anomaly_benign": {
+      "F3": ["packet_count", "reverse_iat_std_us"],
+      "F5": ["packet_count"],
+      "F7": ["packet_count"],
+      "F9": ["packet_count"]
+    }
+  },
+  "parity": {
+    "sample_rows_per_profile_checkpoint": 1024,
+    "selection": "deterministic_first_middle_last_training_rows",
+    "comparison_after_output_cast": "bitwise_equal_float32",
+    "non_finite_policy_equal": true
+  },
+  "loafo": {
+    "supervised_preprocessing_refit_per_holdout_required": true,
+    "holdout_family_allowed_in_fit": false,
+    "anomaly_preprocessing_remains_benign_only": true
+  },
+  "validation": {
+    "all_snapshot_part_hashes_verified_before_fit": true,
+    "flow_map_hash_verified_before_fit": true,
+    "fit_population_exact": true,
+    "feature_order_exact": true,
+    "profile_isolation_exact": true,
+    "artifact_reload_parity_required": true,
+    "artifact_source_hashes_required": true,
+    "atomic_first_publish": true
+  }
+}

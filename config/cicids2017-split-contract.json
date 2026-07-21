@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.6",
+  "dataset": "CIC-IDS2017",
+  "objective": "Publish deterministic leakage-safe known and LOAFO split declarations for the immutable T3.5 partial-flow dataset without copying snapshot features.",
+  "prerequisites": {
+    "t3_5_acceptance": {
+      "path": "run_log/t3.5/acceptance.json",
+      "size_bytes": 3154,
+      "sha256": "ed2cf650f862fcd102f9ba872f650da4a4c476c6198ade37def05a4b93f25042",
+      "task": "T3.5",
+      "status": "passed",
+      "t3_6_authorized": true
+    },
+    "t3_5_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "task": "T3.5",
+      "status": "passed",
+      "part_count": 20,
+      "row_count": 3783154
+    },
+    "t3_5_build": {
+      "path": "run_log/t3.5/build.json",
+      "size_bytes": 438,
+      "sha256": "95f2623030ebce90bce058118c45ef5d3d4f8cb22a83c0191c431d24729bc680",
+      "task": "T3.5",
+      "status": "passed"
+    },
+    "snapshot_contract": {
+      "path": "config/cicids2017-snapshot-contract.json",
+      "size_bytes": 11086,
+      "sha256": "5b3fef6e8539b78227810c44facb6e8583d8b7417b76a65685f1be84e0e93a08"
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "pyarrow_exact_version": "23.0.1",
+    "dependency_mutation_allowed": false,
+    "pcap_replay_required": false,
+    "input_access": "read_only",
+    "hooks_in_scope": false
+  },
+  "known_protocol": {
+    "name": "campaign_time_block_stratified_v1",
+    "seed": 3607,
+    "time_block_seconds": 60,
+    "time_block_key": [
+      "capture_id",
+      "floor(flow_start_timestamp_ns / 60000000000)"
+    ],
+    "campaign_key": "capture_id",
+    "allocation_unit": "entire_time_block",
+    "allocation_basis_checkpoint": "F3",
+    "ratios": {
+      "train": 70,
+      "validation": 10,
+      "test": 20
+    },
+    "partition_order": [
+      "train",
+      "validation",
+      "test"
+    ],
+    "ordering": "descending rare-class contribution, descending block flow count, seeded BLAKE2b tie-break",
+    "objective": "minimize summed squared normalized deviation from per-campaign class and total-flow ratio targets",
+    "exact_ratio_by_row_required": false,
+    "reason_exact_ratio_is_not_required": "A 60-second block is indivisible; splitting a block to force exact row ratios is forbidden.",
+    "same_flow_all_checkpoints_same_partition": true,
+    "same_block_all_flows_same_partition": true,
+    "row_level_random_split_forbidden": true
+  },
+  "unknown_protocol": {
+    "name": "loafo_absolute_family_holdout_v1",
+    "materialization": "declarative_manifest_only",
+    "families": "every non-BENIGN assigned_class with at least one T3.5 snapshot",
+    "train_selector": "known.partition == 'train' and assigned_class != holdout_family",
+    "validation_selector": "known.partition == 'validation' and assigned_class != holdout_family",
+    "test_selector": "known.partition == 'test' or assigned_class == holdout_family",
+    "holdout_family_allowed_in_train": false,
+    "holdout_family_allowed_in_validation": false,
+    "holdout_family_all_flows_in_test": true,
+    "benign_test_membership_unchanged": true,
+    "heartbleed": {
+      "status": "unavailable",
+      "reason": "T3.5 contains zero Heartbleed snapshots"
+    },
+    "macro_loafo_eligibility": "pending_T3.7_rare_family_gate"
+  },
+  "flow_map": {
+    "path": "run_log/t3.6/known-flow-split.parquet",
+    "source_checkpoint": "F3",
+    "expected_rows": 1504210,
+    "one_row_per": [
+      "capture_id",
+      "flow_id"
+    ],
+    "columns": [
+      {"name": "capture_id", "type": "string"},
+      {"name": "flow_id", "type": "uint64"},
+      {"name": "flow_start_timestamp_ns", "type": "int64"},
+      {"name": "time_block_index", "type": "int64"},
+      {"name": "time_block_start_timestamp_ns", "type": "int64"},
+      {"name": "partition", "type": "string"},
+      {"name": "assigned_class", "type": "string"},
+      {"name": "label_binary", "type": "bool"},
+      {"name": "assignment_method", "type": "string"}
+    ],
+    "sort_order": [
+      "capture_id",
+      "flow_id"
+    ],
+    "compression": "zstd",
+    "compression_level": 3,
+    "row_group_rows": 65536,
+    "feature_columns_copied": false
+  },
+  "expected_accounting": {
+    "snapshot_rows_by_checkpoint": {
+      "F3": 1504210,
+      "F5": 829439,
+      "F7": 744359,
+      "F9": 705146
+    },
+    "explicit_zero_snapshot_family": "Heartbleed"
+  },
+  "outputs": {
+    "known_flow_map": "run_log/t3.6/known-flow-split.parquet",
+    "loafo_manifest": "run_log/t3.6/loafo-manifest.json",
+    "acceptance_receipt": "run_log/t3.6/acceptance.json"
+  },
+  "validation": {
+    "all_t3_5_part_hashes_verified_before_read": true,
+    "coverage_exactly_all_snapshot_flows": true,
+    "no_duplicate_flow_key": true,
+    "no_time_block_overlap": true,
+    "all_checkpoint_memberships_resolve_to_same_flow_partition": true,
+    "known_partition_class_and_checkpoint_distributions_required": true,
+    "loafo_absolute_exclusion_proof_required": true,
+    "deterministic_rebuild_hash_required": true,
+    "no_snapshot_dataset_copy": true
+  },
+  "gate": {
+    "initial_status": "in_progress",
+    "t3_7_authorized": false,
+    "user_approval_required_after_full_validation": true
+  }
+}

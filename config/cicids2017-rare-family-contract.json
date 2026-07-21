@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T3.7",
+  "dataset": "CIC-IDS2017",
+  "objective": "Audit flow and checkpoint support for every attack family, lock a statistically interpretable rare-family threshold, and publish one common macro-LOAFO family scope for F3/F5/F7/F9.",
+  "prerequisites": {
+    "t3_6_user_acceptance": {
+      "path": "run_log/t3.6/user-acceptance.json",
+      "size_bytes": 559,
+      "sha256": "0b32f716d71e35fac015c0cb05c33c58ac456be4187791311f2405793c2d1cf4",
+      "task": "T3.6",
+      "status": "passed",
+      "decision": "accepted",
+      "t3_7_authorized": true
+    },
+    "t3_6_acceptance": {
+      "path": "run_log/t3.6/acceptance.json",
+      "size_bytes": 2091,
+      "sha256": "9e6249d65dfc7fab7a31d411c6fd27e18e3320edde0b823776d4261e31df69ca",
+      "task": "T3.6",
+      "status": "passed"
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "loafo_manifest": {
+      "path": "run_log/t3.6/loafo-manifest.json",
+      "size_bytes": 27306,
+      "sha256": "3b1a4a439b9c17de4e8ef824dda49f93330859f3427d820a28fb4738d4a6ebe4",
+      "task": "T3.6",
+      "status": "passed",
+      "available_holdout_families": 13
+    },
+    "t3_5_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "task": "T3.5",
+      "status": "passed",
+      "parts": 20,
+      "rows": 3783154
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "pyarrow_exact_version": "23.0.1",
+    "dependency_mutation_allowed": false,
+    "pcap_replay_required": false,
+    "model_training_allowed": false,
+    "input_access": "read_only",
+    "hooks_in_scope": false
+  },
+  "sample_unit": {
+    "name": "distinct_holdout_flow_at_checkpoint",
+    "identity": ["capture_id", "flow_id"],
+    "one_snapshot_per_flow_per_checkpoint_required": true,
+    "checkpoints": ["F3", "F5", "F7", "F9"],
+    "eligibility_checkpoint": "F9",
+    "reason": "F9 is the smallest prefix population and therefore the conservative common support bound."
+  },
+  "eligibility": {
+    "minimum_distinct_flows_at_f9": 100,
+    "comparison": "greater_than_or_equal",
+    "macro_family_scope": "one_common_list_for_F3_F5_F7_F9",
+    "below_threshold_status": "case_study_only",
+    "zero_snapshot_status": "unavailable",
+    "statistical_rationale": {
+      "interval": "Wilson score interval",
+      "confidence": 0.95,
+      "z": 1.959963984540054,
+      "worst_case_proportion": 0.5,
+      "maximum_half_width_at_n_100": 0.09616846904897529,
+      "interpretation": "At n=100, the worst-case 95% Wilson half-width is below 10 percentage points."
+    }
+  },
+  "provenance": {
+    "eligible_assignment_methods": ["mutual_unique", "class_consensus"],
+    "threshold_population": "all assignments accepted by T3.4R1",
+    "report_by_method_and_checkpoint": true,
+    "consensus_dependency_warning": {
+      "metric": "class_consensus_share_at_f9",
+      "comparison": "greater_than",
+      "threshold": 0.5,
+      "effect": "warning_only"
+    }
+  },
+  "expected_gate": {
+    "macro_eligible": [
+      "Bot",
+      "DDoS",
+      "DoS GoldenEye",
+      "DoS Hulk",
+      "DoS Slowhttptest",
+      "DoS slowloris",
+      "FTP-Patator",
+      "SSH-Patator",
+      "Web Attack – Brute Force"
+    ],
+    "case_study_only": [
+      "Infiltration",
+      "PortScan",
+      "Web Attack – Sql Injection",
+      "Web Attack – XSS"
+    ],
+    "unavailable": ["Heartbleed"]
+  },
+  "required_distributions": [
+    "family_and_checkpoint",
+    "family_partition_and_checkpoint",
+    "family_assignment_method_and_checkpoint",
+    "family_capture_and_checkpoint",
+    "binary_label_and_checkpoint"
+  ],
+  "outputs": {
+    "audit": "run_log/t3.7/rare-family-audit.json",
+    "report": "docs/dataset/cicids2017-rare-family-gate.vi.md",
+    "acceptance_receipt": "run_log/t3.7/acceptance.json"
+  },
+  "validation": {
+    "all_t3_5_part_hashes_verified_before_read": true,
+    "t3_6_flow_map_hash_verified": true,
+    "exact_checkpoint_coverage_required": true,
+    "distinct_flow_count_equals_snapshot_count_per_family_checkpoint": true,
+    "loafo_family_scope_reconciled": true,
+    "threshold_recomputed_not_trusted_from_manifest": true,
+    "provenance_recomputed_from_t3_5": true,
+    "report_rendered_from_audit": true
+  },
+  "gate": {
+    "initial_status": "in_progress",
+    "t4_1_authorized": false,
+    "user_approval_required_after_full_validation": true
+  }
+}
