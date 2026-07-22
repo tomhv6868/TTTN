@@ -1,0 +1,548 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.3",
+  "dataset": "CIC-IDS2017",
+  "baseline": "HBOS and Isolation Forest benign-trained anomaly detectors",
+  "artifacts": {
+    "model_bundle": {
+      "id": "nids.anomaly_baseline.v1",
+      "version": "1.0.0",
+      "format": "joblib",
+      "path": "run_log/t4.3/anomaly-baseline-v1.joblib"
+    },
+    "validation_predictions": {
+      "id": "nids.anomaly_baseline.validation_predictions.v1",
+      "version": "1.0.0",
+      "format": "numpy_npz_compressed_allow_pickle_false",
+      "path": "run_log/t4.3/validation-predictions-v1.npz"
+    },
+    "acceptance": {
+      "id": "nids.anomaly_baseline.acceptance.v1",
+      "version": "1.0.0",
+      "format": "json",
+      "path": "run_log/t4.3/acceptance.json"
+    },
+    "overwrite_allowed": false
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "schema_id": "nids.flow_features.v1",
+      "feature_count": 54
+    },
+    "snapshot_contract": {
+      "path": "config/cicids2017-snapshot-contract.json",
+      "size_bytes": 11086,
+      "sha256": "5b3fef6e8539b78227810c44facb6e8583d8b7417b76a65685f1be84e0e93a08"
+    },
+    "split_contract": {
+      "path": "config/cicids2017-split-contract.json",
+      "size_bytes": 5331,
+      "sha256": "e7e7bdb373e36062a979edd2f8fbfee766eedf3aee776feda8e3cbe815b2b6b2"
+    },
+    "preprocessing_contract": {
+      "path": "config/cicids2017-preprocessing-contract.json",
+      "size_bytes": 5527,
+      "sha256": "9a7cc8f7ad8648c17aefde593ab90e00b8bfaf2e6e55c78dddd3fd04f713fa5b"
+    },
+    "eda_contract": {
+      "path": "config/cicids2017-anomaly-eda-contract.json",
+      "size_bytes": 7222,
+      "sha256": "f8c2ed99555ed4603bb584c41f76b7fb3ac4c781e4d188a59506e669a8f9244a"
+    },
+    "snapshot_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "parts": 20,
+      "rows": 3783154
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "t4_1_technical_acceptance": {
+      "path": "run_log/t4.1/acceptance.json",
+      "size_bytes": 88844,
+      "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+      "status": "passed",
+      "artifact_id": "nids.preprocessing.v1",
+      "artifact_version": "1.0.0"
+    },
+    "t4_2_technical_acceptance": {
+      "path": "run_log/t4.2/acceptance.json",
+      "size_bytes": 5432,
+      "sha256": "720805a1cd25dab6b2129a125df1a65a3100d5ee891d0f40fc4742aac041b98d",
+      "status": "passed"
+    },
+    "t4_2_manual_acceptance": {
+      "path": "run_log/t4.2/user-acceptance.json",
+      "size_bytes": 672,
+      "sha256": "7585ffca9f83dc6d0fdc9ad52fbbd10b3460bf692dfa197296a7d59e73e83b43",
+      "status": "passed",
+      "decision": "accepted",
+      "t4_3_authorized": true
+    },
+    "t4_3_eda": {
+      "path": "run_log/t4.3/eda.json",
+      "size_bytes": 422813,
+      "sha256": "9338ef6de329ab52cb562d5ca5cb2ae07eba4dbc7af1e79bba3e3ac87ff31a4c",
+      "status": "passed",
+      "artifact_id": "nids.anomaly_eda.v1",
+      "artifact_version": "1.0.0"
+    },
+    "t4_3_eda_report": {
+      "path": "docs/lab/T4.3-eda.vi.md",
+      "size_bytes": 6434,
+      "sha256": "ec0aa9b9c9421b80130c6cf9d726f956f340dbc8d0217e7ed6b32cf494db6bd4"
+    },
+    "t4_3_eda_manual_acceptance": {
+      "path": "run_log/t4.3/eda-user-acceptance.json",
+      "size_bytes": 2290,
+      "sha256": "fb14f85988531b076a23270d6982d4a0284f9fa87bf97631ae812597386ed9af",
+      "status": "passed",
+      "decision": "accepted",
+      "model_contract_authorized": true
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "dependency_mutation_allowed": false,
+    "model_training_allowed": true,
+    "pcap_replay_required": false,
+    "hooks_in_scope": false,
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5",
+      "scikit_learn": "1.7.2",
+      "joblib": "1.5.2"
+    }
+  },
+  "input": {
+    "checkpoints": [
+      "F3",
+      "F5",
+      "F7",
+      "F9"
+    ],
+    "fit_partition": "train",
+    "fit_class": "BENIGN",
+    "fit_selector": "partition == 'train' and assigned_class == 'BENIGN'",
+    "evaluation_partition": "validation",
+    "evaluation_classes": "BENIGN versus assigned_class != 'BENIGN'",
+    "sealed_partition": "test",
+    "preprocessing_profile": "anomaly_benign",
+    "preprocessing_fit_or_refit_allowed": false,
+    "metadata_columns_allowed_in_model_matrix": false,
+    "test_rows_allowed_in_transform_score_or_output": false
+  },
+  "labels": {
+    "negative": {
+      "name": "BENIGN",
+      "value": 0
+    },
+    "positive": {
+      "name": "ATTACK",
+      "value": 1,
+      "selector": "assigned_class != 'BENIGN'"
+    },
+    "class_order": [
+      0,
+      1
+    ]
+  },
+  "preprocessing": {
+    "artifact_source": "run_log/t4.1/acceptance.json",
+    "profile": "anomaly_benign",
+    "fit_or_refit_allowed": false,
+    "expected_selected_feature_count": {
+      "F3": 52,
+      "F5": 53,
+      "F7": 53,
+      "F9": 53
+    },
+    "expected_dropped_features": {
+      "F3": [
+        "packet_count",
+        "reverse_iat_std_us"
+      ],
+      "F5": [
+        "packet_count"
+      ],
+      "F7": [
+        "packet_count"
+      ],
+      "F9": [
+        "packet_count"
+      ]
+    },
+    "model_input_dtype": "float32",
+    "feature_selection_by_name_required": true,
+    "positional_feature_selection_allowed": false
+  },
+  "hbos": {
+    "implementation": "project-native NumPy scorer with plain-array artifact",
+    "separate_model_per_checkpoint": true,
+    "fit_population": "benign train only",
+    "feature_mask_derivation": "greedy traversal in accepted T4.1 anomaly feature order; retain a feature only when absolute Pearson correlation is below 0.98 against every retained feature",
+    "correlation_evidence": "run_log/t4.3/eda.json",
+    "correlation_threshold": 0.98,
+    "feature_masks": {
+      "F3": [
+        "flow_age_us",
+        "forward_packet_count",
+        "wire_byte_count",
+        "forward_wire_byte_count",
+        "reverse_wire_byte_count",
+        "packet_length_min",
+        "packet_length_max",
+        "packet_length_std",
+        "forward_packet_length_mean",
+        "forward_packet_length_std",
+        "reverse_packet_length_std",
+        "flow_iat_min_us",
+        "forward_iat_std_us",
+        "reverse_iat_mean_us",
+        "packet_rate_per_second",
+        "wire_byte_rate_per_second",
+        "forward_reverse_packet_ratio",
+        "forward_reverse_wire_byte_ratio",
+        "direction_change_count",
+        "tcp_syn_count",
+        "tcp_ack_count",
+        "tcp_fin_count",
+        "tcp_rst_count",
+        "tcp_psh_count",
+        "tcp_syn_ack_ratio",
+        "tcp_initial_forward_window",
+        "tcp_initial_reverse_window",
+        "tcp_window_mean",
+        "tcp_window_std",
+        "ttl_min",
+        "ttl_max",
+        "ttl_mean",
+        "ttl_std",
+        "payload_packet_count",
+        "forward_payload_packet_count",
+        "reverse_payload_packet_count",
+        "reverse_payload_byte_count",
+        "header_length_mean",
+        "header_length_std"
+      ],
+      "F5": [
+        "flow_age_us",
+        "forward_packet_count",
+        "wire_byte_count",
+        "forward_wire_byte_count",
+        "reverse_wire_byte_count",
+        "packet_length_min",
+        "packet_length_max",
+        "forward_packet_length_mean",
+        "forward_packet_length_std",
+        "flow_iat_min_us",
+        "flow_iat_max_us",
+        "forward_iat_mean_us",
+        "forward_iat_std_us",
+        "reverse_iat_mean_us",
+        "reverse_iat_std_us",
+        "packet_rate_per_second",
+        "wire_byte_rate_per_second",
+        "forward_reverse_packet_ratio",
+        "forward_reverse_wire_byte_ratio",
+        "direction_change_count",
+        "tcp_syn_count",
+        "tcp_ack_count",
+        "tcp_fin_count",
+        "tcp_rst_count",
+        "tcp_psh_count",
+        "tcp_syn_ack_ratio",
+        "tcp_initial_forward_window",
+        "tcp_initial_reverse_window",
+        "tcp_window_mean",
+        "tcp_window_std",
+        "ttl_min",
+        "ttl_max",
+        "ttl_mean",
+        "ttl_std",
+        "payload_packet_count",
+        "forward_payload_packet_count",
+        "reverse_payload_packet_count",
+        "header_length_mean",
+        "header_length_std"
+      ],
+      "F7": [
+        "flow_age_us",
+        "forward_packet_count",
+        "wire_byte_count",
+        "forward_wire_byte_count",
+        "reverse_wire_byte_count",
+        "packet_length_min",
+        "packet_length_max",
+        "forward_packet_length_mean",
+        "forward_packet_length_std",
+        "reverse_packet_length_mean",
+        "reverse_packet_length_std",
+        "flow_iat_min_us",
+        "flow_iat_max_us",
+        "forward_iat_mean_us",
+        "forward_iat_std_us",
+        "reverse_iat_mean_us",
+        "reverse_iat_std_us",
+        "packet_rate_per_second",
+        "wire_byte_rate_per_second",
+        "forward_reverse_packet_ratio",
+        "forward_reverse_wire_byte_ratio",
+        "direction_change_count",
+        "tcp_syn_count",
+        "tcp_ack_count",
+        "tcp_fin_count",
+        "tcp_rst_count",
+        "tcp_psh_count",
+        "tcp_syn_ack_ratio",
+        "tcp_initial_forward_window",
+        "tcp_initial_reverse_window",
+        "tcp_window_mean",
+        "tcp_window_std",
+        "ttl_min",
+        "ttl_max",
+        "ttl_mean",
+        "ttl_std",
+        "payload_packet_count",
+        "forward_payload_packet_count",
+        "reverse_payload_packet_count",
+        "header_length_mean",
+        "header_length_std"
+      ],
+      "F9": [
+        "flow_age_us",
+        "forward_packet_count",
+        "wire_byte_count",
+        "forward_wire_byte_count",
+        "reverse_wire_byte_count",
+        "packet_length_min",
+        "packet_length_max",
+        "packet_length_std",
+        "forward_packet_length_mean",
+        "forward_packet_length_std",
+        "reverse_packet_length_mean",
+        "reverse_packet_length_std",
+        "flow_iat_min_us",
+        "flow_iat_max_us",
+        "forward_iat_mean_us",
+        "reverse_iat_mean_us",
+        "reverse_iat_std_us",
+        "packet_rate_per_second",
+        "wire_byte_rate_per_second",
+        "forward_reverse_packet_ratio",
+        "forward_reverse_wire_byte_ratio",
+        "direction_change_count",
+        "tcp_syn_count",
+        "tcp_ack_count",
+        "tcp_fin_count",
+        "tcp_rst_count",
+        "tcp_psh_count",
+        "tcp_syn_ack_ratio",
+        "tcp_initial_forward_window",
+        "tcp_initial_reverse_window",
+        "tcp_window_mean",
+        "tcp_window_std",
+        "ttl_min",
+        "ttl_max",
+        "ttl_mean",
+        "ttl_std",
+        "payload_packet_count",
+        "forward_payload_packet_count",
+        "reverse_payload_packet_count",
+        "header_length_mean",
+        "header_length_std"
+      ]
+    },
+    "expected_feature_counts": {
+      "F3": 39,
+      "F5": 39,
+      "F7": 41,
+      "F9": 41
+    },
+    "binning": {
+      "interior_bin_count": 16,
+      "lower_quantile": 0.001,
+      "upper_quantile": 0.999,
+      "quantile_method": "linear",
+      "interior_edges": "numpy.linspace(lower, upper, 17)",
+      "lower_fallback": "feature minimum when lower quantile equals upper quantile",
+      "upper_fallback": "feature maximum when lower quantile equals upper quantile",
+      "underflow_rule": "value < lower edge",
+      "interior_rule": "left-closed right-open except the final interior bin includes the upper edge",
+      "overflow_rule": "value > upper edge",
+      "total_bin_count": 18
+    },
+    "probability": {
+      "smoothing": "Laplace add-one",
+      "formula": "(bin_count + 1) / (fit_rows + 18)",
+      "natural_logarithm": true
+    },
+    "raw_score": "mean negative log smoothed bin mass across the checkpoint HBOS mask",
+    "higher_score_is_more_anomalous": true
+  },
+  "isolation_forest": {
+    "implementation": "sklearn.ensemble.IsolationForest",
+    "separate_model_per_checkpoint": true,
+    "fit_population": "benign train only",
+    "feature_scope": "all selected features in the T4.1 anomaly_benign checkpoint profile",
+    "hyperparameter_search_allowed": false,
+    "parameters": {
+      "n_estimators": 300,
+      "max_samples": 4096,
+      "contamination": "auto",
+      "max_features": 1.0,
+      "bootstrap": false,
+      "n_jobs": -1,
+      "random_state": 4303,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "raw_score": "negative score_samples output",
+    "predict_or_decision_function_threshold_used": false,
+    "higher_score_is_more_anomalous": true
+  },
+  "score_normalization_and_decision": {
+    "scope": "separate for each model and checkpoint",
+    "fit_population": "the same benign train scores used by that model",
+    "normalization": "z-score",
+    "mean": "numpy mean float64",
+    "standard_deviation": "numpy standard deviation float64 ddof=0",
+    "zero_standard_deviation_allowed": false,
+    "normalized_score_formula": "(raw_score - benign_train_mean) / benign_train_standard_deviation",
+    "threshold_quantile": 0.99,
+    "threshold_quantile_method": "higher",
+    "threshold_fit_population": "benign train normalized scores only",
+    "binary_rule": "normalized_score >= threshold",
+    "binary_dtype": "uint8",
+    "empirical_benign_train_fpr_required": true,
+    "threshold_status": "provisional T4.3 baseline operating point",
+    "final_threshold_task": "T6.1",
+    "validation_threshold_tuning_allowed": false
+  },
+  "expected_population": {
+    "fit_benign_train": {
+      "F3": 895686,
+      "F5": 433330,
+      "F7": 373746,
+      "F9": 350086
+    },
+    "validation": {
+      "F3": {
+        "rows": 155220,
+        "benign": 125317,
+        "attack": 29903
+      },
+      "F5": {
+        "rows": 84531,
+        "benign": 54978,
+        "attack": 29553
+      },
+      "F7": {
+        "rows": 76358,
+        "benign": 46958,
+        "attack": 29400
+      },
+      "F9": {
+        "rows": 71119,
+        "benign": 42481,
+        "attack": 28638
+      }
+    }
+  },
+  "metrics": {
+    "evaluation_scope": "validation only and independently per model/checkpoint",
+    "required": [
+      "precision",
+      "recall",
+      "f1",
+      "macro_f1",
+      "mcc",
+      "fpr",
+      "confusion_matrix"
+    ],
+    "precision_recall_f1_positive_label": 1,
+    "zero_division": 0,
+    "macro_f1_labels": [
+      0,
+      1
+    ],
+    "fpr_formula": "FP / (FP + TN)",
+    "confusion_matrix_layout": [
+      [
+        "TN",
+        "FP"
+      ],
+      [
+        "FN",
+        "TP"
+      ]
+    ]
+  },
+  "validation_predictions": {
+    "row_order": "snapshot manifest part order then ascending flow_id within part",
+    "shared_arrays_per_checkpoint": {
+      "capture_id": "fixed-width unicode",
+      "flow_id": "uint64",
+      "y_true": "uint8"
+    },
+    "arrays_per_model_and_checkpoint": {
+      "raw_score": "float64",
+      "normalized_score": "float64",
+      "y_pred": "uint8"
+    },
+    "models": [
+      "hbos",
+      "isolation_forest"
+    ],
+    "allow_pickle": false,
+    "test_rows_allowed": false
+  },
+  "model_bundle": {
+    "checkpoint_contents": [
+      "T4.1 anomaly_benign preprocessing profile",
+      "HBOS feature names, feature indices, edges, smoothed bin probabilities, score normalization and threshold",
+      "sklearn IsolationForest estimator, feature names, score normalization and threshold"
+    ],
+    "HBOS_plain_array_representation_required": true,
+    "purpose": "T4.3 reproducibility and later T5.1 export; this is not yet the final deployment bundle"
+  },
+  "acceptance": {
+    "all_prerequisite_hashes_verified_before_training": true,
+    "exact_benign_train_fit_population_required": true,
+    "validation_population_exact": true,
+    "test_partition_untouched": true,
+    "feature_order_exact": true,
+    "metadata_leakage_forbidden": true,
+    "preprocessing_refit_forbidden": true,
+    "attack_validation_labels_used_only_for_metrics": true,
+    "four_independent_HBOS_models_required": true,
+    "four_independent_Isolation_Forest_models_required": true,
+    "model_reload_score_and_binary_parity": "bitwise equal float64 and uint8 on validation",
+    "prediction_bundle_metric_recomputation_required": true,
+    "train_score_statistics_and_empirical_fpr_required": true,
+    "artifact_source_hashes_required": true,
+    "atomic_first_publish": true,
+    "manual_acceptance_required_before_T4_4": true
+  },
+  "implementation": {
+    "source": "python/nids_mvp/anomaly_baseline.py",
+    "test_allowlist": [
+      "tests/test_t43_anomaly_eda.py",
+      "tests/test_t43_anomaly_baseline.py"
+    ]
+  }
+}

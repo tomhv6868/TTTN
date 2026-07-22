@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.3",
+  "phase": "eda",
+  "dataset": "CIC-IDS2017",
+  "purpose": "Create train-only evidence for T4.3 anomaly baseline design without selecting or fitting the final HBOS or Isolation Forest models.",
+  "artifacts": {
+    "machine_readable_eda": {
+      "id": "nids.anomaly_eda.v1",
+      "version": "1.0.0",
+      "format": "json",
+      "path": "run_log/t4.3/eda.json"
+    },
+    "human_readable_report": {
+      "id": "nids.anomaly_eda.report.v1",
+      "version": "1.0.0",
+      "format": "markdown_vi",
+      "path": "docs/lab/T4.3-eda.vi.md"
+    },
+    "overwrite_allowed": false
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "schema_id": "nids.flow_features.v1",
+      "feature_count": 54
+    },
+    "snapshot_contract": {
+      "path": "config/cicids2017-snapshot-contract.json",
+      "size_bytes": 11086,
+      "sha256": "5b3fef6e8539b78227810c44facb6e8583d8b7417b76a65685f1be84e0e93a08"
+    },
+    "split_contract": {
+      "path": "config/cicids2017-split-contract.json",
+      "size_bytes": 5331,
+      "sha256": "e7e7bdb373e36062a979edd2f8fbfee766eedf3aee776feda8e3cbe815b2b6b2"
+    },
+    "preprocessing_contract": {
+      "path": "config/cicids2017-preprocessing-contract.json",
+      "size_bytes": 5527,
+      "sha256": "9a7cc8f7ad8648c17aefde593ab90e00b8bfaf2e6e55c78dddd3fd04f713fa5b"
+    },
+    "snapshot_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "parts": 20,
+      "rows": 3783154
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "t4_1_technical_acceptance": {
+      "path": "run_log/t4.1/acceptance.json",
+      "size_bytes": 88844,
+      "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+      "status": "passed",
+      "artifact_id": "nids.preprocessing.v1",
+      "artifact_version": "1.0.0"
+    },
+    "t4_2_technical_acceptance": {
+      "path": "run_log/t4.2/acceptance.json",
+      "size_bytes": 5432,
+      "sha256": "720805a1cd25dab6b2129a125df1a65a3100d5ee891d0f40fc4742aac041b98d",
+      "status": "passed"
+    },
+    "t4_2_manual_acceptance": {
+      "path": "run_log/t4.2/user-acceptance.json",
+      "size_bytes": 672,
+      "sha256": "7585ffca9f83dc6d0fdc9ad52fbbd10b3460bf692dfa197296a7d59e73e83b43",
+      "status": "passed",
+      "decision": "accepted",
+      "t4_3_authorized": true
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "dependency_mutation_allowed": false,
+    "model_training_allowed": false,
+    "pcap_replay_required": false,
+    "hooks_in_scope": false,
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5",
+      "scikit_learn": "1.7.2",
+      "joblib": "1.5.2"
+    }
+  },
+  "input": {
+    "checkpoints": [
+      "F3",
+      "F5",
+      "F7",
+      "F9"
+    ],
+    "partition": "train",
+    "assigned_class": "BENIGN",
+    "selector": "partition == 'train' and assigned_class == 'BENIGN'",
+    "preprocessing_profile": "anomaly_benign",
+    "preprocessing_fit_or_refit_allowed": false,
+    "feature_selection": "exact selected_features and order from the accepted T4.1 anomaly_benign profile",
+    "positional_feature_selection_allowed": false,
+    "metadata_columns_allowed_in_feature_matrix": false,
+    "validation_rows_allowed": false,
+    "test_rows_allowed": false,
+    "attack_train_rows_allowed": false
+  },
+  "expected_population": {
+    "F3": {
+      "rows": 895686,
+      "selected_feature_count": 52,
+      "dropped_features": [
+        "packet_count",
+        "reverse_iat_std_us"
+      ]
+    },
+    "F5": {
+      "rows": 433330,
+      "selected_feature_count": 53,
+      "dropped_features": [
+        "packet_count"
+      ]
+    },
+    "F7": {
+      "rows": 373746,
+      "selected_feature_count": 53,
+      "dropped_features": [
+        "packet_count"
+      ]
+    },
+    "F9": {
+      "rows": 350086,
+      "selected_feature_count": 53,
+      "dropped_features": [
+        "packet_count"
+      ]
+    }
+  },
+  "eda": {
+    "scope": "benign_train_only",
+    "raw_feature_checks": [
+      "nan_count",
+      "positive_infinity_count",
+      "negative_infinity_count"
+    ],
+    "transformed_feature_statistics": {
+      "population": "all benign train rows",
+      "required": [
+        "count",
+        "finite_count",
+        "mean",
+        "standard_deviation",
+        "minimum",
+        "maximum",
+        "quantiles"
+      ],
+      "quantile_probabilities": [
+        0.0,
+        0.001,
+        0.01,
+        0.05,
+        0.25,
+        0.5,
+        0.75,
+        0.95,
+        0.99,
+        0.999,
+        1.0
+      ]
+    },
+    "deterministic_sample": {
+      "maximum_rows_per_checkpoint": 100000,
+      "selection": "sorted unique numpy.linspace indices over the materialized benign-train row order",
+      "uses_randomness": false,
+      "required_statistics": [
+        "sample_row_count",
+        "sample_unique_count_per_feature",
+        "pearson_correlation_pairs"
+      ]
+    },
+    "correlation_audit": {
+      "absolute_pearson_report_threshold": 0.98,
+      "feature_pruning_allowed": false,
+      "purpose": "surface duplicated or strongly dependent evidence for user review"
+    },
+    "hbos_candidate_diagnostics": {
+      "candidate_bin_counts": [
+        16,
+        32,
+        64
+      ],
+      "edge_strategy": "feature-wise empirical quantiles with duplicate edges collapsed",
+      "required_per_feature": [
+        "requested_bin_count",
+        "effective_bin_count",
+        "collapsed_edge_count",
+        "minimum_bin_mass",
+        "maximum_bin_mass"
+      ],
+      "winner_selection_allowed": false,
+      "final_hbos_fit_allowed": false
+    },
+    "isolation_forest_fit_allowed": false,
+    "decision_threshold_selection_allowed": false,
+    "validation_metric_computation_allowed": false
+  },
+  "deliverables": {
+    "implementation": "python/nids_mvp/anomaly_eda.py",
+    "test_allowlist": [
+      "tests/test_t43_anomaly_eda.py"
+    ],
+    "machine_readable_eda": "run_log/t4.3/eda.json",
+    "human_readable_report": "docs/lab/T4.3-eda.vi.md"
+  },
+  "acceptance": {
+    "all_prerequisite_hashes_verified_before_scan": true,
+    "exact_benign_train_population_required": true,
+    "preprocessing_artifact_reused_without_refit": true,
+    "feature_order_exact": true,
+    "validation_partition_untouched": true,
+    "test_partition_untouched": true,
+    "attack_train_rows_excluded": true,
+    "raw_flow_rows_not_emitted": true,
+    "no_final_model_artifact": true,
+    "no_hyperparameter_or_feature_mask_decision": true,
+    "machine_and_human_reports_must_agree": true,
+    "user_review_required_before_model_contract": true
+  }
+}
