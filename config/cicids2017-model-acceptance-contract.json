@@ -1,0 +1,326 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.8",
+  "dataset": "CIC-IDS2017",
+  "objective": "Decide whether the accepted RF Stacker improves the accepted Flow RF classifier using a pre-locked paired LOAFO endpoint while reporting HBOS and Isolation Forest as separate secondary baselines.",
+  "authorization": {
+    "decision": "accepted",
+    "approval_record": "conversation: user accepted the separate-baseline comparison, global family-bootstrap endpoint, known-validation safeguards and Flow RF fallback",
+    "implementation_authorized": true,
+    "model_training_allowed": false,
+    "threshold_change_allowed": false
+  },
+  "artifacts": {
+    "acceptance": {
+      "id": "nids.model_acceptance.v1",
+      "version": "1.0.0",
+      "format": "json",
+      "path": "run_log/t4.8/acceptance.json"
+    },
+    "report": {
+      "id": "nids.model_acceptance.report.vi.v1",
+      "version": "1.0.0",
+      "format": "self_contained_html_utf8",
+      "path": "run_log/t4.8/report.vi.html"
+    },
+    "overwrite_allowed": false
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "rf_baseline_contract": {
+      "path": "config/cicids2017-rf-baseline-contract.json",
+      "size_bytes": 7063,
+      "sha256": "471fb609a034524682fc8ecd184fb714f6ff6a7136ee0aee494ee56fbe8ccda0"
+    },
+    "anomaly_baseline_contract": {
+      "path": "config/cicids2017-anomaly-baseline-contract.json",
+      "size_bytes": 17093,
+      "sha256": "b836265cec414181f4b1a4d75cc37734c3af3b8e34688271e46c30ab729711f0"
+    },
+    "rf_stacker_contract": {
+      "path": "config/cicids2017-rf-stacker-contract.json",
+      "size_bytes": 11544,
+      "sha256": "e20310485e88b1cda581bf89096fd685a2c118ad5ce5ebf462309dc5dc4c7aaa"
+    },
+    "loafo_contract": {
+      "path": "config/cicids2017-loafo-contract.json",
+      "size_bytes": 10477,
+      "sha256": "3a7c4ba1a7204aa1d002389590be359fa9b17f4080526d7ff7c02d779ee8e3dc"
+    },
+    "loafo_rf300_contract": {
+      "path": "config/cicids2017-loafo-rf300-contract.json",
+      "size_bytes": 1410,
+      "sha256": "3c6b1deef5bd1bc5f04af38e5e7aa5f90518dbca2f3fc924d2e8636ec174202d"
+    },
+    "t4_2_acceptance": {
+      "path": "run_log/t4.2/acceptance.json",
+      "size_bytes": 5432,
+      "sha256": "720805a1cd25dab6b2129a125df1a65a3100d5ee891d0f40fc4742aac041b98d",
+      "status": "passed"
+    },
+    "t4_2_validation_predictions": {
+      "path": "run_log/t4.2/validation-predictions-v1.npz",
+      "size_bytes": 1078654,
+      "sha256": "6a1107b33e753ca4afaef4a5ba4060825fc8344822c07b727e2f76fae95cfdcf"
+    },
+    "t4_3_acceptance": {
+      "path": "run_log/t4.3/acceptance.json",
+      "size_bytes": 14543,
+      "sha256": "88599430c7739f29e454d95f57c34a5c24974159359795bacad8bd0b3f48266c",
+      "status": "passed"
+    },
+    "t4_3_validation_predictions": {
+      "path": "run_log/t4.3/validation-predictions-v1.npz",
+      "size_bytes": 6808343,
+      "sha256": "e6f4a5626e6201a60164d457edd2713eac82cd4a65cd503ac3935cc06b4cf46c"
+    },
+    "t4_5_acceptance": {
+      "path": "run_log/t4.5/acceptance.json",
+      "size_bytes": 44821,
+      "sha256": "ef94e26bcd04725b463466a34dc15bec58bce92dd75da3cae55881a89dea56d1",
+      "status": "passed"
+    },
+    "t4_5_validation_predictions": {
+      "path": "run_log/t4.5/validation-predictions-v1.npz",
+      "size_bytes": 1124057,
+      "sha256": "60736d773b8ce8a70e0c0e2907172080a697c5a11066af4ebcca7114c7fae594"
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "t4_7_acceptance": {
+      "path": "run_log/t4.7-rf300/acceptance.json",
+      "size_bytes": 792041,
+      "sha256": "481a8d0793febeb8e0330a245ad73def04b86675f876008d5b5c93b0ec85dc4e",
+      "status": "passed",
+      "tree_count": 300
+    },
+    "t4_7_report": {
+      "path": "run_log/t4.7-rf300/report.vi.html",
+      "size_bytes": 213181,
+      "sha256": "c22040d2a5657c55cb2ae9973e2ca9c4753dfa77c2b824e24c926b01a6be3269"
+    },
+    "t4_7_manual_acceptance": {
+      "path": "run_log/t4.7-rf300/user-acceptance.json",
+      "size_bytes": 1184,
+      "sha256": "3cac230727a20e4398c71c55424e651ac8bc7f4ed7c0147e9505022631487837",
+      "status": "passed",
+      "decision": "accepted",
+      "t4_8_authorized": true
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "dependency_mutation_allowed": false,
+    "model_training_allowed": false,
+    "threshold_change_allowed": false,
+    "test_partition_selection_allowed": false,
+    "hooks_in_scope": false,
+    "pcap_replay_required": false,
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5"
+    }
+  },
+  "baseline_interpretation": {
+    "baseline_a": {
+      "id": "flow_rf",
+      "source_task": "T4.2",
+      "role": "primary_classifier_baseline"
+    },
+    "baseline_b": {
+      "source_task": "T4.3",
+      "independent_models": [
+        "hbos",
+        "isolation_forest"
+      ],
+      "evaluate_independently": true
+    },
+    "anomaly_ensemble_baseline_defined": false,
+    "new_or_majority_vote_or_weighted_threshold_allowed": false,
+    "stacker_anomaly_count_and_weighted_score_are_meta_features_only": true
+  },
+  "comparisons": {
+    "candidate": "rf_stacker",
+    "primary_confirmatory": "flow_rf",
+    "secondary_descriptive": [
+      "hbos",
+      "isolation_forest"
+    ],
+    "direction": "rf_stacker minus baseline",
+    "select_baseline_checkpoint_metric_or_threshold_from_loafo_outcomes_allowed": false
+  },
+  "family_scope": {
+    "macro_aggregate": [
+      "Bot",
+      "DDoS",
+      "DoS GoldenEye",
+      "DoS Hulk",
+      "DoS Slowhttptest",
+      "DoS slowloris",
+      "FTP-Patator",
+      "SSH-Patator",
+      "Web Attack – Brute Force"
+    ],
+    "case_study_only": [
+      "Infiltration",
+      "PortScan",
+      "Web Attack – Sql Injection",
+      "Web Attack – XSS"
+    ],
+    "unavailable": [
+      "Heartbleed"
+    ],
+    "case_studies_in_inferential_claim_allowed": false
+  },
+  "checkpoints": [
+    "F3",
+    "F5",
+    "F7",
+    "F9"
+  ],
+  "primary_endpoint": {
+    "name": "global_paired_novel_f1_delta",
+    "source": "accepted T4.7 RF300 per-family checkpoint novel_detection.f1",
+    "novel_population": "unknown_holdout versus benign; known attacks excluded",
+    "estimand": "mean over four checkpoint deltas within each family, then equal-weight mean over nine family units",
+    "family_weighting": "equal",
+    "checkpoint_weighting_within_family": "equal",
+    "confidence_interval": {
+      "method": "paired percentile bootstrap",
+      "level": 0.95,
+      "samples": 10000,
+      "seed": 1729,
+      "resampling_unit": "holdout_family",
+      "keep_all_checkpoints_of_family_together": true,
+      "quantile_method": "linear"
+    }
+  },
+  "secondary_loafo_endpoints": {
+    "per_checkpoint_metrics": [
+      "novel_f1",
+      "unknown_holdout_recall",
+      "benign_fpr",
+      "roc_auc",
+      "average_precision"
+    ],
+    "per_checkpoint_confidence_intervals": "descriptive only",
+    "per_checkpoint_improvement_claim_allowed": false,
+    "case_studies": "reported separately without confidence intervals or inferential claims"
+  },
+  "known_validation": {
+    "partition": "validation",
+    "join_key": [
+      "capture_id",
+      "flow_id"
+    ],
+    "dependency_unit": [
+      "capture_id",
+      "time_block_index"
+    ],
+    "stratum": "capture_id",
+    "bootstrap": {
+      "method": "paired stratified cluster percentile bootstrap",
+      "level": 0.95,
+      "samples": 10000,
+      "seed": 1729,
+      "resample_time_blocks_with_replacement_within_capture": true,
+      "keep_all_rows_models_and_checkpoints_of_sampled_block_together": true,
+      "quantile_method": "linear"
+    },
+    "expected_rows": {
+      "F3": 155220,
+      "F5": 84531,
+      "F7": 76358,
+      "F9": 71119
+    },
+    "expected_compound_group_count": 110,
+    "metrics": [
+      "f1",
+      "recall",
+      "fpr"
+    ],
+    "comparisons": [
+      "rf_stacker minus flow_rf",
+      "rf_stacker minus hbos",
+      "rf_stacker minus isolation_forest"
+    ],
+    "confidence_intervals_are_secondary_descriptive": true,
+    "independent_flow_bootstrap_allowed": false
+  },
+  "safeguards": {
+    "comparison": "rf_stacker minus flow_rf",
+    "scope": "every checkpoint must pass",
+    "use_point_estimates": true,
+    "known_recall": {
+      "minimum_delta": -0.002,
+      "formula": "stacker recall minus Flow RF recall"
+    },
+    "benign_fpr": {
+      "maximum_delta": 0.0005,
+      "formula": "stacker FPR minus Flow RF FPR"
+    }
+  },
+  "multiplicity": {
+    "formal_claim_count": 1,
+    "formal_claim": "global RF Stacker minus Flow RF primary endpoint",
+    "checkpoint_claims": false,
+    "secondary_baseline_claims": false,
+    "family_wise_correction_required": false,
+    "reason": "all checkpoint and secondary-baseline intervals are descriptive and cannot trigger model selection or an improvement claim",
+    "future_checkpoint_claim_policy": "lock Holm correction before implementation if any checkpoint-specific claim is later requested"
+  },
+  "claim_and_selection": {
+    "improvement_claim": {
+      "primary_ci_lower_bound_must_be_strictly_greater_than": 0.0,
+      "all_known_validation_safeguards_must_pass": true
+    },
+    "on_pass": {
+      "phase_5_binary_classifier": "rf_stacker",
+      "hbos_and_isolation_forest": "retain_for_phase_6_fusion",
+      "flow_rf": "retain_as_baseline"
+    },
+    "on_fail": {
+      "phase_5_binary_classifier": "flow_rf",
+      "hbos_and_isolation_forest": "retain_for_phase_6_fusion",
+      "rf_stacker": "retain_as_ablation"
+    },
+    "t5_1_authorized_by_technical_acceptance": false,
+    "manual_acceptance_required_before_t5_1": true
+  },
+  "acceptance": {
+    "all_prerequisite_hashes_verified": true,
+    "t4_7_manual_acceptance_verified": true,
+    "separate_baseline_interpretation_exact": true,
+    "no_new_anomaly_ensemble": true,
+    "primary_family_and_checkpoint_scope_exact": true,
+    "case_studies_excluded_from_inference": true,
+    "known_prediction_identity_and_labels_exact": true,
+    "known_split_join_cardinality_exact": true,
+    "paired_family_bootstrap_exact": true,
+    "paired_group_bootstrap_exact": true,
+    "safeguards_applied_to_every_checkpoint": true,
+    "no_model_fit_or_threshold_change": true,
+    "test_labels_not_used_for_selection": true,
+    "report_self_contained": true,
+    "atomic_first_publish": true
+  },
+  "implementation": {
+    "source": "python/nids_mvp/model_acceptance.py",
+    "test_allowlist": [
+      "tests/test_t48_model_acceptance.py"
+    ],
+    "commands": [
+      "python -B -m nids_mvp.model_acceptance run --contract config/cicids2017-model-acceptance-contract.json",
+      "python -B -m nids_mvp.model_acceptance validate --contract config/cicids2017-model-acceptance-contract.json"
+    ]
+  }
+}

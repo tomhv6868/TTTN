@@ -1,0 +1,253 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.7",
+  "dataset": "CIC-IDS2017",
+  "objective": "Run leakage-safe leave-one-attack-family-out experiments while keeping anomaly models benign-only and preserving the accepted Random Forest topology.",
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "dependency_mutation_allowed": false,
+    "model_training_allowed": true,
+    "hooks_in_scope": false,
+    "pcap_replay_required": false,
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5",
+      "scikit_learn": "1.7.2",
+      "joblib": "1.5.2"
+    }
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb"
+    },
+    "snapshot_contract": {
+      "path": "config/cicids2017-snapshot-contract.json",
+      "size_bytes": 11086,
+      "sha256": "5b3fef6e8539b78227810c44facb6e8583d8b7417b76a65685f1be84e0e93a08"
+    },
+    "split_contract": {
+      "path": "config/cicids2017-split-contract.json",
+      "size_bytes": 5331,
+      "sha256": "e7e7bdb373e36062a979edd2f8fbfee766eedf3aee776feda8e3cbe815b2b6b2"
+    },
+    "preprocessing_contract": {
+      "path": "config/cicids2017-preprocessing-contract.json",
+      "size_bytes": 5527,
+      "sha256": "9a7cc8f7ad8648c17aefde593ab90e00b8bfaf2e6e55c78dddd3fd04f713fa5b"
+    },
+    "rf_baseline_contract": {
+      "path": "config/cicids2017-rf-baseline-contract.json",
+      "size_bytes": 7063,
+      "sha256": "471fb609a034524682fc8ecd184fb714f6ff6a7136ee0aee494ee56fbe8ccda0"
+    },
+    "anomaly_contract": {
+      "path": "config/cicids2017-anomaly-baseline-contract.json",
+      "size_bytes": 17093,
+      "sha256": "b836265cec414181f4b1a4d75cc37734c3af3b8e34688271e46c30ab729711f0"
+    },
+    "oof_contract": {
+      "path": "config/cicids2017-oof-contract.json",
+      "size_bytes": 9087,
+      "sha256": "bbf5d75560275f193d42e27fa91a0219294de658645bf946cf45e24d97eaad67"
+    },
+    "rf_stacker_contract": {
+      "path": "config/cicids2017-rf-stacker-contract.json",
+      "size_bytes": 11544,
+      "sha256": "e20310485e88b1cda581bf89096fd685a2c118ad5ce5ebf462309dc5dc4c7aaa"
+    },
+    "known_family_contract": {
+      "path": "config/cicids2017-known-family-contract.json",
+      "size_bytes": 12278,
+      "sha256": "38cd960de16448dc917aa6d2d2447d287db192c7316e2e8c63c4622b22d13bdd"
+    },
+    "snapshot_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef"
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a"
+    },
+    "loafo_manifest": {
+      "path": "run_log/t3.6/loafo-manifest.json",
+      "size_bytes": 27306,
+      "sha256": "3b1a4a439b9c17de4e8ef824dda49f93330859f3427d820a28fb4738d4a6ebe4"
+    },
+    "rare_family_audit": {
+      "path": "run_log/t3.7/rare-family-audit.json",
+      "size_bytes": 33142,
+      "sha256": "942d6b482834d57a69956ff833226a8dda2cdcbae60d334295d9db273175fa4e"
+    },
+    "t4_2_model": {
+      "path": "run_log/t4.2/rf-baseline-v1.joblib",
+      "size_bytes": 140427861,
+      "sha256": "5bec1997d8bed9a3b3e53cc5fa9327d297a74ae4ddb44b77ae58a174d523de31"
+    },
+    "t4_2_validation_predictions": {
+      "path": "run_log/t4.2/validation-predictions-v1.npz",
+      "size_bytes": 1078654,
+      "sha256": "6a1107b33e753ca4afaef4a5ba4060825fc8344822c07b727e2f76fae95cfdcf"
+    },
+    "t4_3_model": {
+      "path": "run_log/t4.3/anomaly-baseline-v1.joblib",
+      "size_bytes": 14792842,
+      "sha256": "ba44692ef5de383a0eb8ad329d51d5e4a6cbcf8cc49aa9fe2f29c3d5529c3744"
+    },
+    "t4_3_validation_predictions": {
+      "path": "run_log/t4.3/validation-predictions-v1.npz",
+      "size_bytes": 6808343,
+      "sha256": "e6f4a5626e6201a60164d457edd2713eac82cd4a65cd503ac3935cc06b4cf46c"
+    },
+    "t4_4_oof_meta_features": {
+      "path": "run_log/t4.4/oof-meta-features-v1.parquet",
+      "size_bytes": 57873464,
+      "sha256": "77695a6b6f03df8e56c8d24789e1e9419b3d773a23573bcede4aa0cea6cd09e8"
+    },
+    "t4_5_model": {
+      "path": "run_log/t4.5/rf-stacker-v1.joblib",
+      "size_bytes": 140518551,
+      "sha256": "1c7b53fd4151230bc2e95621645b772387500a430db8e0788582e6141326654a"
+    },
+    "t4_5_validation_predictions": {
+      "path": "run_log/t4.5/validation-predictions-v1.npz",
+      "size_bytes": 1124057,
+      "sha256": "60736d773b8ce8a70e0c0e2907172080a697c5a11066af4ebcca7114c7fae594"
+    },
+    "t4_6_acceptance": {
+      "path": "run_log/t4.6/acceptance.json",
+      "size_bytes": 60084,
+      "sha256": "1b1d45a186b82a13d5d4f1958dc81dfa06efb8208b407497e69f0c1d3f43e42c"
+    },
+    "t4_6_user_acceptance": {
+      "path": "run_log/t4.6/user-acceptance.json",
+      "size_bytes": 1093,
+      "sha256": "95f9988924550790e0da6dfea5b9e167eaf939f6fc8c075fa7bd302870c7a957"
+    },
+    "t4_6_model": {
+      "path": "run_log/t4.6/known-family-rf-v1.joblib",
+      "size_bytes": 149414107,
+      "sha256": "d279e9992cafe6a9c8d9c4d3a81e18ddb96c889c11b30907767e03926e938177"
+    },
+    "t4_6_validation_predictions": {
+      "path": "run_log/t4.6/validation-predictions-v1.npz",
+      "size_bytes": 734792,
+      "sha256": "f34f23d46fb184cfea76913f7716d134bdc04eb583075ddb1d404c93bccab396"
+    }
+  },
+  "family_scope": {
+    "execute_in_order": [
+      "Bot",
+      "DDoS",
+      "DoS GoldenEye",
+      "DoS Hulk",
+      "DoS Slowhttptest",
+      "DoS slowloris",
+      "FTP-Patator",
+      "SSH-Patator",
+      "Web Attack – Brute Force",
+      "Infiltration",
+      "PortScan",
+      "Web Attack – Sql Injection",
+      "Web Attack – XSS"
+    ],
+    "macro_aggregate": [
+      "Bot",
+      "DDoS",
+      "DoS GoldenEye",
+      "DoS Hulk",
+      "DoS Slowhttptest",
+      "DoS slowloris",
+      "FTP-Patator",
+      "SSH-Patator",
+      "Web Attack – Brute Force"
+    ],
+    "case_study_only": [
+      "Infiltration",
+      "PortScan",
+      "Web Attack – Sql Injection",
+      "Web Attack – XSS"
+    ],
+    "unavailable": ["Heartbleed"]
+  },
+  "checkpoints": ["F3", "F5", "F7", "F9"],
+  "loafo_protocol": {
+    "supervised_preprocessing": "refit for every holdout and checkpoint on train rows excluding the holdout family",
+    "flow_rf": "refit on benign and non-holdout attack train rows",
+    "rf_stacker": "refit on benign and non-holdout attack train rows; train anomaly meta-features come only from accepted T4.4 OOF rows after holdout filtering",
+    "known_family_rf": "refit on non-holdout attack train rows with class order excluding the holdout",
+    "anomaly_models": "reuse accepted T4.3 full benign-train HBOS and Isolation Forest models, normalization profiles and thresholds without refit",
+    "unknown_evaluation": "all rows of the held-out family from train, validation and test become sealed unknown evaluation rows",
+    "known_evaluation": "known validation and test rows retain their original partition and exclude the holdout family",
+    "test_use": "metrics only after every preprocessing, fit, threshold and tree-count decision is frozen",
+    "persist_model_objects": false,
+    "reload_parity": "persist each temporary family model, reload and compare probabilities before deleting the temporary model"
+  },
+  "random_forest": {
+    "implementation": "sklearn.ensemble.RandomForestClassifier",
+    "topology": "the accepted T4.2/T4.5/T4.6 parameters remain exact except n_estimators selected by optimization_benchmark",
+    "gpu_primary_training_allowed": false,
+    "reason": "available GPU implementations change split construction or estimator family and therefore do not preserve the accepted Random Forest algorithm"
+  },
+  "optimization_benchmark": {
+    "purpose": "select one globally frozen tree count before any LOAFO test scoring",
+    "data": "accepted known validation only",
+    "test_partition_allowed": false,
+    "candidate_tree_counts": [50, 100, 150, 200, 300],
+    "reference_tree_count": 300,
+    "method": "cumulative first-N estimator probabilities from the accepted 300-tree T4.2, T4.5 and T4.6 bundles",
+    "selection": "smallest candidate that passes every applicable gate for all three model roles and all four checkpoints; otherwise 300",
+    "binary_gates": {
+      "macro_f1_max_drop": 0.002,
+      "attack_recall_max_drop": 0.002,
+      "benign_fpr_max_increase": 0.0005
+    },
+    "multiclass_gates": {
+      "macro_family_f1_max_drop": 0.002,
+      "balanced_accuracy_max_drop": 0.002
+    },
+    "diagnostics": [
+      "validation_log_loss_by_tree_count",
+      "metric_values_and_deltas_by_tree_count",
+      "wall_time_by_model_role_and_checkpoint",
+      "selected_tree_count"
+    ],
+    "artifact": {
+      "path": "run_log/t4.7/tree-convergence-benchmark.json",
+      "format": "json",
+      "overwrite_allowed": false
+    }
+  },
+  "performance": {
+    "materialize_raw_snapshot_once_per_checkpoint_and_family": true,
+    "share_transformed_matrices_across_supervised_models": true,
+    "score_accepted_anomaly_models_once_per_snapshot_population": true,
+    "durable_restartable_family_stages": true,
+    "maximum_families_per_execution_stage": 2
+  },
+  "required_outputs": {
+    "per_family_checkpoint_predictions": "Parquet with stable capture_id/flow_id/group keys and all baseline, anomaly, stacker and known-family outputs",
+    "per_family_receipt": "JSON with population accounting, leakage audit, metrics, timing, peak RAM and temporary reload parity",
+    "aggregate_acceptance": "JSON with macro results for nine eligible families and separate four-family case studies",
+    "report": "Vietnamese report with loss curves, ROC/PR, confusion matrices, recall/FPR heatmaps, feature importance, confidence distributions, training time, RAM and GPU utilization"
+  },
+  "validation": {
+    "all_prerequisite_hashes_verified": true,
+    "accepted_300_tree_probability_parity_required": true,
+    "benchmark_selection_deterministic": true,
+    "holdout_absent_from_every_supervised_fit": true,
+    "anomaly_fit_population_benign_only": true,
+    "flow_and_model_fit_leakage_zero": true,
+    "test_labels_excluded_from_all_selection": true,
+    "hooks_excluded": true
+  }
+}

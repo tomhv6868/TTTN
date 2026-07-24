@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.7",
+  "contract_kind": "derived_execution_override",
+  "base_contract": {
+    "path": "config/cicids2017-loafo-contract.json",
+    "size_bytes": 10477,
+    "sha256": "3a7c4ba1a7204aa1d002389590be359fa9b17f4080526d7ff7c02d779ee8e3dc"
+  },
+  "user_decision": {
+    "path": "run_log/t4.7/rf300-user-decision.json",
+    "size_bytes": 929,
+    "sha256": "5a9b1ba261af1985975690ada75a107770433363adb946e4f287612e440e2384"
+  },
+  "execution_variant": {
+    "id": "rf300-primary",
+    "role": "primary_final",
+    "output_root": "run_log/t4.7-rf300",
+    "prior_variant": {
+      "id": "rf50-accelerated",
+      "output_root": "run_log/t4.7",
+      "role": "accelerated_ablation",
+      "preserve": true
+    }
+  },
+  "random_forest": {
+    "implementation": "sklearn.ensemble.RandomForestClassifier",
+    "final_tree_count": 300,
+    "tree_count_source": "explicit_user_decision",
+    "n_jobs": -1,
+    "topology": "the accepted T4.2/T4.5/T4.6 parameters remain exact with n_estimators restored to 300",
+    "gpu_primary_training_allowed": false
+  },
+  "validation_override": {
+    "tree_benchmark_selection_is_advisory_ablation_only": true,
+    "rf300_is_primary_final": true,
+    "all_base_leakage_and_parity_gates_remain_required": true,
+    "test_labels_excluded_from_fit_and_selection": true,
+    "hooks_excluded": true,
+    "overwrite_existing_evidence": false
+  }
+}

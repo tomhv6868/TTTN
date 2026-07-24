@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.5",
+  "dataset": "CIC-IDS2017",
+  "objective": "Train one leakage-safe Random Forest stacker per checkpoint from T4.1 supervised original features and T4.4/T4.3 anomaly meta-features.",
+  "artifacts": {
+    "model_bundle": {
+      "id": "nids.rf_stacker.v1",
+      "version": "1.0.0",
+      "format": "joblib",
+      "path": "run_log/t4.5/rf-stacker-v1.joblib"
+    },
+    "validation_predictions": {
+      "id": "nids.rf_stacker.validation_predictions.v1",
+      "version": "1.0.0",
+      "format": "numpy_npz_compressed_allow_pickle_false",
+      "path": "run_log/t4.5/validation-predictions-v1.npz"
+    },
+    "acceptance": {
+      "id": "nids.rf_stacker.acceptance.v1",
+      "version": "1.0.0",
+      "format": "json",
+      "path": "run_log/t4.5/acceptance.json"
+    },
+    "overwrite_allowed": false
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "feature_count": 54
+    },
+    "snapshot_contract": {
+      "path": "config/cicids2017-snapshot-contract.json",
+      "size_bytes": 11086,
+      "sha256": "5b3fef6e8539b78227810c44facb6e8583d8b7417b76a65685f1be84e0e93a08"
+    },
+    "split_contract": {
+      "path": "config/cicids2017-split-contract.json",
+      "size_bytes": 5331,
+      "sha256": "e7e7bdb373e36062a979edd2f8fbfee766eedf3aee776feda8e3cbe815b2b6b2"
+    },
+    "preprocessing_contract": {
+      "path": "config/cicids2017-preprocessing-contract.json",
+      "size_bytes": 5527,
+      "sha256": "9a7cc8f7ad8648c17aefde593ab90e00b8bfaf2e6e55c78dddd3fd04f713fa5b"
+    },
+    "rf_baseline_contract": {
+      "path": "config/cicids2017-rf-baseline-contract.json",
+      "size_bytes": 7063,
+      "sha256": "471fb609a034524682fc8ecd184fb714f6ff6a7136ee0aee494ee56fbe8ccda0"
+    },
+    "anomaly_baseline_contract": {
+      "path": "config/cicids2017-anomaly-baseline-contract.json",
+      "size_bytes": 17093,
+      "sha256": "b836265cec414181f4b1a4d75cc37734c3af3b8e34688271e46c30ab729711f0"
+    },
+    "oof_contract": {
+      "path": "config/cicids2017-oof-contract.json",
+      "size_bytes": 9087,
+      "sha256": "bbf5d75560275f193d42e27fa91a0219294de658645bf946cf45e24d97eaad67"
+    },
+    "snapshot_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "parts": 20,
+      "rows": 3783154
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "t4_1_technical_acceptance": {
+      "path": "run_log/t4.1/acceptance.json",
+      "size_bytes": 88844,
+      "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+      "status": "passed",
+      "artifact_id": "nids.preprocessing.v1",
+      "artifact_version": "1.0.0"
+    },
+    "t4_2_technical_acceptance": {
+      "path": "run_log/t4.2/acceptance.json",
+      "size_bytes": 5432,
+      "sha256": "720805a1cd25dab6b2129a125df1a65a3100d5ee891d0f40fc4742aac041b98d",
+      "status": "passed"
+    },
+    "t4_2_validation_predictions": {
+      "path": "run_log/t4.2/validation-predictions-v1.npz",
+      "size_bytes": 1078654,
+      "sha256": "6a1107b33e753ca4afaef4a5ba4060825fc8344822c07b727e2f76fae95cfdcf"
+    },
+    "t4_3_technical_acceptance": {
+      "path": "run_log/t4.3/acceptance.json",
+      "size_bytes": 14543,
+      "sha256": "88599430c7739f29e454d95f57c34a5c24974159359795bacad8bd0b3f48266c",
+      "status": "passed"
+    },
+    "t4_3_validation_predictions": {
+      "path": "run_log/t4.3/validation-predictions-v1.npz",
+      "size_bytes": 6808343,
+      "sha256": "e6f4a5626e6201a60164d457edd2713eac82cd4a65cd503ac3935cc06b4cf46c"
+    },
+    "t4_4_technical_acceptance": {
+      "path": "run_log/t4.4/acceptance.json",
+      "size_bytes": 184988,
+      "sha256": "691648e4b95f8e575ed032df43885aef7b97e7ff76e1df359568db293a69bc7c",
+      "status": "passed"
+    },
+    "t4_4_manual_acceptance": {
+      "path": "run_log/t4.4/user-acceptance.json",
+      "size_bytes": 871,
+      "sha256": "ad9514357d01845c198f81d0d79f11eef581ca4bc885330a3ae5416f27345272",
+      "status": "passed",
+      "decision": "accepted",
+      "t4_5_authorized": true
+    },
+    "t4_4_oof_meta_features": {
+      "path": "run_log/t4.4/oof-meta-features-v1.parquet",
+      "size_bytes": 57873464,
+      "sha256": "77695a6b6f03df8e56c8d24789e1e9419b3d773a23573bcede4aa0cea6cd09e8",
+      "rows": 2629897
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "dependency_mutation_allowed": false,
+    "model_training_allowed": true,
+    "pcap_replay_required": false,
+    "hooks_in_scope": false,
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5",
+      "scikit_learn": "1.7.2",
+      "joblib": "1.5.2"
+    }
+  },
+  "input": {
+    "checkpoints": ["F3", "F5", "F7", "F9"],
+    "join_key": ["checkpoint", "capture_id", "flow_id"],
+    "join_by_row_position_allowed": false,
+    "duplicate_or_unmatched_key_allowed": false,
+    "fit_partition": "train",
+    "evaluation_partition": "validation",
+    "sealed_partition": "test",
+    "test_rows_allowed": false,
+    "metadata_columns_allowed_in_model_matrix": false,
+    "rf_baseline_probability_as_feature_allowed": false
+  },
+  "labels": {
+    "negative": {"name": "BENIGN", "value": 0},
+    "positive": {"name": "ATTACK", "value": 1, "selector": "assigned_class != 'BENIGN'"},
+    "class_order": [0, 1]
+  },
+  "original_features": {
+    "source": "T3.5 snapshot features transformed by the accepted T4.1 supervised_known profile",
+    "preprocessing_profile": "supervised_known",
+    "fit_or_refit_allowed": false,
+    "feature_order": "exact T4.1 supervised_known selected_features order, followed by meta_features.order",
+    "expected_selected_feature_count": {"F3": 52, "F5": 53, "F7": 53, "F9": 53},
+    "expected_dropped_features": {
+      "F3": ["packet_count", "reverse_iat_std_us"],
+      "F5": ["packet_count"],
+      "F7": ["packet_count"],
+      "F9": ["packet_count"]
+    },
+    "output_dtype": "float32"
+  },
+  "meta_features": {
+    "train_source": "T4.4 OOF meta-features; each train row was scored by anomaly models that excluded its fold",
+    "validation_source": "T4.3 full-benign-train anomaly predictions",
+    "order": [
+      "hbos_normalized_score",
+      "isolation_forest_normalized_score",
+      "hbos_binary",
+      "isolation_forest_binary",
+      "anomaly_count",
+      "weighted_score"
+    ],
+    "raw_scores_allowed": false,
+    "anomaly_count_formula": "uint8(hbos_binary + isolation_forest_binary)",
+    "weighted_score_formula": "0.5 * hbos_normalized_score + 0.5 * isolation_forest_normalized_score",
+    "weighted_score_calculation_dtype": "float64",
+    "final_matrix_dtype": "float32",
+    "missing_or_non_finite_allowed": false,
+    "validation_label_use": "identity and metrics only; never meta-feature construction or tuning"
+  },
+  "stacker_matrix": {
+    "expected_feature_count": {"F3": 58, "F5": 59, "F7": 59, "F9": 59},
+    "column_order": "original_features.feature_order then meta_features.order",
+    "dtype": "float32",
+    "train_meta_feature_origin": "OOF only",
+    "validation_meta_feature_origin": "full benign train fit only"
+  },
+  "random_forest": {
+    "implementation": "sklearn.ensemble.RandomForestClassifier",
+    "configuration_source": "exact T4.2 parameters for a feature-contribution comparison",
+    "separate_model_per_checkpoint": true,
+    "hyperparameter_search_allowed": false,
+    "parameters": {
+      "n_estimators": 300,
+      "criterion": "gini",
+      "max_depth": null,
+      "min_samples_split": 2,
+      "min_samples_leaf": 1,
+      "max_features": "sqrt",
+      "bootstrap": true,
+      "class_weight": "balanced_subsample",
+      "random_state": 4202,
+      "n_jobs": -1,
+      "oob_score": false,
+      "warm_start": false,
+      "ccp_alpha": 0.0,
+      "max_samples": null
+    }
+  },
+  "decision": {
+    "score": "predict_proba positive-class probability",
+    "threshold": 0.5,
+    "threshold_comparison": "attack_probability >= 0.5",
+    "validation_threshold_tuning_allowed": false
+  },
+  "expected_population": {
+    "train": {
+      "F3": {"rows": 1042365, "benign": 895686, "attack": 146679},
+      "F5": {"rows": 577974, "benign": 433330, "attack": 144644},
+      "F7": {"rows": 517508, "benign": 373746, "attack": 143762},
+      "F9": {"rows": 492050, "benign": 350086, "attack": 141964}
+    },
+    "validation": {
+      "F3": {"rows": 155220, "benign": 125317, "attack": 29903},
+      "F5": {"rows": 84531, "benign": 54978, "attack": 29553},
+      "F7": {"rows": 76358, "benign": 46958, "attack": 29400},
+      "F9": {"rows": 71119, "benign": 42481, "attack": 28638}
+    }
+  },
+  "metrics": {
+    "evaluation_scope": "validation_only",
+    "required": ["precision", "recall", "f1", "macro_f1", "mcc", "fpr", "confusion_matrix"],
+    "precision_recall_f1_positive_label": 1,
+    "zero_division": 0,
+    "macro_f1_labels": [0, 1],
+    "fpr_formula": "FP / (FP + TN)",
+    "confusion_matrix_layout": [["TN", "FP"], ["FN", "TP"]],
+    "training_metrics_as_quality_evidence_allowed": false,
+    "T4_2_metric_delta_diagnostic_allowed": true,
+    "improvement_claim_allowed_before_T4_8": false
+  },
+  "feature_importance": {
+    "store_all_named_importances": true,
+    "store_ranked_meta_feature_importances": true,
+    "importance_type": "RandomForestClassifier.feature_importances_",
+    "causal_interpretation_allowed": false
+  },
+  "validation_predictions": {
+    "row_order": "snapshot manifest part order then ascending flow_id within part",
+    "arrays_per_checkpoint": {
+      "capture_id": "fixed-width unicode",
+      "flow_id": "uint64",
+      "y_true": "uint8",
+      "attack_probability": "float64",
+      "y_pred": "uint8"
+    },
+    "allow_pickle": false,
+    "test_rows_allowed": false
+  },
+  "model_bundle": {
+    "checkpoint_contents": [
+      "accepted T4.1 supervised_known preprocessing profile",
+      "ordered original and meta feature names",
+      "RandomForestClassifier estimator",
+      "weighted-score and decision contract"
+    ],
+    "embed_T4_3_anomaly_models": false,
+    "T4_3_model_reference_by_hash_required": true
+  },
+  "acceptance": {
+    "all_prerequisite_hashes_verified_before_training": true,
+    "fit_population_exact": true,
+    "validation_population_exact": true,
+    "test_partition_untouched": true,
+    "key_join_cardinality_exact": true,
+    "duplicate_or_unmatched_key_count_zero": true,
+    "train_meta_features_OOF_only": true,
+    "validation_meta_features_T4_3_only": true,
+    "feature_order_and_dtype_exact": true,
+    "metadata_leakage_forbidden": true,
+    "four_independent_models_required": true,
+    "model_reload_probability_parity": "bitwise_equal_float64",
+    "prediction_bundle_metric_recomputation_required": true,
+    "feature_importance_accounting_required": true,
+    "artifact_source_hashes_required": true,
+    "atomic_first_publish": true,
+    "manual_acceptance_required_before_T4_6": true
+  },
+  "implementation": {
+    "source": "python/nids_mvp/rf_stacker.py",
+    "test_allowlist": ["tests/test_t45_rf_stacker.py"]
+  }
+}

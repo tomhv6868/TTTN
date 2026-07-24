@@ -1,0 +1,321 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.6",
+  "dataset": "CIC-IDS2017",
+  "objective": "Train one attack-only known-family Random Forest multiclass classifier per checkpoint with deterministic class-probability, top-class and confidence outputs.",
+  "artifacts": {
+    "model_bundle": {
+      "id": "nids.known_family_rf.v1",
+      "version": "1.0.0",
+      "format": "joblib",
+      "path": "run_log/t4.6/known-family-rf-v1.joblib"
+    },
+    "validation_predictions": {
+      "id": "nids.known_family_rf.validation_predictions.v1",
+      "version": "1.0.0",
+      "format": "numpy_npz_compressed_allow_pickle_false",
+      "path": "run_log/t4.6/validation-predictions-v1.npz"
+    },
+    "acceptance": {
+      "id": "nids.known_family_rf.acceptance.v1",
+      "version": "1.0.0",
+      "format": "json",
+      "path": "run_log/t4.6/acceptance.json"
+    },
+    "overwrite_allowed": false
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "feature_count": 54
+    },
+    "snapshot_contract": {
+      "path": "config/cicids2017-snapshot-contract.json",
+      "size_bytes": 11086,
+      "sha256": "5b3fef6e8539b78227810c44facb6e8583d8b7417b76a65685f1be84e0e93a08"
+    },
+    "split_contract": {
+      "path": "config/cicids2017-split-contract.json",
+      "size_bytes": 5331,
+      "sha256": "e7e7bdb373e36062a979edd2f8fbfee766eedf3aee776feda8e3cbe815b2b6b2"
+    },
+    "preprocessing_contract": {
+      "path": "config/cicids2017-preprocessing-contract.json",
+      "size_bytes": 5527,
+      "sha256": "9a7cc8f7ad8648c17aefde593ab90e00b8bfaf2e6e55c78dddd3fd04f713fa5b"
+    },
+    "rf_baseline_contract": {
+      "path": "config/cicids2017-rf-baseline-contract.json",
+      "size_bytes": 7063,
+      "sha256": "471fb609a034524682fc8ecd184fb714f6ff6a7136ee0aee494ee56fbe8ccda0"
+    },
+    "snapshot_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "parts": 20,
+      "rows": 3783154
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "rare_family_audit": {
+      "path": "run_log/t3.7/rare-family-audit.json",
+      "size_bytes": 33142,
+      "sha256": "942d6b482834d57a69956ff833226a8dda2cdcbae60d334295d9db273175fa4e",
+      "status": "passed",
+      "macro_family_count": 9,
+      "case_study_family_count": 4,
+      "unavailable_family_count": 1
+    },
+    "t4_1_technical_acceptance": {
+      "path": "run_log/t4.1/acceptance.json",
+      "size_bytes": 88844,
+      "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+      "status": "passed",
+      "artifact_id": "nids.preprocessing.v1",
+      "artifact_version": "1.0.0"
+    },
+    "t4_5_technical_acceptance": {
+      "path": "run_log/t4.5/acceptance.json",
+      "size_bytes": 44821,
+      "sha256": "ef94e26bcd04725b463466a34dc15bec58bce92dd75da3cae55881a89dea56d1",
+      "status": "passed"
+    },
+    "t4_5_manual_acceptance": {
+      "path": "run_log/t4.5/user-acceptance.json",
+      "size_bytes": 1089,
+      "sha256": "6956a3bff4420ec843e0652b25a4b2dffc9c287851b3153abb1e73372f2a05aa",
+      "status": "passed",
+      "decision": "accepted",
+      "t4_6_authorized": true
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "dependency_mutation_allowed": false,
+    "model_training_allowed": true,
+    "pcap_replay_required": false,
+    "hooks_in_scope": false,
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5",
+      "scikit_learn": "1.7.2",
+      "joblib": "1.5.2"
+    }
+  },
+  "input": {
+    "checkpoints": ["F3", "F5", "F7", "F9"],
+    "join_key": ["checkpoint", "capture_id", "flow_id"],
+    "fit_selector": "partition == 'train' and assigned_class != 'BENIGN'",
+    "evaluation_selector": "partition == 'validation' and assigned_class != 'BENIGN'",
+    "sealed_partition": "test",
+    "test_rows_allowed": false,
+    "benign_rows_allowed_in_fit_evaluation_or_outputs": false,
+    "metadata_columns_allowed_in_model_matrix": false,
+    "stacker_or_anomaly_features_allowed": false
+  },
+  "labels": {
+    "class_order": [
+      "Bot",
+      "DDoS",
+      "DoS GoldenEye",
+      "DoS Hulk",
+      "DoS Slowhttptest",
+      "DoS slowloris",
+      "FTP-Patator",
+      "Infiltration",
+      "PortScan",
+      "SSH-Patator",
+      "Web Attack – Brute Force",
+      "Web Attack – Sql Injection",
+      "Web Attack – XSS"
+    ],
+    "macro_family_order": [
+      "Bot",
+      "DDoS",
+      "DoS GoldenEye",
+      "DoS Hulk",
+      "DoS Slowhttptest",
+      "DoS slowloris",
+      "FTP-Patator",
+      "SSH-Patator",
+      "Web Attack – Brute Force"
+    ],
+    "case_study_family_order": [
+      "Infiltration",
+      "PortScan",
+      "Web Attack – Sql Injection",
+      "Web Attack – XSS"
+    ],
+    "unavailable": ["Heartbleed"],
+    "benign_class_included": false,
+    "class_encoding": "zero-based index into labels.class_order",
+    "class_order_source": "T3.7 rare-family audit order excluding BENIGN and unavailable Heartbleed"
+  },
+  "features": {
+    "source": "T3.5 snapshot flow features transformed by the accepted T4.1 supervised_known profile",
+    "preprocessing_profile": "supervised_known",
+    "fit_or_refit_allowed": false,
+    "feature_order": "exact T4.1 supervised_known selected_features order",
+    "expected_selected_feature_count": {"F3": 52, "F5": 53, "F7": 53, "F9": 53},
+    "expected_dropped_features": {
+      "F3": ["packet_count", "reverse_iat_std_us"],
+      "F5": ["packet_count"],
+      "F7": ["packet_count"],
+      "F9": ["packet_count"]
+    },
+    "matrix_dtype": "float32",
+    "non_finite_allowed": false
+  },
+  "random_forest": {
+    "implementation": "sklearn.ensemble.RandomForestClassifier",
+    "configuration_source": "exact T4.2 parameters approved for reuse in T4.6",
+    "separate_model_per_checkpoint": true,
+    "hyperparameter_search_allowed": false,
+    "parameters": {
+      "n_estimators": 300,
+      "criterion": "gini",
+      "max_depth": null,
+      "min_samples_split": 2,
+      "min_samples_leaf": 1,
+      "max_features": "sqrt",
+      "bootstrap": true,
+      "class_weight": "balanced_subsample",
+      "random_state": 4202,
+      "n_jobs": -1,
+      "oob_score": false,
+      "warm_start": false,
+      "ccp_alpha": 0.0,
+      "max_samples": null
+    }
+  },
+  "confidence": {
+    "class_probability": "RandomForestClassifier.predict_proba in labels.class_order",
+    "top_class_index": "first argmax of class_probability in labels.class_order",
+    "top_class": "labels.class_order[top_class_index]",
+    "confidence": "max(class_probability)",
+    "calibration": "none",
+    "calibrated_probability_claim_allowed": false,
+    "validation_tuning_or_thresholding_allowed": false,
+    "probability_sum_absolute_tolerance": 1e-12
+  },
+  "expected_population": {
+    "train": {"F3": 146679, "F5": 144644, "F7": 143762, "F9": 141964},
+    "validation": {"F3": 29903, "F5": 29553, "F7": 29400, "F9": 28638},
+    "train_by_family": {
+      "Bot": {"F3": 452, "F5": 452, "F7": 452, "F9": 452},
+      "DDoS": {"F3": 37256, "F5": 37256, "F7": 37256, "F9": 37256},
+      "DoS GoldenEye": {"F3": 4759, "F5": 4759, "F7": 4759, "F9": 4755},
+      "DoS Hulk": {"F3": 95108, "F5": 94931, "F7": 94794, "F9": 94688},
+      "DoS Slowhttptest": {"F3": 2645, "F5": 2412, "F7": 1696, "F9": 145},
+      "DoS slowloris": {"F3": 2593, "F5": 1529, "F7": 1502, "F9": 1365},
+      "FTP-Patator": {"F3": 1524, "F5": 1513, "F7": 1513, "F9": 1513},
+      "Infiltration": {"F3": 10, "F5": 10, "F7": 10, "F9": 10},
+      "PortScan": {"F3": 629, "F5": 80, "F7": 80, "F9": 80},
+      "SSH-Patator": {"F3": 1590, "F5": 1589, "F7": 1587, "F9": 1587},
+      "Web Attack – Brute Force": {"F3": 93, "F5": 93, "F7": 93, "F9": 93},
+      "Web Attack – Sql Injection": {"F3": 6, "F5": 6, "F7": 6, "F9": 6},
+      "Web Attack – XSS": {"F3": 14, "F5": 14, "F7": 14, "F9": 14}
+    },
+    "validation_by_family": {
+      "Bot": {"F3": 94, "F5": 94, "F7": 94, "F9": 94},
+      "DDoS": {"F3": 7401, "F5": 7401, "F7": 7380, "F9": 7369},
+      "DoS GoldenEye": {"F3": 1180, "F5": 1180, "F7": 1180, "F9": 1180},
+      "DoS Hulk": {"F3": 19180, "F5": 19177, "F7": 19177, "F9": 19177},
+      "DoS Slowhttptest": {"F3": 813, "F5": 811, "F7": 723, "F9": 46},
+      "DoS slowloris": {"F3": 390, "F5": 220, "F7": 176, "F9": 102},
+      "FTP-Patator": {"F3": 341, "F5": 341, "F7": 341, "F9": 341},
+      "Infiltration": {"F3": 1, "F5": 1, "F7": 1, "F9": 1},
+      "PortScan": {"F3": 175, "F5": 0, "F7": 0, "F9": 0},
+      "SSH-Patator": {"F3": 308, "F5": 308, "F7": 308, "F9": 308},
+      "Web Attack – Brute Force": {"F3": 17, "F5": 17, "F7": 17, "F9": 17},
+      "Web Attack – Sql Injection": {"F3": 0, "F5": 0, "F7": 0, "F9": 0},
+      "Web Attack – XSS": {"F3": 3, "F5": 3, "F7": 3, "F9": 3}
+    }
+  },
+  "metrics": {
+    "evaluation_scope": "attack-only validation",
+    "primary": "macro_f1 over labels.macro_family_order",
+    "required": [
+      "macro_family_f1",
+      "weighted_f1_all_supported_families",
+      "balanced_accuracy_supported_families",
+      "top_2_accuracy",
+      "multiclass_log_loss",
+      "per_class_metrics",
+      "confusion_matrix"
+    ],
+    "confusion_matrix_label_order": "labels.class_order",
+    "confusion_matrix_shape": [13, 13],
+    "per_class_fields": ["support", "predicted_count", "true_positive", "false_positive", "false_negative", "precision", "recall", "f1"],
+    "undefined_metric_representation": null,
+    "case_study_families_excluded_from_macro": true,
+    "zero_validation_support_not_silently_scored_as_zero": true,
+    "training_metrics_as_quality_evidence_allowed": false
+  },
+  "feature_importance": {
+    "store_all_named_importances": true,
+    "importance_type": "RandomForestClassifier.feature_importances_",
+    "causal_interpretation_allowed": false
+  },
+  "validation_predictions": {
+    "row_order": "snapshot manifest part order then ascending flow_id within part, filtered to attack validation rows",
+    "arrays_per_checkpoint": {
+      "capture_id": "fixed-width unicode",
+      "flow_id": "uint64",
+      "y_true": "fixed-width unicode family label",
+      "class_probability": "float64 matrix with columns in labels.class_order",
+      "top_class_index": "uint8",
+      "top_class": "fixed-width unicode family label",
+      "confidence": "float64"
+    },
+    "allow_pickle": false,
+    "test_rows_allowed": false
+  },
+  "model_bundle": {
+    "checkpoint_contents": [
+      "accepted T4.1 supervised_known preprocessing profile",
+      "ordered feature names",
+      "labels.class_order",
+      "RandomForestClassifier estimator",
+      "confidence contract"
+    ],
+    "embed_T4_5_stacker": false
+  },
+  "acceptance": {
+    "all_prerequisite_hashes_verified_before_training": true,
+    "fit_population_and_per_family_counts_exact": true,
+    "validation_population_and_per_family_counts_exact": true,
+    "test_partition_untouched": true,
+    "benign_rows_excluded": true,
+    "feature_order_and_dtype_exact": true,
+    "metadata_leakage_forbidden": true,
+    "four_independent_models_required": true,
+    "all_thirteen_training_classes_required_per_checkpoint": true,
+    "model_classes_equal_class_order": true,
+    "probability_shape_order_finite_range_and_sum_required": true,
+    "top_class_and_confidence_parity_required": true,
+    "model_reload_probability_parity": "bitwise_equal_float64",
+    "prediction_bundle_metric_recomputation_required": true,
+    "feature_importance_accounting_required": true,
+    "artifact_source_hashes_required": true,
+    "atomic_first_publish": true,
+    "manual_acceptance_required_before_T4_7": true
+  },
+  "implementation": {
+    "source": "python/nids_mvp/known_family_rf.py",
+    "test_allowlist": ["tests/test_t46_known_family_rf.py"]
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T4.4",
+  "dataset": "CIC-IDS2017",
+  "objective": "Build leakage-safe five-fold out-of-fold anomaly meta-features for every known-train snapshot row at F3, F5, F7, and F9.",
+  "prerequisites": {
+    "t4_3_manual_acceptance": {
+      "path": "run_log/t4.3/user-acceptance.json",
+      "size_bytes": 687,
+      "sha256": "5239afa56a8749abfbc80da69b742db9d4c24c8e1d7bee0a7b0827362776c247",
+      "status": "passed",
+      "decision": "accepted",
+      "t4_4_authorized": true
+    },
+    "t4_3_technical_acceptance": {
+      "path": "run_log/t4.3/acceptance.json",
+      "size_bytes": 14543,
+      "sha256": "88599430c7739f29e454d95f57c34a5c24974159359795bacad8bd0b3f48266c",
+      "status": "passed"
+    },
+    "t4_1_technical_acceptance": {
+      "path": "run_log/t4.1/acceptance.json",
+      "size_bytes": 88844,
+      "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+      "status": "passed"
+    },
+    "snapshot_manifest": {
+      "path": "run_log/t3.5/manifest.json",
+      "size_bytes": 21347,
+      "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+      "parts": 20,
+      "rows": 3783154
+    },
+    "known_flow_map": {
+      "path": "run_log/t3.6/known-flow-split.parquet",
+      "size_bytes": 9011968,
+      "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+      "rows": 1504210
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "schema_id": "cicids2017-partial-flow-54-v1",
+      "feature_count": 54
+    },
+    "split_contract": {
+      "path": "config/cicids2017-split-contract.json",
+      "size_bytes": 5331,
+      "sha256": "e7e7bdb373e36062a979edd2f8fbfee766eedf3aee776feda8e3cbe815b2b6b2"
+    },
+    "anomaly_contract": {
+      "path": "config/cicids2017-anomaly-baseline-contract.json",
+      "size_bytes": 17093,
+      "sha256": "b836265cec414181f4b1a4d75cc37734c3af3b8e34688271e46c30ab729711f0"
+    },
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "versions": {
+      "pyarrow": "23.0.1",
+      "numpy": "2.2.5",
+      "scikit_learn": "1.7.2"
+    },
+    "dependency_mutation_allowed": false,
+    "model_training_allowed": true,
+    "hooks_in_scope": false,
+    "input_access": "read_only"
+  },
+  "input": {
+    "checkpoints": ["F3", "F5", "F7", "F9"],
+    "partition": "train",
+    "fit_class": "BENIGN",
+    "scored_classes": "all known-train classes",
+    "validation_rows_allowed": false,
+    "test_rows_allowed": false,
+    "metadata_as_model_features_allowed": false
+  },
+  "folding": {
+    "fold_count": 5,
+    "seed": 4404,
+    "allocation_basis_checkpoint": "F3",
+    "campaign_key": "capture_id",
+    "group_key": ["capture_id", "time_block_index"],
+    "time_block_seconds": 60,
+    "allocation_unit": "entire time block",
+    "ratios": {"fold_0": 20, "fold_1": 20, "fold_2": 20, "fold_3": 20, "fold_4": 20},
+    "algorithm": "T3.6 deterministic greedy normalized class-and-row deviation allocator",
+    "same_assignment_all_checkpoints": true,
+    "rare_family_presence_all_folds_required": false,
+    "reason": "Indivisible groups make five-fold presence impossible for families represented by fewer than five train groups."
+  },
+  "preprocessing": {
+    "scope": "separate per checkpoint and held-out fold",
+    "fit_population": "BENIGN rows in the other four train folds only",
+    "imputer": "median",
+    "infinite_input_allowed": false,
+    "all_nan_feature_allowed": false,
+    "constant_rule": "drop exact zero-variance feature after imputation in the fold fit population",
+    "scaler": "StandardScaler",
+    "scaler_fit_mode": "deterministic partial_fit in ascending materialized-row batches",
+    "output_dtype": "float32",
+    "train_transform_parity": "bitwise equal float32"
+  },
+  "hbos": {
+    "correlation_mask": {
+      "fit_population": "the fold-local transformed benign fit population only",
+      "sample_rows_maximum": 100000,
+      "sample_selection": "unique numpy linspace indices in fit-row order",
+      "method": "Pearson",
+      "absolute_threshold": 0.98,
+      "selection": "greedy feature-schema order; retain first and reject later correlated features",
+      "non_finite_off_diagonal_correlation": 0.0
+    },
+    "binning": {
+      "interior_bin_count": 16,
+      "total_bin_count": 18,
+      "lower_quantile": 0.01,
+      "upper_quantile": 0.99,
+      "quantile_method": "linear"
+    },
+    "probability": "Laplace add-one",
+    "raw_score": "mean negative log smoothed bin mass",
+    "higher_score_is_more_anomalous": true
+  },
+  "isolation_forest": {
+    "implementation": "sklearn.ensemble.IsolationForest",
+    "parameters": {
+      "n_estimators": 300,
+      "max_samples": 4096,
+      "contamination": "auto",
+      "max_features": 1.0,
+      "bootstrap": false,
+      "n_jobs": -1,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "random_state_formula": "4404 + held_out_fold",
+    "hyperparameter_search_allowed": false,
+    "higher_score_is_more_anomalous": true
+  },
+  "score_decision": {
+    "scope": "separate per model, checkpoint, and held-out fold",
+    "fit_population": "scores of the fold-local benign fit population",
+    "normalization": "z-score float64 with ddof=0",
+    "threshold_quantile": 0.99,
+    "threshold_quantile_method": "higher",
+    "binary_rule": "normalized_score >= threshold",
+    "validation_threshold_tuning_allowed": false
+  },
+  "expected_population": {
+    "F3": {
+      "rows": 1042365,
+      "folds": {
+        "0": {"rows": 206011, "benign": 180363, "attack": 25648, "groups": 407},
+        "1": {"rows": 211663, "benign": 177725, "attack": 33938, "groups": 408},
+        "2": {"rows": 205602, "benign": 180513, "attack": 25089, "groups": 413},
+        "3": {"rows": 207021, "benign": 179568, "attack": 27453, "groups": 409},
+        "4": {"rows": 212068, "benign": 177517, "attack": 34551, "groups": 410}
+      }
+    },
+    "F5": {
+      "rows": 577974,
+      "folds": {
+        "0": {"rows": 110624, "benign": 85412, "attack": 25212},
+        "1": {"rows": 120104, "benign": 86485, "attack": 33619},
+        "2": {"rows": 112719, "benign": 88082, "attack": 24637},
+        "3": {"rows": 115359, "benign": 88176, "attack": 27183},
+        "4": {"rows": 119168, "benign": 85175, "attack": 33993}
+      }
+    },
+    "F7": {
+      "rows": 517508,
+      "folds": {
+        "0": {"rows": 99161, "benign": 74123, "attack": 25038},
+        "1": {"rows": 107130, "benign": 73662, "attack": 33468},
+        "2": {"rows": 101175, "benign": 76538, "attack": 24637},
+        "3": {"rows": 103395, "benign": 76212, "attack": 27183},
+        "4": {"rows": 106647, "benign": 73211, "attack": 33436}
+      }
+    },
+    "F9": {
+      "rows": 492050,
+      "folds": {
+        "0": {"rows": 93528, "benign": 69245, "attack": 24283},
+        "1": {"rows": 101491, "benign": 68820, "attack": 32671},
+        "2": {"rows": 96520, "benign": 71884, "attack": 24636},
+        "3": {"rows": 98771, "benign": 71725, "attack": 27046},
+        "4": {"rows": 101740, "benign": 68412, "attack": 33328}
+      }
+    }
+  },
+  "artifact": {
+    "id": "cicids2017-oof-anomaly-meta-features",
+    "version": "1.0.0",
+    "path": "run_log/t4.4/oof-meta-features-v1.parquet",
+    "compression": "zstd",
+    "compression_level": 3,
+    "row_group_rows": 65536,
+    "row_order": "checkpoint order, then fold order, then original snapshot-manifest row order",
+    "columns": {
+      "checkpoint": "string",
+      "capture_id": "string",
+      "flow_id": "uint64",
+      "fold": "uint8",
+      "assigned_class": "string",
+      "y_true": "uint8",
+      "hbos_raw_score": "float64",
+      "hbos_normalized_score": "float64",
+      "hbos_binary": "uint8",
+      "isolation_forest_raw_score": "float64",
+      "isolation_forest_normalized_score": "float64",
+      "isolation_forest_binary": "uint8",
+      "anomaly_count": "uint8"
+    },
+    "weighted_score_in_scope": false,
+    "fold_models_persisted": false
+  },
+  "acceptance": {
+    "path": "run_log/t4.4/acceptance.json",
+    "all_prerequisite_hashes_verified": true,
+    "each_train_snapshot_scored_exactly_once": true,
+    "same_group_one_fold": true,
+    "same_flow_same_fold_all_checkpoints": true,
+    "fit_rows_benign_only": true,
+    "held_out_rows_excluded_from_all_model_fit": true,
+    "preprocessing_fit_fold_local": true,
+    "hbos_mask_fit_fold_local": true,
+    "normalization_and_threshold_fit_fold_local": true,
+    "validation_and_test_untouched": true,
+    "per_fold_metrics_and_confusion_matrix_required": true,
+    "artifact_hash_and_schema_required": true,
+    "manual_acceptance_required_before_T4_5": true
+  },
+  "implementation": {
+    "source": "python/nids_mvp/oof_meta_features.py",
+    "test_allowlist": ["tests/test_t44_oof_meta_features.py"]
+  }
+}

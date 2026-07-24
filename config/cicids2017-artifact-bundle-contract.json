@@ -1,0 +1,326 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T5.1",
+  "dataset": "CIC-IDS2017",
+  "artifact": {
+    "id": "nids.native_inference_bundle.v1",
+    "version": "1.0.0",
+    "format": "deterministic_zip_per_checkpoint",
+    "checkpoints": [
+      "F3",
+      "F5",
+      "F7",
+      "F9"
+    ],
+    "outputs": {
+      "F3": "run_log/t5.1/bundles/F3.bundle.zip",
+      "F5": "run_log/t5.1/bundles/F5.bundle.zip",
+      "F7": "run_log/t5.1/bundles/F7.bundle.zip",
+      "F9": "run_log/t5.1/bundles/F9.bundle.zip"
+    },
+    "acceptance": "run_log/t5.1/acceptance.json",
+    "overwrite_allowed": false
+  },
+  "design_approval": {
+    "decision": "accepted",
+    "user_message": "chấp nhận cả 3",
+    "production_models": [
+      "flow_rf",
+      "known_family_rf",
+      "hbos",
+      "isolation_forest"
+    ],
+    "excluded_from_production_bundle": {
+      "rf_stacker": "retained as T4.5 ablation only"
+    },
+    "export_host": "windows_native",
+    "runtime_target": "Ubuntu VMware 24.04 x86_64 with ONNX Runtime C++ 1.27.1",
+    "python_cpp_parity_task": "T5.3"
+  },
+  "prerequisites": {
+    "plan": {
+      "path": "plan.md",
+      "size_bytes": 20897,
+      "sha256": "8d862b092803323403c4a4285b4f06189f8dc2951d6f83666c847a0c7c92ffda"
+    },
+    "feature_schema": {
+      "path": "config/flow-feature-schema-v1.json",
+      "size_bytes": 14319,
+      "sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+      "schema_id": "nids.flow_features.v1",
+      "feature_count": 54,
+      "encoded_type": "float64"
+    },
+    "preprocessing_acceptance": {
+      "path": "run_log/t4.1/acceptance.json",
+      "size_bytes": 88844,
+      "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+      "status": "passed"
+    },
+    "flow_rf_contract": {
+      "path": "config/cicids2017-rf-baseline-contract.json",
+      "size_bytes": 7063,
+      "sha256": "471fb609a034524682fc8ecd184fb714f6ff6a7136ee0aee494ee56fbe8ccda0"
+    },
+    "flow_rf_acceptance": {
+      "path": "run_log/t4.2/acceptance.json",
+      "size_bytes": 5432,
+      "sha256": "720805a1cd25dab6b2129a125df1a65a3100d5ee891d0f40fc4742aac041b98d",
+      "status": "passed"
+    },
+    "flow_rf_artifact": {
+      "path": "run_log/t4.2/rf-baseline-v1.joblib",
+      "size_bytes": 140427861,
+      "sha256": "5bec1997d8bed9a3b3e53cc5fa9327d297a74ae4ddb44b77ae58a174d523de31"
+    },
+    "anomaly_contract": {
+      "path": "config/cicids2017-anomaly-baseline-contract.json",
+      "size_bytes": 17093,
+      "sha256": "b836265cec414181f4b1a4d75cc37734c3af3b8e34688271e46c30ab729711f0"
+    },
+    "anomaly_acceptance": {
+      "path": "run_log/t4.3/acceptance.json",
+      "size_bytes": 14543,
+      "sha256": "88599430c7739f29e454d95f57c34a5c24974159359795bacad8bd0b3f48266c",
+      "status": "passed"
+    },
+    "anomaly_artifact": {
+      "path": "run_log/t4.3/anomaly-baseline-v1.joblib",
+      "size_bytes": 14792842,
+      "sha256": "ba44692ef5de383a0eb8ad329d51d5e4a6cbcf8cc49aa9fe2f29c3d5529c3744"
+    },
+    "known_family_contract": {
+      "path": "config/cicids2017-known-family-contract.json",
+      "size_bytes": 12278,
+      "sha256": "38cd960de16448dc917aa6d2d2447d287db192c7316e2e8c63c4622b22d13bdd"
+    },
+    "known_family_acceptance": {
+      "path": "run_log/t4.6/acceptance.json",
+      "size_bytes": 60084,
+      "sha256": "1b1d45a186b82a13d5d4f1958dc81dfa06efb8208b407497e69f0c1d3f43e42c",
+      "status": "passed"
+    },
+    "known_family_artifact": {
+      "path": "run_log/t4.6/known-family-rf-v1.joblib",
+      "size_bytes": 149414107,
+      "sha256": "d279e9992cafe6a9c8d9c4d3a81e18ddb96c889c11b30907767e03926e938177"
+    },
+    "model_acceptance": {
+      "path": "run_log/t4.8/acceptance.json",
+      "size_bytes": 71557,
+      "sha256": "9bd14e7195c7affc8d7477939826a9fa5299f46a522cf71eecb02bdad6a3c086",
+      "status": "passed",
+      "selected_binary_classifier": "flow_rf"
+    },
+    "model_manual_acceptance": {
+      "path": "run_log/t4.8/user-acceptance.json",
+      "size_bytes": 1255,
+      "sha256": "3ebdfb5c26985826707fe783e8f633c4a4a3da4611b53b807e7ae71c91f2bf8f",
+      "status": "passed",
+      "decision": "accepted",
+      "t5_1_authorized": true
+    },
+    "export_dependencies": {
+      "path": "run_log/t5.1/dependency-receipt.json",
+      "size_bytes": 3799,
+      "sha256": "8d93b1553f88f5d909659a852a452850f1a69b1c06182fc891c5f80694a0addf",
+      "status": "passed"
+    }
+  },
+  "execution": {
+    "host": "windows_native",
+    "python": "3.13.2",
+    "versions": {
+      "joblib": "1.5.2",
+      "numpy": "2.2.5",
+      "onnx": "1.20.1",
+      "scikit_learn": "1.7.2",
+      "skl2onnx": "1.20.0"
+    },
+    "dependency_mutation": "task_scoped_temporary_export_venv_only",
+    "model_training_allowed": false,
+    "threshold_calibration_allowed": false,
+    "hooks_in_scope": false
+  },
+  "archive": {
+    "member_order": [
+      "feature_schema.json",
+      "preprocessing.json",
+      "hbos.json",
+      "thresholds.json",
+      "models/flow_rf.onnx",
+      "models/isolation_forest.onnx",
+      "models/known_family_rf.onnx",
+      "manifest.json"
+    ],
+    "compression": "ZIP_DEFLATED",
+    "compression_level": 9,
+    "timestamp": "1980-01-01T00:00:00",
+    "create_system": 0,
+    "external_attributes": 25165824,
+    "utf8_json": true,
+    "canonical_json": {
+      "sort_keys": true,
+      "ensure_ascii": false,
+      "separators": [
+        ",",
+        ":"
+      ],
+      "terminal_newline": true
+    },
+    "manifest_hash_scope": "all members except manifest.json",
+    "extraction": "offline deployment staging before the T5.2 runtime starts"
+  },
+  "preprocessing": {
+    "raw_input": {
+      "feature_count": 54,
+      "dtype": "float64",
+      "order_source": "feature_schema.json"
+    },
+    "profiles_per_checkpoint": [
+      "supervised_known",
+      "anomaly_benign"
+    ],
+    "operation_order": [
+      "median_imputation",
+      "selected_indices",
+      "standard_scaling",
+      "float32_cast"
+    ],
+    "refit_allowed": false
+  },
+  "onnx": {
+    "requested_target_opsets": {
+      "ai.onnx": 15,
+      "ai.onnx.ml": 2
+    },
+    "input_name": "input",
+    "input_dtype": "float32",
+    "dynamic_batch": true,
+    "deterministic_protobuf_serialization": true,
+    "checker_required": true,
+    "models": {
+      "flow_rf": {
+        "source": "T4.2 accepted RandomForestClassifier",
+        "preprocessing_profile": "supervised_known",
+        "converter_options": {
+          "zipmap": false
+        },
+        "class_order": [
+          0,
+          1
+        ],
+        "outputs": {
+          "label": "int64[N]",
+          "probabilities": "float32[N,2]"
+        }
+      },
+      "known_family_rf": {
+        "source": "T4.6 accepted RandomForestClassifier",
+        "preprocessing_profile": "supervised_known",
+        "converter_options": {
+          "zipmap": false
+        },
+        "class_order_source": "T4.6 labels.class_order",
+        "outputs": {
+          "label": "int64[N]",
+          "probabilities": "float32[N,13]"
+        }
+      },
+      "isolation_forest": {
+        "source": "T4.3 accepted IsolationForest",
+        "preprocessing_profile": "anomaly_benign",
+        "converter_options": {
+          "score_samples": true
+        },
+        "runtime_output": "score_samples",
+        "raw_anomaly_score_formula": "-score_samples",
+        "outputs": {
+          "label": "int64[N,1]",
+          "scores": "float32[N,1]",
+          "score_samples": "float32[N,1]"
+        },
+        "allowed_metadata_repair": "Set the converter-omitted score_samples output shape to [N,1] before ONNX checker validation; graph nodes and initializers must remain unchanged"
+      }
+    }
+  },
+  "hbos": {
+    "serialization": "canonical_json_float64_arrays",
+    "source": "T4.3 accepted HBOS state",
+    "required_fields": [
+      "feature_names",
+      "feature_indices",
+      "fit_rows",
+      "interior_bin_count",
+      "total_bin_count",
+      "edges",
+      "counts",
+      "probabilities",
+      "decision"
+    ],
+    "runtime_score_and_bin_semantics_source": "config/cicids2017-anomaly-baseline-contract.json"
+  },
+  "thresholds": {
+    "flow_rf": {
+      "value": 0.5,
+      "status": "accepted T4.2 operating point",
+      "binary_rule": "attack_probability >= threshold"
+    },
+    "hbos": {
+      "value_source": "T4.3 checkpoint decision.threshold",
+      "status": "provisional",
+      "final_threshold_task": "T6.1"
+    },
+    "isolation_forest": {
+      "value_source": "T4.3 checkpoint decision.threshold",
+      "status": "provisional",
+      "final_threshold_task": "T6.1"
+    },
+    "recalibration_allowed": false
+  },
+  "manifest": {
+    "required_identity": [
+      "artifact_id",
+      "artifact_version",
+      "checkpoint",
+      "feature_schema_id"
+    ],
+    "required_provenance": [
+      "contract_sha256",
+      "prerequisite_sha256"
+    ],
+    "required_model_metadata": [
+      "input_name",
+      "input_dtype",
+      "input_shape",
+      "output_names",
+      "output_shapes",
+      "class_order",
+      "opset_imports"
+    ],
+    "required_member_metadata": [
+      "path",
+      "size_bytes",
+      "sha256"
+    ]
+  },
+  "acceptance": {
+    "all_prerequisite_hashes_and_sizes_exact": true,
+    "accepted_model_identity_and_structure_exact": true,
+    "preprocessing_profiles_equal_across_consumers": true,
+    "feature_order_and_selected_indices_exact": true,
+    "four_checkpoint_archives_only": true,
+    "archive_member_order_and_metadata_exact": true,
+    "canonical_json_required": true,
+    "onnx_checker_all_models": true,
+    "onnx_repeat_export_byte_equality": true,
+    "archive_repeat_build_byte_equality": true,
+    "hbos_state_exact": true,
+    "thresholds_copied_without_recalibration": true,
+    "rf_stacker_absent": true,
+    "training_or_fit_calls_forbidden": true,
+    "python_cpp_numeric_parity_claim_allowed": false,
+    "python_cpp_numeric_parity_deferred_to": "T5.3",
+    "atomic_first_publish": true
+  }
+}
