@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "mode": "demo_critical_path",
+  "kind": "diagnostic_demo_scenario",
+  "formal_acceptance": false,
+  "artifact_root": "run_log/t8.5/scenarios",
+  "topology": {
+    "network": "VMnet1",
+    "subnet": "192.168.252.0/24",
+    "kali": {"interface": "eth1", "ipv4": "192.168.252.10"},
+    "windows": {"interface": "Ethernet0 2", "ipv4": "192.168.252.20"},
+    "ubuntu": {"interface": "ens160", "ipv4": "192.168.252.128"}
+  },
+  "safety": {
+    "manual_steps_only": true,
+    "one_case_at_a_time": true,
+    "maximum_tool_duration_seconds": 30,
+    "maximum_rate_per_second": 100,
+    "vmnet_only": true
+  },
+  "taxonomy": {
+    "source_attack_label_count": 14,
+    "model_family_count": 13,
+    "canonical_family_count": 14,
+    "web_attack_aggregation_presentation_only": true
+  },
+  "cases": [
+    {"id": "bot", "label": "Bot", "model_available": true, "tier": "macro", "tool": "windows beacon to Kali HTTP listener"},
+    {"id": "ddos", "label": "DDoS", "model_available": true, "tier": "macro", "tool": "accepted PCAP replay; bounded hping3 is single-source approximation only"},
+    {"id": "dos-goldeneye", "label": "DoS GoldenEye", "model_available": true, "tier": "macro", "tool": "GoldenEye.py"},
+    {"id": "dos-hulk", "label": "DoS Hulk", "model_available": true, "tier": "macro", "tool": "HULK.py"},
+    {"id": "dos-slowhttptest", "label": "DoS Slowhttptest", "model_available": true, "tier": "macro", "tool": "slowhttptest"},
+    {"id": "dos-slowloris", "label": "DoS slowloris", "model_available": true, "tier": "macro", "tool": "slowloris or slowhttptest slow-header mode"},
+    {"id": "ftp-patator", "label": "FTP-Patator", "model_available": true, "tier": "macro", "tool": "patator or hydra against disposable FTP account"},
+    {"id": "heartbleed", "label": "Heartbleed", "model_available": false, "tier": "unavailable", "tool": "PCAP replay or negative-control scan only"},
+    {"id": "infiltration", "label": "Infiltration", "model_available": true, "tier": "case_study", "tool": "harmless canary upload plus bounded Windows egress"},
+    {"id": "portscan", "label": "PortScan", "model_available": true, "tier": "case_study", "tool": "nmap"},
+    {"id": "ssh-patator", "label": "SSH-Patator", "model_available": true, "tier": "macro", "tool": "patator or hydra against disposable SSH account"},
+    {"id": "web-brute-force", "label": "Web Attack – Brute Force", "model_available": true, "tier": "macro", "tool": "hydra against disposable login endpoint"},
+    {"id": "web-sql-injection", "label": "Web Attack – Sql Injection", "model_available": true, "tier": "case_study", "tool": "bounded sqlmap request-pattern test"},
+    {"id": "web-xss", "label": "Web Attack – XSS", "model_available": true, "tier": "case_study", "tool": "fixed curl payload corpus or XSSer"},
+    {"id": "web-aggregate", "label": "Web Attack (canonical presentation)", "model_available": false, "tier": "presentation_only", "tool": "never executed; aggregate the three locked Web labels in reports only"}
+  ]
+}
