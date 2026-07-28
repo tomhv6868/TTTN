@@ -1,0 +1,46 @@
+{
+  "title": "Rebuild lab 2026-08-08",
+  "note": "Cac moc da verify that trong docs/rebuild-changelog.md tren VM da rebuild. Khong dung trang thai T9.1 cu tu current-task.json/context.md (truoc rebuild).",
+  "milestones": [
+    {
+      "step": "T0.2 toolchain (DPDK 25.11.2 + ONNX Runtime 1.27.1)",
+      "status": "passed"
+    },
+    {
+      "step": "T0.3 DPDK resource smoke (preflight/apply/run/rollback)",
+      "status": "passed"
+    },
+    {
+      "step": "T0.4 passive topology gate (200/200 goi, TX=0)",
+      "status": "passed"
+    },
+    {
+      "step": "Replay 4 PCAP -> shard, hash byte-identical ban goc",
+      "status": "passed"
+    },
+    {
+      "step": "Dataset/Model V1/ONNX bundle/native runtime hash verify",
+      "status": "passed"
+    },
+    {
+      "step": "Native DPDK terminal runtime build + ctest",
+      "status": "passed"
+    },
+    {
+      "step": "Build nids_dpdk_live + stage bundle F9",
+      "status": "passed"
+    },
+    {
+      "step": "Cat 14 scenario PCAP (du 14 nhan CICIDS)",
+      "status": "passed"
+    },
+    {
+      "step": "Replay 14 family qua F9 (13/14 dung family, pacing that) + live dashboard",
+      "status": "passed"
+    }
+  ],
+  "known_limits": [
+    "Model V1 (terminal 6-lop) phan loai sai (Benign) cho FTP-Patator/PortScan live thuc te, tai lap ca truoc va sau rebuild.",
+    "net_pcap khong giu pacing timestamp goc -> phai dung tcpreplay pacing that cho replay."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "f9_baseline": {
+    "known_attack_recall": {"value": 0.99884, "citation": "docs/final-report.vi.md"},
+    "unknown_family_recall": {"value": 0.41471, "citation": "docs/final-report.vi.md", "note": "per-model held-out family recall, khong phai ty le runtime gan nhan unknown_candidate"},
+    "benign_fpr": {"value": 0.00119, "citation": "docs/final-report.vi.md"},
+    "macro_unknown_candidate_recall_after_fusion": {"value": 0.00162, "citation": "docs/final-report.vi.md"},
+    "portscan_case_study_unknown_candidate_recall": {"value": 0.0, "citation": "docs/final-report.vi.md", "note": "case study rieng le, khong duoc tu nang thanh confirmatory result"}
+  },
+  "t91_terminal_full_flow": {
+    "selected_profile": {"value": "A", "feature_count": 54, "citation": "docs/context.md addendum T9.1 model production"},
+    "selected_threshold": {"value": 0.9984837643022101, "citation": "docs/context.md"},
+    "validation_attack_recall": {"value": 0.9961659985263447, "citation": "docs/context.md"},
+    "validation_benign_fpr": {"value": 0.0007905181736834304, "citation": "docs/context.md"},
+    "validation_macro_f1_profile_a": {"value": 0.9970458856815592, "citation": "docs/context.md"},
+    "ftp_precision": {"value": 1.0, "citation": "docs/context.md"},
+    "ftp_recall": {"value": 0.9956140350877193, "citation": "docs/context.md"},
+    "portscan_precision": {"value": 0.9961775018681381, "citation": "docs/context.md"},
+    "portscan_recall": {"value": 0.9994521337946943, "citation": "docs/context.md"},
+    "family_distribution": {
+      "citation": "docs/context.md T9.1 addendum, mapping sau family sau split",
+      "total_assigned": 2366094,
+      "quarantine": 69958,
+      "raw_total": 2436052,
+      "families": [
+        {"name": "Benign", "count": 1848412},
+        {"name": "DoS", "count": 350338},
+        {"name": "PortScan", "count": 158976},
+        {"name": "FTP-Bruteforce", "count": 4942},
+        {"name": "SSH-Bruteforce", "count": 2503},
+        {"name": "Other", "count": 923}
+      ],
+      "heartbleed_note": "0 flow assigned - trang thai unavailable, khong tao metric gia"
+    }
+  },
+  "parity": {
+    "python_ort_max_abs_probability_error": {"value": 2.8726522216526718e-07, "citation": "docs/context.md phase 6 ONNX bundle"},
+    "native_max_abs_probability_error": {"value": 1.2309058727844047e-07, "citation": "docs/context.md phase 7 native runtime"},
+    "tolerance": 1e-05
+  },
+  "speed_run": {
+    "baseline_capacity_bracket_pps": {"passed": 5000, "failed": 10000, "citation": "docs/context.md"},
+    "full_pipeline_1800pps": {
+      "cpu_percent": 97.262,
+      "flows_per_second": 195832,
+      "parse_us_p50_p95_p99": [0.079, 0.516, 0.858],
+      "inference_ms_p50_p95_p99": [4.771, 6.358, 8.317],
+      "alert_ms_p50_p95_p99": [4.514, 6.021, 7.026],
+      "citation": "docs/context.md T7.5"
+    },
+    "stability_1000pps_30min": {
+      "sent_packets": 1800000,
+      "achieved_pps": 999.982,
+      "cpu_percent": 54.296,
+      "max_rss_kib": 342440,
+      "drop": 0,
+      "citation": "docs/context.md T7.6"
+    },
+    "limitation_note": "Bracket khong co exact maximum. Alerts/hour tu benchmark nay la synthetic, khong thay the alerts/hour cua detection study T8.1."
+  },
+  "t85_live_demo": {
+    "decision": "known_attack",
+    "candidate": "DDoS",
+    "flow_rf_probability": 0.9699991941,
+    "confidence": 0.9999991655,
+    "citation": "docs/context.md T8.5",
+    "scope_note": "Day la bang chung known_attack/DDoS on-NIC duy nhat trong workspace nay."
+  }
+}

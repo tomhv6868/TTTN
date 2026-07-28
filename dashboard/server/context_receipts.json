@@ -1,0 +1,22 @@
+{
+  "source": "docs/context.md - bang \"Receipt chinh\"",
+  "rows": [
+    {"task": "T0.3", "status": "passed", "path": "run_log/t0.3-receipt-4.json", "sha256": "79f8b4c2d8622c68d0393569930008d91669de707c97e419a16a4565c362387f"},
+    {"task": "T0.4", "status": "passed", "path": "run_log/t0.4/acceptance.json", "sha256": "4c53e99a832449e03e3c1d5761e51674c8f7345baad97d1969d6bacdf0644ad9"},
+    {"task": "T0.5", "status": "passed", "path": "run_log/t0.5/acceptance.json", "sha256": "b4e8f0296c7a8b6fb43efbf772f1c702add91d3eab2da63e0c2681c599bf50d7"},
+    {"task": "T2.6", "status": "passed", "path": "run_log/t2.6/acceptance.json", "sha256": "0a69d11ed5897216b8ef31816aad33c02e2935a2ffe138e470d7fee24909fcfe"},
+    {"task": "T3.1", "status": "passed", "path": "run_log/t3.1/acceptance.json", "sha256": "4a08454a0818b2665e2efd8c628db0e70f74f9f61da949185ec92cb9468522cd"},
+    {"task": "T3.5", "status": "passed", "path": "run_log/t3.5/acceptance.json", "sha256": "ed2cf650f862fcd102f9ba872f650da4a4c476c6198ade37def05a4b93f25042"},
+    {"task": "T3.6", "status": "passed", "path": "run_log/t3.6/acceptance.json", "sha256": "9e6249d65dfc7fab7a31d411c6fd27e18e3320edde0b823776d4261e31df69ca"},
+    {"task": "T4.8", "status": "passed", "path": "run_log/t4.8/acceptance.json", "sha256": "9bd14e7195c7affc8d7477939826a9fa5299f46a522cf71eecb02bdad6a3c086"},
+    {"task": "T5.1", "status": "passed", "path": "run_log/t5.1/acceptance.json", "sha256": "fbd0ee96ac3a84a5f9caf8d30d80cf260cd25f3a5841b11fa2f5173c12320ace"},
+    {"task": "T5.3", "status": "technical passed", "path": "run_log/t5.3/acceptance.json", "sha256": "1808f2ef433b0b239a5d8fca6cd829e0c42b22b971ed3b0889a5811ca834db90"},
+    {"task": "T6.1", "status": "technical passed", "path": "run_log/t6.1/acceptance.json", "sha256": "bd3cb0d6c539cfb95a8eb015cc086615fb0c960b39443ebba604421fdb8949ea"},
+    {"task": "T6.2-6.3", "status": "reduced/speed-run", "path": "run_log/t6.2-6.3/acceptance.json", "sha256": "e3b50b3fc8ac1eeb978182a11b1677127a4eb80b52d98aaef74ebe44a3da2f91"},
+    {"task": "T7.3", "status": "accepted_for_demo", "path": "run_log/t7.3/acceptance.json", "sha256": "da4df77a5b99efacaa5b0b228084a4d98677c29586d46fa0cb1355e80a143f26"},
+    {"task": "T7.4-T7.6", "status": "accepted_for_speed_run_demo", "path": "run_log/t7.4-t7.6/acceptance.json", "sha256": "3066a0d56eb2fe14f8c02279cc48d6fd222b72aaed37f3fd81e3e672f38a3498"},
+    {"task": "T8.1-8.2", "status": "accepted_for_demo", "path": "run_log/t8.1-t8.2/acceptance.json", "sha256": "092c8ad88586eb16dd9b216aaf9cd610e8aa2909889b05d6f5e68badb43ed36e"},
+    {"task": "T8.3-8.4", "status": "accepted_for_demo", "path": "run_log/t8.3-t8.4/acceptance.json", "sha256": "ee70c9f5eabd089d171a73dd7fc21f3cc8c5796185e02afda05e289f19379178"},
+    {"task": "T8.5", "status": "passed demo, formal=false", "path": "run_log/t8.5/demo-acceptance.json", "sha256": "425dcfc29c09891c34450aa59314a3fe8b51ebe6fcbb341f837de3a86b7dc067"}
+  ]
+}
