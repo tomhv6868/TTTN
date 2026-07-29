@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T9.1",
+  "kind": "terminal_flow_model_v2_live_split_policy",
+  "status": "policy_locked_counts_pending",
+  "policy_locked_at_utc": "2026-07-29T05:11:26.4775975Z",
+  "audit": {
+    "contract_path": "config/terminal-flow-model-v2-audit-contract.json",
+    "contract_sha256": "0431f9e44923eb0805a2a1c82c772b4f6b690bbeb91878695ba88d0cb4a36c7b",
+    "revision": "r2_physical_feature_suffix",
+    "receipt_path": "run_log/full-flow-v1/model-v2/audit/model-v2-audit-r2.json",
+    "receipt_sha256": "188607e2ee12c2658c9e3b07311673507d0357143a8b8deb015e723e876fd038",
+    "receipt_status": "passed",
+    "gate_decision": "blocked"
+  },
+  "split": {
+    "unit": "whole_attempt",
+    "assignment_mode": "deterministic_reserved_slots",
+    "assignment_time": "claim_receipt_create_new_before_capture",
+    "partitions": [
+      "train",
+      "validation",
+      "holdout"
+    ],
+    "campaigns": [
+      "ftp_patator_wrong_password",
+      "ftp_valid_login",
+      "http_normal",
+      "https_normal"
+    ],
+    "attempt_counts": {
+      "status": "pending_user_lock",
+      "by_campaign": {
+        "ftp_patator_wrong_password": {
+          "train": {
+            "required": null,
+            "reserve": null
+          },
+          "validation": {
+            "required": null,
+            "reserve": null
+          },
+          "holdout": {
+            "required": null,
+            "reserve": null
+          }
+        },
+        "ftp_valid_login": {
+          "train": {
+            "required": null,
+            "reserve": null
+          },
+          "validation": {
+            "required": null,
+            "reserve": null
+          },
+          "holdout": {
+            "required": null,
+            "reserve": null
+          }
+        },
+        "http_normal": {
+          "train": {
+            "required": null,
+            "reserve": null
+          },
+          "validation": {
+            "required": null,
+            "reserve": null
+          },
+          "holdout": {
+            "required": null,
+            "reserve": null
+          }
+        },
+        "https_normal": {
+          "train": {
+            "required": null,
+            "reserve": null
+          },
+          "validation": {
+            "required": null,
+            "reserve": null
+          },
+          "holdout": {
+            "required": null,
+            "reserve": null
+          }
+        }
+      }
+    },
+    "reserved_slots": [],
+    "cross_partition_attempt_reuse": false,
+    "collection_session_cross_partition": false,
+    "failed_claim_reuse": false,
+    "replacement_policy": "predeclared_reserve_slot_only"
+  },
+  "claim_identity": {
+    "required_fields": [
+      "schema_version",
+      "task",
+      "policy_sha256",
+      "split_lock_sha256",
+      "slot_id",
+      "campaign",
+      "partition",
+      "collection_session_id",
+      "attempt_id",
+      "run_token",
+      "run_contract_sha256",
+      "claim_phase",
+      "traffic_started"
+    ],
+    "claim_phase": "before_capture",
+    "traffic_started": false,
+    "write_semantics": "create_new"
+  },
+  "forbidden_attempts": [
+    {
+      "attempt_id": "t91-ftp-patator-20260729033157-36b1db91",
+      "run_contract_sha256": "5e937c17245412d3728f0d7a89f5da3526db2f0b8f617d2be678f832d613a07a",
+      "reason": "orchestration_failure"
+    },
+    {
+      "attempt_id": "t91-ftp-patator-20260729034112-f8763728",
+      "run_contract_sha256": "892d76384d331573cf6657002cb524186a498165f0322b04add2f67ea135b263",
+      "reason": "diagnostic_attempt_before_policy_lock"
+    }
+  ],
+  "access_policy": {
+    "train_usage": "fit_only_after_counts_lock_and_gate_approval",
+    "validation_usage": "model_and_threshold_selection_only_after_counts_lock_and_gate_approval",
+    "holdout_usage": "sealed_until_immutable_model_lock",
+    "cicids_test_usage": "sealed_until_final_model_and_threshold_lock",
+    "holdout_path_disclosure_allowed": false,
+    "test_path_disclosure_allowed": false
+  },
+  "filesystem_allowlist": {
+    "policy_path": "config/terminal-flow-model-v2-live-split-policy.json",
+    "future_split_lock_path": "config/terminal-flow-model-v2-live-split-lock.json",
+    "claim_root": "run_log/full-flow-v1/model-v2/live-split/claims",
+    "current_task_path": "config/agent/current-task.json",
+    "audit_contract_path": "config/terminal-flow-model-v2-audit-contract.json",
+    "audit_receipt_path": "run_log/full-flow-v1/model-v2/audit/model-v2-audit-r2.json"
+  },
+  "gate": {
+    "decision": "blocked_counts_pending",
+    "training_authorized": false,
+    "threshold_selection_authorized": false,
+    "train_validation_capture_authorized": false,
+    "holdout_capture_authorized": false,
+    "holdout_access_authorized": false,
+    "test_partition_may_be_opened": false,
+    "next_gate": "user_locks_attempt_count_matrix"
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "schema_id": "nids.terminal_flow_features.v1",
+  "schema_version": "1.0.0",
+  "task": "T9.1",
+  "kind": "terminal_flow_feature_schema",
+  "description": "Fixed-order features emitted once for each closed or EOF-flushed TCP/UDP flow generation.",
+  "feature_vector": {
+    "length": 70,
+    "ordering": "ascending feature index",
+    "encoded_type": "float64",
+    "finite_only": true,
+    "legacy_prefix": {
+      "schema_id": "nids.flow_features.v1",
+      "indices": "0..53",
+      "requirement": "Names, order, units, formulas, and numeric policies are unchanged; values are observed at terminal emission."
+    }
+  },
+  "emission_contract": {
+    "cardinality": "exactly one row per observed flow generation",
+    "emit_events": [
+      "tracker close",
+      "capture EOF flush"
+    ],
+    "closing_packet_included": true,
+    "synthetic_packet_or_time_on_timeout_or_eof": false,
+    "tuple_reuse": "the trigger packet belongs only to the new generation",
+    "capture_order_preserved": true,
+    "accepted_protocols": [
+      "TCP",
+      "UDP"
+    ]
+  },
+  "time_policy": {
+    "source_type": "int64 nanoseconds",
+    "feature_unit": "microseconds",
+    "conversion": "value_ns / 1000.0",
+    "rounding": "none",
+    "flow_age": "(nondecreasing_timestamp_watermark_ns - first_timestamp_ns) / 1000.0",
+    "iat": "current_timestamp_ns - previous_timestamp_ns in capture order",
+    "directional_iat": "current_direction_timestamp_ns - previous_same_direction_timestamp_ns in capture order",
+    "signed_iat_preserved": true,
+    "packets_sorted_by_timestamp": false
+  },
+  "statistics_policy": {
+    "algorithm": "Welford",
+    "update": "n = n + 1; delta = x - mean; mean = mean + delta / n; delta2 = x - mean; M2 = M2 + delta * delta2",
+    "variance": "population",
+    "variance_formula": "M2 / n",
+    "standard_deviation": "sqrt(M2 / n)",
+    "empty_group": "all statistics are 0",
+    "single_sample": "standard deviation is 0",
+    "non_finite_input_or_output": "fail-fast",
+    "iat_accumulator_unit": "nanoseconds",
+    "other_accumulator_units": "native feature units"
+  },
+  "division_policy": {
+    "zero_denominator": 0.0,
+    "nonpositive_flow_age_rate": 0.0,
+    "non_finite_result": "fail-fast"
+  },
+  "active_idle_policy": {
+    "idle_threshold_ns": 5000000000,
+    "boundary": "a gap is idle only when gap_ns > idle_threshold_ns",
+    "clock": "nondecreasing per-flow timestamp watermark",
+    "active_segment": "starts at the first packet watermark; an idle boundary finalizes the prior active span; terminal emission finalizes the last active span",
+    "idle_segment": "the entire watermark gap that exceeds the threshold",
+    "singleton_active_us": 0.0,
+    "no_idle_us": 0.0,
+    "timeout_or_eof_wait": "not added to active or idle time"
+  },
+  "context_policy": {
+    "freeze_point": "first accepted packet of the flow generation after registering the current generation",
+    "current_generation_included": true,
+    "causality": "capture order only; later packets and later flow generations cannot change frozen values",
+    "window": "fixed timestamp block floor(nondecreasing_event_watermark_ns / 60000000000)",
+    "reset_scope_offline": "each capture file",
+    "reset_scope_live": "sensor process",
+    "endpoint_orientation": "directed endpoints and ports from the first accepted packet",
+    "same_destination_endpoint_key": "(destination_ipv4, destination_port)",
+    "same_source_destination_key": "(source_ipv4, destination_ipv4)",
+    "distinct_destination_port_key": "distinct destination_port inside the same_source_destination_key",
+    "first_count": 1,
+    "raw_ip_retention": "derivation state only; never a model input or exported feature"
+  },
+  "lifecycle_policy": {
+    "encoding": "exhaustive one-hot",
+    "invariant": "indices 66..69 sum to exactly 1",
+    "tcp_reset": "TCP flow with any observed RST",
+    "tcp_fin_handshake": "TCP flow without RST with FIN observed in both directions",
+    "tcp_other": "every other TCP terminal state, including timeout, tuple reuse, and incomplete FIN",
+    "udp": "every UDP terminal state",
+    "exact_close_reason": "metadata only"
+  },
+  "feature_profiles": [
+    {"id": "A", "name": "legacy_terminal", "start_index": 0, "end_index": 53, "length": 54},
+    {"id": "B", "name": "terminal_traffic", "start_index": 0, "end_index": 60, "length": 61},
+    {"id": "C", "name": "terminal_context", "start_index": 0, "end_index": 63, "length": 64},
+    {"id": "D", "name": "terminal_ports", "start_index": 0, "end_index": 65, "length": 66},
+    {"id": "E", "name": "terminal_full", "start_index": 0, "end_index": 69, "length": 70}
+  ],
+  "dataset_columns": {
+    "model_input": "exactly one selected feature profile in ascending index order",
+    "label": [
+      "label_binary",
+      "label_family"
+    ],
+    "metadata_only": [
+      "flow_id",
+      "flow_generation",
+      "capture_id",
+      "capture_path",
+      "source_ipv4",
+      "destination_ipv4",
+      "first_timestamp_ns",
+      "last_timestamp_ns",
+      "close_reason",
+      "label_status",
+      "label_method",
+      "partition"
+    ]
+  },
+  "leakage_policy": {
+    "forbidden_model_inputs": [
+      "flow identifier or generation",
+      "capture identifier or path",
+      "dataset-origin src",
+      "raw IPv4 address",
+      "absolute timestamp",
+      "export row ordinal",
+      "label or label derivation status/method",
+      "partition",
+      "attack schedule",
+      "raw packet or payload bytes",
+      "exact close reason",
+      "NAT-translated port"
+    ],
+    "allowed_terminal_information": [
+      "final relative flow duration",
+      "final packet, byte, flag, window, TTL, payload, and header statistics",
+      "frozen causal context counts",
+      "first-observed transport ports",
+      "coarse lifecycle one-hot"
+    ],
+    "shortcut_sensitive": [
+      "indices 64..65 transport ports",
+      "indices 66..69 lifecycle one-hot"
+    ]
+  },
+  "reference_lineage": {
+    "status": "conceptual feature-family lineage only",
+    "sources": [
+      "reference layer 1: destination port and aggregate byte/packet families",
+      "reference layer 2: duration, directional traffic, rates, flags, windows, active time, and protocol families",
+      "reference layer 3: duration, directional traffic, TTL, load, state, and destination/service context families"
+    ],
+    "not_claimed": [
+      "numeric parity with reference active/idle definitions",
+      "numeric parity with reference state encoding",
+      "numeric parity with reference contextual counters",
+      "numeric parity with factorized protocol values",
+      "NAT port equivalence"
+    ]
+  },
+  "features": [
+    {"index": 0, "name": "flow_age_us", "logical_type": "float64", "unit": "microseconds", "formula": "current nondecreasing flow watermark minus the first packet timestamp, divided by 1000.0", "zero_policy": "0 when the watermark equals the first packet timestamp"},
+    {"index": 1, "name": "packet_count", "logical_type": "uint64", "unit": "packets", "formula": "count of all accepted packets in this flow generation through the checkpoint", "zero_policy": "0 for an empty state"},
+    {"index": 2, "name": "forward_packet_count", "logical_type": "uint64", "unit": "packets", "formula": "count of packets whose direction is forward", "zero_policy": "0 when no forward packet exists"},
+    {"index": 3, "name": "reverse_packet_count", "logical_type": "uint64", "unit": "packets", "formula": "count of packets whose direction is reverse", "zero_policy": "0 when no reverse packet exists"},
+    {"index": 4, "name": "wire_byte_count", "logical_type": "uint64", "unit": "bytes", "formula": "sum of PacketView.wire_length over all packets", "zero_policy": "0 for an empty state"},
+    {"index": 5, "name": "forward_wire_byte_count", "logical_type": "uint64", "unit": "bytes", "formula": "sum of PacketView.wire_length over forward packets", "zero_policy": "0 when no forward packet exists"},
+    {"index": 6, "name": "reverse_wire_byte_count", "logical_type": "uint64", "unit": "bytes", "formula": "sum of PacketView.wire_length over reverse packets", "zero_policy": "0 when no reverse packet exists"},
+    {"index": 7, "name": "packet_length_min", "logical_type": "uint32", "unit": "bytes", "formula": "minimum PacketView.wire_length over all packets", "zero_policy": "0 for an empty group"},
+    {"index": 8, "name": "packet_length_max", "logical_type": "uint32", "unit": "bytes", "formula": "maximum PacketView.wire_length over all packets", "zero_policy": "0 for an empty group"},
+    {"index": 9, "name": "packet_length_mean", "logical_type": "float64", "unit": "bytes", "formula": "Welford mean of PacketView.wire_length over all packets", "zero_policy": "0 for an empty group"},
+    {"index": 10, "name": "packet_length_std", "logical_type": "float64", "unit": "bytes", "formula": "Welford population standard deviation of PacketView.wire_length over all packets", "zero_policy": "0 for zero or one sample"},
+    {"index": 11, "name": "forward_packet_length_mean", "logical_type": "float64", "unit": "bytes", "formula": "Welford mean of PacketView.wire_length over forward packets", "zero_policy": "0 for an empty group"},
+    {"index": 12, "name": "forward_packet_length_std", "logical_type": "float64", "unit": "bytes", "formula": "Welford population standard deviation of PacketView.wire_length over forward packets", "zero_policy": "0 for zero or one sample"},
+    {"index": 13, "name": "reverse_packet_length_mean", "logical_type": "float64", "unit": "bytes", "formula": "Welford mean of PacketView.wire_length over reverse packets", "zero_policy": "0 for an empty group"},
+    {"index": 14, "name": "reverse_packet_length_std", "logical_type": "float64", "unit": "bytes", "formula": "Welford population standard deviation of PacketView.wire_length over reverse packets", "zero_policy": "0 for zero or one sample"},
+    {"index": 15, "name": "flow_iat_min_us", "logical_type": "float64", "unit": "microseconds", "formula": "minimum signed flow IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than two flow packets exist"},
+    {"index": 16, "name": "flow_iat_max_us", "logical_type": "float64", "unit": "microseconds", "formula": "maximum signed flow IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than two flow packets exist"},
+    {"index": 17, "name": "flow_iat_mean_us", "logical_type": "float64", "unit": "microseconds", "formula": "Welford mean of signed flow IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than two flow packets exist"},
+    {"index": 18, "name": "flow_iat_std_us", "logical_type": "float64", "unit": "microseconds", "formula": "Welford population standard deviation of signed flow IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than three flow packets exist"},
+    {"index": 19, "name": "forward_iat_mean_us", "logical_type": "float64", "unit": "microseconds", "formula": "Welford mean of signed same-direction forward IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than two forward packets exist"},
+    {"index": 20, "name": "forward_iat_std_us", "logical_type": "float64", "unit": "microseconds", "formula": "Welford population standard deviation of signed same-direction forward IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than three forward packets exist"},
+    {"index": 21, "name": "reverse_iat_mean_us", "logical_type": "float64", "unit": "microseconds", "formula": "Welford mean of signed same-direction reverse IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than two reverse packets exist"},
+    {"index": 22, "name": "reverse_iat_std_us", "logical_type": "float64", "unit": "microseconds", "formula": "Welford population standard deviation of signed same-direction reverse IAT in nanoseconds divided by 1000.0", "zero_policy": "0 when fewer than three reverse packets exist"},
+    {"index": 23, "name": "packet_rate_per_second", "logical_type": "float64", "unit": "packets/second", "formula": "packet_count * 1000000.0 / flow_age_us", "zero_policy": "0 when flow_age_us is not positive"},
+    {"index": 24, "name": "wire_byte_rate_per_second", "logical_type": "float64", "unit": "bytes/second", "formula": "wire_byte_count * 1000000.0 / flow_age_us", "zero_policy": "0 when flow_age_us is not positive"},
+    {"index": 25, "name": "forward_reverse_packet_ratio", "logical_type": "float64", "unit": "ratio", "formula": "forward_packet_count / reverse_packet_count", "zero_policy": "0 when reverse_packet_count is 0"},
+    {"index": 26, "name": "forward_reverse_wire_byte_ratio", "logical_type": "float64", "unit": "ratio", "formula": "forward_wire_byte_count / reverse_wire_byte_count", "zero_policy": "0 when reverse_wire_byte_count is 0"},
+    {"index": 27, "name": "direction_change_count", "logical_type": "uint64", "unit": "changes", "formula": "number of adjacent packets in capture order whose flow directions differ", "zero_policy": "0 before the first direction change"},
+    {"index": 28, "name": "tcp_syn_count", "logical_type": "uint64", "unit": "flags", "formula": "count of TCP packets with the SYN flag set", "zero_policy": "0 for UDP flows or when absent"},
+    {"index": 29, "name": "tcp_ack_count", "logical_type": "uint64", "unit": "flags", "formula": "count of TCP packets with the ACK flag set", "zero_policy": "0 for UDP flows or when absent"},
+    {"index": 30, "name": "tcp_fin_count", "logical_type": "uint64", "unit": "flags", "formula": "count of TCP packets with the FIN flag set", "zero_policy": "0 for UDP flows or when absent"},
+    {"index": 31, "name": "tcp_rst_count", "logical_type": "uint64", "unit": "flags", "formula": "count of TCP packets with the RST flag set", "zero_policy": "0 for UDP flows or when absent"},
+    {"index": 32, "name": "tcp_psh_count", "logical_type": "uint64", "unit": "flags", "formula": "count of TCP packets with the PSH flag set", "zero_policy": "0 for UDP flows or when absent"},
+    {"index": 33, "name": "tcp_syn_ack_ratio", "logical_type": "float64", "unit": "ratio", "formula": "tcp_syn_count / tcp_ack_count", "zero_policy": "0 when tcp_ack_count is 0"},
+    {"index": 34, "name": "tcp_initial_forward_window", "logical_type": "uint16", "unit": "bytes", "formula": "TCP window_size of the first forward TCP packet", "zero_policy": "0 for UDP flows or before a forward TCP packet exists"},
+    {"index": 35, "name": "tcp_initial_reverse_window", "logical_type": "uint16", "unit": "bytes", "formula": "TCP window_size of the first reverse TCP packet", "zero_policy": "0 for UDP flows or before a reverse TCP packet exists"},
+    {"index": 36, "name": "tcp_window_mean", "logical_type": "float64", "unit": "bytes", "formula": "Welford mean of TCP window_size over all TCP packets", "zero_policy": "0 for UDP flows or an empty group"},
+    {"index": 37, "name": "tcp_window_std", "logical_type": "float64", "unit": "bytes", "formula": "Welford population standard deviation of TCP window_size over all TCP packets", "zero_policy": "0 for UDP flows or zero or one sample"},
+    {"index": 38, "name": "ttl_min", "logical_type": "uint8", "unit": "hops", "formula": "minimum IPv4 TTL over all packets", "zero_policy": "0 for an empty group"},
+    {"index": 39, "name": "ttl_max", "logical_type": "uint8", "unit": "hops", "formula": "maximum IPv4 TTL over all packets", "zero_policy": "0 for an empty group"},
+    {"index": 40, "name": "ttl_mean", "logical_type": "float64", "unit": "hops", "formula": "Welford mean of IPv4 TTL over all packets", "zero_policy": "0 for an empty group"},
+    {"index": 41, "name": "ttl_std", "logical_type": "float64", "unit": "hops", "formula": "Welford population standard deviation of IPv4 TTL over all packets", "zero_policy": "0 for zero or one sample"},
+    {"index": 42, "name": "payload_packet_count", "logical_type": "uint64", "unit": "packets", "formula": "count of packets whose PacketView.payload.length is greater than 0", "zero_policy": "0 when no payload exists"},
+    {"index": 43, "name": "forward_payload_packet_count", "logical_type": "uint64", "unit": "packets", "formula": "count of forward packets whose PacketView.payload.length is greater than 0", "zero_policy": "0 when no forward payload exists"},
+    {"index": 44, "name": "reverse_payload_packet_count", "logical_type": "uint64", "unit": "packets", "formula": "count of reverse packets whose PacketView.payload.length is greater than 0", "zero_policy": "0 when no reverse payload exists"},
+    {"index": 45, "name": "payload_byte_count", "logical_type": "uint64", "unit": "bytes", "formula": "sum of PacketView.payload.length over all packets", "zero_policy": "0 when no payload exists"},
+    {"index": 46, "name": "forward_payload_byte_count", "logical_type": "uint64", "unit": "bytes", "formula": "sum of PacketView.payload.length over forward packets", "zero_policy": "0 when no forward payload exists"},
+    {"index": 47, "name": "reverse_payload_byte_count", "logical_type": "uint64", "unit": "bytes", "formula": "sum of PacketView.payload.length over reverse packets", "zero_policy": "0 when no reverse payload exists"},
+    {"index": 48, "name": "payload_length_min", "logical_type": "uint32", "unit": "bytes", "formula": "minimum PacketView.payload.length over every packet, including zero-length payloads", "zero_policy": "0 for an empty group"},
+    {"index": 49, "name": "payload_length_max", "logical_type": "uint32", "unit": "bytes", "formula": "maximum PacketView.payload.length over every packet, including zero-length payloads", "zero_policy": "0 for an empty group"},
+    {"index": 50, "name": "payload_length_mean", "logical_type": "float64", "unit": "bytes", "formula": "Welford mean of PacketView.payload.length over every packet, including zero-length payloads", "zero_policy": "0 for an empty group"},
+    {"index": 51, "name": "payload_length_std", "logical_type": "float64", "unit": "bytes", "formula": "Welford population standard deviation of PacketView.payload.length over every packet, including zero-length payloads", "zero_policy": "0 for zero or one sample"},
+    {"index": 52, "name": "header_length_mean", "logical_type": "float64", "unit": "bytes", "formula": "Welford mean of PacketView.payload.offset, the frame bytes preceding transport payload, over all packets", "zero_policy": "0 for an empty group"},
+    {"index": 53, "name": "header_length_std", "logical_type": "float64", "unit": "bytes", "formula": "Welford population standard deviation of PacketView.payload.offset, the frame bytes preceding transport payload, over all packets", "zero_policy": "0 for zero or one sample"},
+    {"index": 54, "name": "protocol_number", "logical_type": "uint8", "unit": "IANA protocol number", "formula": "6 for TCP and 17 for UDP; never dataset-factorized", "zero_policy": "not applicable for accepted flows"},
+    {"index": 55, "name": "forward_ttl_mean", "logical_type": "float64", "unit": "hops", "formula": "Welford mean of IPv4 TTL over forward packets", "zero_policy": "0 when no forward packet exists"},
+    {"index": 56, "name": "reverse_ttl_mean", "logical_type": "float64", "unit": "hops", "formula": "Welford mean of IPv4 TTL over reverse packets", "zero_policy": "0 when no reverse packet exists"},
+    {"index": 57, "name": "forward_wire_bit_rate_per_second", "logical_type": "float64", "unit": "bits/second", "formula": "forward_wire_byte_count * 8 * 1000000.0 / flow_age_us", "zero_policy": "0 when flow_age_us is not positive"},
+    {"index": 58, "name": "reverse_wire_bit_rate_per_second", "logical_type": "float64", "unit": "bits/second", "formula": "reverse_wire_byte_count * 8 * 1000000.0 / flow_age_us", "zero_policy": "0 when flow_age_us is not positive"},
+    {"index": 59, "name": "active_mean_us", "logical_type": "float64", "unit": "microseconds", "formula": "mean duration of active segments under active_idle_policy", "zero_policy": "0 when the only active segment is a singleton"},
+    {"index": 60, "name": "idle_mean_us", "logical_type": "float64", "unit": "microseconds", "formula": "mean duration of gaps classified as idle under active_idle_policy", "zero_policy": "0 when no idle gap exists"},
+    {"index": 61, "name": "context_same_destination_endpoint_flow_count_60s", "logical_type": "uint64", "unit": "flow generations", "formula": "frozen causal count for context_policy.same_destination_endpoint_key in the current fixed 60-second block", "zero_policy": "minimum value is 1"},
+    {"index": 62, "name": "context_same_source_destination_flow_count_60s", "logical_type": "uint64", "unit": "flow generations", "formula": "frozen causal count for context_policy.same_source_destination_key in the current fixed 60-second block", "zero_policy": "minimum value is 1"},
+    {"index": 63, "name": "context_source_destination_distinct_destination_port_count_60s", "logical_type": "uint64", "unit": "ports", "formula": "frozen causal distinct destination-port count for context_policy.same_source_destination_key in the current fixed 60-second block", "zero_policy": "minimum value is 1"},
+    {"index": 64, "name": "first_observed_source_port", "logical_type": "uint16", "unit": "port", "formula": "source transport port on the first accepted packet that anchors forward direction", "zero_policy": "0 is retained as a valid observed port"},
+    {"index": 65, "name": "first_observed_destination_port", "logical_type": "uint16", "unit": "port", "formula": "destination transport port on the first accepted packet that anchors forward direction", "zero_policy": "0 is retained as a valid observed port"},
+    {"index": 66, "name": "lifecycle_tcp_reset", "logical_type": "uint8", "unit": "indicator", "formula": "1 exactly when lifecycle_policy classifies the flow as tcp_reset", "zero_policy": "0 otherwise"},
+    {"index": 67, "name": "lifecycle_tcp_fin_handshake", "logical_type": "uint8", "unit": "indicator", "formula": "1 exactly when lifecycle_policy classifies the flow as tcp_fin_handshake", "zero_policy": "0 otherwise"},
+    {"index": 68, "name": "lifecycle_tcp_other", "logical_type": "uint8", "unit": "indicator", "formula": "1 exactly when lifecycle_policy classifies the flow as tcp_other", "zero_policy": "0 otherwise"},
+    {"index": 69, "name": "lifecycle_udp", "logical_type": "uint8", "unit": "indicator", "formula": "1 exactly when lifecycle_policy classifies the flow as udp", "zero_policy": "0 otherwise"}
+  ]
+}

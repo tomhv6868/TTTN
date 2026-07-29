@@ -1,0 +1,408 @@
+{
+  "schema_version": "1.1.0",
+  "audit_revision": "r2_physical_feature_suffix",
+  "supersedes": {
+    "status": "invalid_reference_column_alignment",
+    "receipt_path": "run_log/full-flow-v2/audit/model-v2-audit.json",
+    "receipt_sha256": "925684b21a9fd83c5d9b200d22035f749327eb83f83a59d49972dadf3dfa0736",
+    "contract_sha256": "129720c1667e9a49976913c06346c8e725ce2f602d0f00b4b3c139f3e6d56572",
+    "reuse_allowed": false
+  },
+  "task": "T9.1",
+  "kind": "terminal_flow_model_v2_audit_contract",
+  "status": "locked",
+  "source_plan": {
+    "path": "plan-2.md",
+    "sha256": "10e54b19c892982c4f6c29a5cb5cb23c0c913a09d4f9c27c7f22365a7f80142c"
+  },
+  "inputs": {
+    "feature_schema": {
+      "path": "config/terminal-flow-feature-schema-v1.json",
+      "sha256": "ebe260327df74e265c2dc89178e3d038c3183de55603187c4b1e503e06173dfc"
+    },
+    "dataset_manifest": {
+      "path": "run_log/full-flow-v1/dataset/manifest.json",
+      "sha256": "3f4f921cf98363100c1471df4164d0c7b322c3634e8cd3882a337317da57516d"
+    },
+    "model_manifest_v1": {
+      "path": "run_log/full-flow-v1/model/manifest.json",
+      "sha256": "b7b383435ae70d49077ce074c4fac2bda57a2ffd4d7f016e48b5e25af45c0ccf"
+    },
+    "bundle_manifest_v1": {
+      "path": "run_log/full-flow-v1/model/terminal-flow.bundle/manifest.json",
+      "sha256": "16975f134494ed40389d189e2267c9641e45ece809e682624b4c4403e15cddff"
+    },
+    "diagnostic_attempt": {
+      "path": "run_log/full-flow-v1/live/ftp-patator/t91-ftp-patator-20260729034112-f8763728",
+      "attempt_id": "t91-ftp-patator-20260729034112-f8763728",
+      "run_contract_sha256": "892d76384d331573cf6657002cb524186a498165f0322b04add2f67ea135b263",
+      "usage": "audit_only_never_training_holdout_or_acceptance"
+    }
+  },
+  "runtime": {
+    "host": "windows_native",
+    "python_major_minor": "3.13",
+    "numpy_exact_version": "2.2.5",
+    "pyarrow_exact_version": "23.0.1",
+    "batch_rows": 65536
+  },
+  "architecture": {
+    "required": "binary_head_plus_attack_family_head",
+    "binary_head": {
+      "class_order": [
+        "Benign",
+        "Attack"
+      ]
+    },
+    "attack_family_head": {
+      "source_column": "assigned_class",
+      "benign_source_value": "BENIGN",
+      "class_order": [
+        "Bot",
+        "DDoS",
+        "DoS GoldenEye",
+        "DoS Hulk",
+        "DoS Slowhttptest",
+        "DoS slowloris",
+        "FTP-Patator",
+        "Infiltration",
+        "PortScan",
+        "SSH-Patator",
+        "Web Attack – Brute Force",
+        "Web Attack – Sql Injection",
+        "Web Attack – XSS"
+      ],
+      "unavailable": [
+        "Heartbleed"
+      ]
+    },
+    "algorithm_candidates": [
+      "lightgbm",
+      "hist_gradient_boosting",
+      "sgd_log_loss"
+    ],
+    "evaluate_all_binary_family_pairs": true,
+    "expected_pair_count": 9,
+    "current_v1": {
+      "architecture": "single_multiclass",
+      "source_column": "label_family",
+      "class_order": [
+        "Benign",
+        "FTP-Bruteforce",
+        "SSH-Bruteforce",
+        "PortScan",
+        "DoS",
+        "Other"
+      ],
+      "accepted_as_v2": false
+    }
+  },
+  "feature_policy": {
+    "schema_feature_count": 70,
+    "excluded_groups": {
+      "tcp_window": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "aggregate_ttl": [
+        38,
+        39,
+        40,
+        41
+      ],
+      "directional_ttl": [
+        55,
+        56
+      ],
+      "first_observed_ports": [
+        64,
+        65
+      ]
+    },
+    "candidate_profiles": [
+      {
+        "id": "V2A",
+        "name": "stable_terminal_traffic",
+        "feature_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          57,
+          58,
+          59,
+          60
+        ]
+      },
+      {
+        "id": "V2B",
+        "name": "stable_terminal_context",
+        "feature_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63
+        ]
+      },
+      {
+        "id": "V2C",
+        "name": "stable_terminal_context_lifecycle",
+        "feature_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          66,
+          67,
+          68,
+          69
+        ]
+      }
+    ],
+    "distribution_audit_indices": [
+      1,
+      30,
+      31,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      66,
+      67,
+      68,
+      69
+    ]
+  },
+  "selection_policy": {
+    "fit_on": [
+      "train"
+    ],
+    "select_on": [
+      "validation"
+    ],
+    "maximum_benign_fpr": 0.01,
+    "minimum_target_precision": 0.9,
+    "minimum_target_recall": 0.9,
+    "overall_attack_recall_max_drop": 0.002,
+    "macro_f1_max_drop": 0.01,
+    "profile_minimum_target_f1_max_drop": 0.01,
+    "test_partition": "sealed_until_architecture_algorithm_profile_hyperparameters_and_threshold_are_locked"
+  },
+  "live_data_policy": {
+    "split_unit": "whole_attempt",
+    "assignment_time": "before_capture",
+    "cross_split_attempt_reuse": false,
+    "diagnostic_attempt_reuse": false,
+    "required_campaigns": [
+      "ftp_patator_wrong_password",
+      "ftp_valid_login",
+      "http_normal",
+      "https_normal"
+    ],
+    "attempt_counts": {
+      "status": "pending_separate_gate",
+      "training": null,
+      "validation": null,
+      "holdout": null
+    }
+  },
+  "test_partition": {
+    "status": "sealed",
+    "allowed_operations": [
+      "read_manifest_path_strings_only"
+    ],
+    "forbidden_operations": [
+      "resolve_test_part_path",
+      "stat_test_part",
+      "hash_test_part",
+      "open_test_part",
+      "read_test_features_or_labels"
+    ]
+  },
+  "audit_policy": {
+    "reference_partitions": [
+      "train",
+      "validation"
+    ],
+    "reference_cohorts": [
+      {
+        "id": "benign",
+        "column": "assigned_class",
+        "value": "BENIGN"
+      },
+      {
+        "id": "ftp_patator",
+        "column": "assigned_class",
+        "value": "FTP-Patator"
+      }
+    ],
+    "model_gate_failure_required": true,
+    "windows_post_status": "report_missing_for_historical_attempt_require_for_fresh_attempts",
+    "reference_column_binding": "physical_suffix_exact_70",
+    "domain_shift_conclusion": "inconclusive_without_same_traffic_offline_replay",
+    "receipt_overwrite": false
+  },
+  "outputs": {
+    "root": "run_log/full-flow-v1/model-v2",
+    "audit_receipt": "run_log/full-flow-v1/model-v2/audit/model-v2-audit-r2.json"
+  }
+}

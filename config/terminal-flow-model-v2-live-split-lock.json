@@ -1,0 +1,453 @@
+{
+  "schema_version": "1.0.0",
+  "task": "T9.1",
+  "kind": "terminal_flow_model_v2_live_split_lock",
+  "status": "counts_locked_capture_not_authorized",
+  "locked_at_utc": "2026-07-29T21:04:06.1197933+07:00",
+  "policy": {
+    "path": "config/terminal-flow-model-v2-live-split-policy.json",
+    "sha256": "a9d3e2eb24427e2bbd9293edc87e2a234c21bca53b3dcae96a2f8dcd262daf25"
+  },
+  "split": {
+    "unit": "whole_attempt",
+    "assignment_mode": "deterministic_reserved_slots",
+    "assignment_time": "claim_receipt_create_new_before_capture",
+    "attempt_counts": {
+      "status": "locked",
+      "by_campaign": {
+        "ftp_patator_wrong_password": {
+          "train": {
+            "required": 3,
+            "reserve": 1
+          },
+          "validation": {
+            "required": 2,
+            "reserve": 1
+          },
+          "holdout": {
+            "required": 2,
+            "reserve": 1
+          }
+        },
+        "ftp_valid_login": {
+          "train": {
+            "required": 3,
+            "reserve": 1
+          },
+          "validation": {
+            "required": 2,
+            "reserve": 1
+          },
+          "holdout": {
+            "required": 2,
+            "reserve": 1
+          }
+        },
+        "http_normal": {
+          "train": {
+            "required": 3,
+            "reserve": 1
+          },
+          "validation": {
+            "required": 2,
+            "reserve": 1
+          },
+          "holdout": {
+            "required": 2,
+            "reserve": 1
+          }
+        },
+        "https_normal": {
+          "train": {
+            "required": 3,
+            "reserve": 1
+          },
+          "validation": {
+            "required": 2,
+            "reserve": 1
+          },
+          "holdout": {
+            "required": 2,
+            "reserve": 1
+          }
+        }
+      }
+    },
+    "slots": [
+      {
+        "slot_id": "ftp_patator_wrong_password-train-required-001",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-train-required-002",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-train-required-003",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 3,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-train-reserve-001",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "train",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-validation-required-001",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-validation-required-002",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-validation-reserve-001",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "validation",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-holdout-required-001",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-holdout-required-002",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_patator_wrong_password-holdout-reserve-001",
+        "campaign": "ftp_patator_wrong_password",
+        "partition": "holdout",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-train-required-001",
+        "campaign": "ftp_valid_login",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-train-required-002",
+        "campaign": "ftp_valid_login",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-train-required-003",
+        "campaign": "ftp_valid_login",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 3,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-train-reserve-001",
+        "campaign": "ftp_valid_login",
+        "partition": "train",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-validation-required-001",
+        "campaign": "ftp_valid_login",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-validation-required-002",
+        "campaign": "ftp_valid_login",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-validation-reserve-001",
+        "campaign": "ftp_valid_login",
+        "partition": "validation",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-holdout-required-001",
+        "campaign": "ftp_valid_login",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-holdout-required-002",
+        "campaign": "ftp_valid_login",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "ftp_valid_login-holdout-reserve-001",
+        "campaign": "ftp_valid_login",
+        "partition": "holdout",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-train-required-001",
+        "campaign": "http_normal",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-train-required-002",
+        "campaign": "http_normal",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-train-required-003",
+        "campaign": "http_normal",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 3,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-train-reserve-001",
+        "campaign": "http_normal",
+        "partition": "train",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-validation-required-001",
+        "campaign": "http_normal",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-validation-required-002",
+        "campaign": "http_normal",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-validation-reserve-001",
+        "campaign": "http_normal",
+        "partition": "validation",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-holdout-required-001",
+        "campaign": "http_normal",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-holdout-required-002",
+        "campaign": "http_normal",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "http_normal-holdout-reserve-001",
+        "campaign": "http_normal",
+        "partition": "holdout",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-train-required-001",
+        "campaign": "https_normal",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-train-required-002",
+        "campaign": "https_normal",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-train-required-003",
+        "campaign": "https_normal",
+        "partition": "train",
+        "role": "required",
+        "ordinal": 3,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-train-reserve-001",
+        "campaign": "https_normal",
+        "partition": "train",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "fit",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-validation-required-001",
+        "campaign": "https_normal",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-validation-required-002",
+        "campaign": "https_normal",
+        "partition": "validation",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-validation-reserve-001",
+        "campaign": "https_normal",
+        "partition": "validation",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "model_and_threshold_selection",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-holdout-required-001",
+        "campaign": "https_normal",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-holdout-required-002",
+        "campaign": "https_normal",
+        "partition": "holdout",
+        "role": "required",
+        "ordinal": 2,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      },
+      {
+        "slot_id": "https_normal-holdout-reserve-001",
+        "campaign": "https_normal",
+        "partition": "holdout",
+        "role": "reserve",
+        "ordinal": 1,
+        "usage": "final_generalization_only_after_model_lock",
+        "state": "reserved"
+      }
+    ],
+    "cross_partition_attempt_reuse": false,
+    "collection_session_cross_partition": false,
+    "failed_claim_reuse": false,
+    "replacement_policy": "predeclared_reserve_slot_only"
+  },
+  "gate": {
+    "decision": "blocked_pending_capture_authorization",
+    "training_authorized": false,
+    "threshold_selection_authorized": false,
+    "train_validation_capture_authorized": false,
+    "holdout_capture_authorized": false,
+    "holdout_access_authorized": false,
+    "test_partition_may_be_opened": false,
+    "next_gate": "capture_authorization_review"
+  }
+}
