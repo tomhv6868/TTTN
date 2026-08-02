@@ -1,0 +1,173 @@
+{
+  "schema_version": "2.0.0",
+  "task": "T9.1",
+  "kind": "terminal_live_campaign_config",
+  "mode": "demo_critical_path",
+  "artifact_root": "run_log/full-flow-v1/live",
+  "topology": {
+    "management_network": {
+      "name": "VMnet8",
+      "mode": "NAT",
+      "subnet": "192.168.100.0/24"
+    },
+    "data_network": {
+      "name": "VMnet1",
+      "mode": "host-only",
+      "subnet": "192.168.252.0/24"
+    },
+    "kali": {
+      "interface": "eth1",
+      "expected_driver": "vmxnet3"
+    },
+    "ubuntu": {
+      "interface": "ens160",
+      "expected_driver": "vmxnet3",
+      "expected_mac": "00:0c:29:30:b9:d3"
+    },
+    "windows": {
+      "hostname": "WIN-SALLRN2MPJ9",
+      "target_ip": "192.168.252.20",
+      "interface_alias": "Ethernet1",
+      "expected_driver_pattern": "Intel(R) 82574L Gigabit Network Connection #2"
+    }
+  },
+  "model": {
+    "bundle_directory": "run_log/full-flow-v1/model/terminal-flow.bundle",
+    "bundle_manifest_sha256": "16975f134494ed40389d189e2267c9641e45ece809e682624b4c4403e15cddff",
+    "native_parity_reference_sha256": "4db86db70f6f13b777a674db608eb6414e269877f2a90b5e47b0a36e04cc6db9",
+    "feature_schema_id": "nids.terminal_flow_features.v1"
+  },
+  "dpdk": {
+    "resource_config": "config/dpdk-passive.json",
+    "resource_config_sha256": "fd0b8032ba8426a3034470feceb9ae4e139555ba58192c88db8cf632b7dfa86f",
+    "binary": "/home/wang/.cache/nids-partial-flow/build/ubuntu-release/nids_t91_terminal_live",
+    "port_id": 0,
+    "lcores": "0",
+    "memory_channels": 2,
+    "memory_mb": 256,
+    "mtu": 9000,
+    "require_promiscuous": true,
+    "file_prefix": "nids-t91-live"
+  },
+  "bounds": {
+    "sensor_outer_timeout_seconds": 90,
+    "ready_timeout_seconds": 30,
+    "sender_timeout_seconds": 30,
+    "windows_ttl_seconds": 120,
+    "max_packets": 100000,
+    "max_runtime_ms": 60000,
+    "arm_timeout_ms": 20000,
+    "idle_timeout_ms": 5000,
+    "ftp_wrong_passwords": 20,
+    "ftp_threads": 1,
+    "portscan_ports": "1-1024",
+    "portscan_max_rate": 100,
+    "portscan_max_retries": 0,
+    "portscan_host_timeout_seconds": 25
+  },
+  "target": {
+    "ftp_username": "nidslab",
+    "ftp_valid_password": "Nids-Lab-2026!",
+    "firewall_rule_prefix": "NIDS-T91",
+    "firewall_tcp_ports": "1-1024"
+  },
+  "acceptance": {
+    "minimum_terminal_flows": {
+      "ftp-patator": 18,
+      "portscan": 900
+    },
+    "require_non_eof_exact_model_family_alert": true,
+    "require_clean_dpdk_counters": true,
+    "require_rollback": true,
+    "taxonomy_label_count": 14,
+    "passed_label_goal": 2
+  },
+  "cases": [
+    {
+      "id": "bot",
+      "scenario_label": "Bot",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: no bounded host harness in this phase"
+    },
+    {
+      "id": "ddos",
+      "scenario_label": "DDoS",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: no safe live generator for the terminal model in this phase"
+    },
+    {
+      "id": "dos-goldeneye",
+      "scenario_label": "DoS GoldenEye",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: tool and endpoint contract not locked"
+    },
+    {
+      "id": "dos-hulk",
+      "scenario_label": "DoS Hulk",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: tool and endpoint contract not locked"
+    },
+    {
+      "id": "dos-slowhttptest",
+      "scenario_label": "DoS Slowhttptest",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: tool and endpoint contract not locked"
+    },
+    {
+      "id": "dos-slowloris",
+      "scenario_label": "DoS slowloris",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: tool and endpoint contract not locked"
+    },
+    {
+      "id": "ftp-patator",
+      "scenario_label": "FTP-Patator",
+      "status": "supported",
+      "tool": "patator",
+      "expected_model_family": "FTP-Bruteforce"
+    },
+    {
+      "id": "heartbleed",
+      "scenario_label": "Heartbleed",
+      "status": "unsupported",
+      "reason": "unavailable in assigned terminal-flow training data"
+    },
+    {
+      "id": "infiltration",
+      "scenario_label": "Infiltration",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: endpoint contract not locked"
+    },
+    {
+      "id": "portscan",
+      "scenario_label": "PortScan",
+      "status": "supported",
+      "tool": "nmap",
+      "expected_model_family": "PortScan"
+    },
+    {
+      "id": "ssh-patator",
+      "scenario_label": "SSH-Patator",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: target service and account contract not locked"
+    },
+    {
+      "id": "web-brute-force",
+      "scenario_label": "Web Attack \u2013 Brute Force",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: web endpoint contract not locked"
+    },
+    {
+      "id": "web-sql-injection",
+      "scenario_label": "Web Attack \u2013 Sql Injection",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: web endpoint contract not locked"
+    },
+    {
+      "id": "web-xss",
+      "scenario_label": "Web Attack \u2013 XSS",
+      "status": "unsupported",
+      "reason": "deferred_for_demo: web endpoint contract not locked"
+    }
+  ]
+}
