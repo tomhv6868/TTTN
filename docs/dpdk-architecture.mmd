@@ -1,0 +1,95 @@
+%% Duong di cua mot goi tin trong he thong NIDS
+%% Doc kem: docs/dpdk-code-and-terms.md
+%% Nhan bang tieng Viet khong dau de tuong thich moi trinh render mermaid
+
+flowchart TB
+
+    subgraph L1["1 - PHAN CUNG"]
+        NIC["Card mang ens160<br/>giao han cho DPDK<br/>chi nghe, khong gui"]
+        HP["Vung nho lon 256 MiB<br/>card ghi thang vao day"]
+    end
+
+    subgraph L2["2 - THU NHAN BANG DPDK - phan phai tu lo"]
+        EAL["Khoi dong DPDK<br/>xin bo nho, gan CPU"]
+        POOL["Kho hop chua goi tin<br/>8192 hop xin san tu dau"]
+        CFG["Cau hinh card<br/>1 hang doi nhan<br/>bat che do nghe tat ca"]
+        LOOP["Vong lap hoi card<br/>lay ca nam goi moi lan"]
+        STAT["Dem goi bi bo<br/>imissed / rx_nombuf"]
+    end
+
+    subgraph L3["3 - BO CHUYEN DOI - 65 dong, ranh gioi DPDK"]
+        Q{"Goi nam lien mot khoi?"}
+        FAST["Doc thang tai cho<br/>khong chep - nhanh nhat"]
+        SLOW["Ghep cac manh lai<br/>cham hon nhung van dung"]
+        ERR["Bao loi ro rang<br/>can bao nhieu / dang co bao nhieu"]
+    end
+
+    subgraph L4["4 - LOI DUNG CHUNG - khong biet DPDK ton tai"]
+        PARSE["Boc tach goi tin<br/>dia chi, cong, giao thuc"]
+        FLOW["Gom goi thanh luong<br/>hai chieu"]
+        FEAT["Tinh 54 dac trung<br/>cua luong"]
+        CKPT["Moc cham diem<br/>F3 - F5 - F7 - F9"]
+    end
+
+    subgraph L5["5 - PHAT HIEN"]
+        MODEL["Mo hinh cham diem<br/>Random Forest + HBOS"]
+        ALERT["Canh bao dang JSON"]
+    end
+
+    subgraph L6["DUONG DOI CHUNG - chay lai tu tep da luu"]
+        PCAP["Doc tep PCAP<br/>bang thu vien libpcap"]
+    end
+
+    subgraph L7["KIEM CHUNG TU DONG"]
+        TEST1["So sanh 2 nhanh chuyen doi<br/>lien khoi = chia manh"]
+        TEST2["So sanh 2 duong thu nhan<br/>PCAP = DPDK, du 54 dac trung"]
+        VDEV["Card mang ao<br/>chay duoc tren may thuong"]
+    end
+
+    OUT["Ket qua ra<br/>man hinh - tep canh bao - bien nhan"]
+
+    HP --> EAL
+    EAL --> POOL
+    EAL --> CFG
+    NIC -->|goi tin ghi thang vao bo nho| POOL
+    NIC --> CFG
+    CFG --> LOOP
+    CFG --> STAT
+    POOL --> LOOP
+
+    LOOP -->|goi tin dinh dang DPDK| Q
+    Q -->|co| FAST
+    Q -->|khong| SLOW
+    SLOW -.cho chua khong du.-> ERR
+
+    FAST --> PARSE
+    SLOW --> PARSE
+    PCAP -->|cung dinh dang chung| PARSE
+
+    PARSE --> FLOW
+    FLOW --> FEAT
+    FEAT --> CKPT
+    CKPT -->|tai moc F9| MODEL
+    MODEL --> ALERT
+    ALERT --> OUT
+    STAT --> OUT
+
+    VDEV --> TEST1
+    VDEV --> TEST2
+    TEST1 -.kiem tra.-> Q
+    TEST2 -.kiem tra.-> FEAT
+    PCAP -.nguon doi chung.-> TEST2
+
+    classDef hw     fill:#5B3FA8,stroke:#2E1F57,color:#fff
+    classDef dpdk   fill:#12657F,stroke:#08303D,color:#fff
+    classDef bridge fill:#9C4715,stroke:#4D2209,color:#fff
+    classDef core   fill:#2C6440,stroke:#153020,color:#fff
+    classDef test   fill:#6B6B6B,stroke:#333,color:#fff
+    classDef err    fill:#A32626,stroke:#511313,color:#fff
+
+    class NIC,HP hw
+    class EAL,POOL,CFG,LOOP,STAT dpdk
+    class Q,FAST,SLOW bridge
+    class PARSE,FLOW,FEAT,CKPT,MODEL,ALERT,PCAP,OUT core
+    class TEST1,TEST2,VDEV test
+    class ERR err
