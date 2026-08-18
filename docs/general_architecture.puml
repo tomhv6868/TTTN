@@ -1,0 +1,77 @@
+@startuml
+title General Architecture (Mô hình tổng quát)
+
+left to right direction
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName "Times New Roman"
+skinparam defaultFontSize 13
+skinparam ArrowColor black
+skinparam rectangleBorderColor black
+skinparam rectangleBackgroundColor white
+skinparam databaseBorderColor black
+skinparam databaseBackgroundColor white
+
+package "Input Sources (Nguồn đầu vào)" {
+  database "PCAP Files\n(Tệp PCAP)" as PCAP
+  rectangle "Network Interface\n(Card mạng giám sát)" as NIC
+}
+
+package "Input Adapters (Bộ tiếp hợp đầu vào)" {
+  rectangle "PCAP Adapter\n(Bộ tiếp hợp PCAP)" as PA
+  rectangle "DPDK RX\n(Thu nhận gói tin trực tuyến)" as RX
+  rectangle "DPDK Adapter\n(Bộ tiếp hợp DPDK)" as DA
+}
+
+package "Shared Processing Core (Lõi xử lý dùng chung)" {
+  rectangle "Packet Parser\n(Bộ phân tích gói tin)" as PP
+  rectangle "Bidirectional Flow Key\n(Khóa flow hai chiều)" as FK
+  rectangle "Flow Table\n(Bảng trạng thái flow)" as FT
+  rectangle "Terminal Feature Engine\n(Bộ trích xuất đặc trưng terminal-flow)" as FE
+}
+
+package "Offline Model Development (Xây dựng mô hình ngoại tuyến)" {
+  rectangle "Label Reconciliation\n(Đối chiếu nhãn)" as LR
+  database "Labeled Flow Dataset\n(Dữ liệu flow có nhãn)" as DS
+  rectangle "Time-block Split\n(Phân hoạch theo khối thời gian)" as SPLIT
+  rectangle "Model Training and Selection\n(Huấn luyện và lựa chọn mô hình)" as TRAIN
+  rectangle "Multiclass Model\n(Mô hình phân loại đa lớp)" as MODEL
+}
+
+package "Online Detection (Phát hiện trực tuyến)" {
+  rectangle "Terminal-flow Inference\n(Suy luận khi flow đóng)" as INF
+  rectangle "Security Alert\n(Cảnh báo an toàn thông tin)" as ALERT
+}
+
+PCAP --> PA
+NIC --> RX
+RX --> DA
+PA --> PP
+DA --> PP
+PP --> FK
+FK --> FT
+FT --> FE : Flow close event
+
+FE --> LR : Offline flow records
+LR --> DS
+DS --> SPLIT
+SPLIT --> TRAIN
+TRAIN --> MODEL
+
+FE --> INF : Online feature vector
+MODEL --> INF
+INF --> ALERT
+
+note bottom of PA
+Reads PCAP records directly.
+(Đọc trực tiếp bản ghi PCAP,
+không đi qua DPDK.)
+end note
+
+note bottom of RX
+Passive, one RX port, zero TX.
+(Thu nhận thụ động,
+một cổng RX và không có TX.)
+end note
+
+@enduml

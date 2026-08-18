@@ -1,0 +1,883 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_precedence": [
+    "current_task",
+    "task_contract_or_acceptance_specification",
+    "environment_contract_and_toolchain_receipt",
+    "final_acceptance_receipt_or_manual_acceptance_record",
+    "build_receipt",
+    "report",
+    "latest_attempt",
+    "older_attempts_history_and_debug"
+  ],
+  "tasks": {
+    "T0.1": {
+      "status": "unverified_legacy",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": []
+    },
+    "T0.2": {
+      "status": "unverified_legacy",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T0.1"]
+    },
+    "T0.3": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t0.3-receipt-4.json",
+        "sha256": "79f8b4c2d8622c68d0393569930008d91669de707c97e419a16a4565c362387f",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T0.2"]
+    },
+    "T0.4": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t0.4/acceptance.json",
+        "sha256": "4c53e99a832449e03e3c1d5761e51674c8f7345baad97d1969d6bacdf0644ad9",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T0.3"]
+    },
+    "T0.5": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t0.5/acceptance.json",
+        "sha256": "b4e8f0296c7a8b6fb43efbf772f1c702add91d3eab2da63e0c2681c599bf50d7",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T0.4"]
+    },
+    "T1.1": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t1.1/acceptance.json",
+        "sha256": "d84c82c2be70b6702ccc51e1f7407f21dda416ad26d4830804d8d0580aa9e0f3",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t1.1/attempts/ubuntu-acceptance-20260714T121603244123Z/receipt.json",
+        "sha256": "d84c82c2be70b6702ccc51e1f7407f21dda416ad26d4830804d8d0580aa9e0f3",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T0.5"]
+    },
+    "T1.2": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t1.2/acceptance.json",
+        "sha256": "6a1fd67c95570d44a6de56136b7251fed3e00505248607b92a80fe26534f3136",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t1.2/attempts/ubuntu-acceptance-20260714T131631026059Z/receipt.json",
+        "sha256": "6a1fd67c95570d44a6de56136b7251fed3e00505248607b92a80fe26534f3136",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T1.1"]
+    },
+    "T1.3": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t1.3/acceptance.json",
+        "sha256": "8f95f3dbbd1cc3cd8ad27ff7f7897b19779f35a237ec246f493810601f7eb864",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t1.3/attempts/schema-20260714T135407034206Z/receipt.json",
+        "sha256": "8f95f3dbbd1cc3cd8ad27ff7f7897b19779f35a237ec246f493810601f7eb864",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T1.2"]
+    },
+    "T1.4": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t1.4/acceptance.json",
+        "sha256": "94e21a1c4183dc1098cba308997407e000c49e0b09454ba8131b3a71dd8a93d3",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t1.4/attempts/ubuntu-acceptance-20260714T141744734163Z/receipt.json",
+        "sha256": "94e21a1c4183dc1098cba308997407e000c49e0b09454ba8131b3a71dd8a93d3",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T1.3"]
+    },
+    "T1.5": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t1.5/acceptance.json",
+        "sha256": "d74d2c942bcaa5803151f4efe1446c90e6104a2e6fc7467463e3269244a91f03",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t1.5/attempts/schema-review-20260714T151107388162Z/receipt.json",
+        "sha256": "d74d2c942bcaa5803151f4efe1446c90e6104a2e6fc7467463e3269244a91f03",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T1.4"]
+    },
+    "T2.1": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t2.1/acceptance.json",
+        "sha256": "421596da8020f9b5420ef03b69523d6c8ce51f1906802d1f942f6401123d02ea",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t2.1/attempts/ubuntu-acceptance-20260714T165129229807Z/receipt.json",
+        "sha256": "421596da8020f9b5420ef03b69523d6c8ce51f1906802d1f942f6401123d02ea",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T1.5"]
+    },
+    "T2.2": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t2.2/acceptance.json",
+        "sha256": "b76c5f0ecf5ddec63829a40374bab00f6ba3096efbd79e1b0c80719c55820049",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t2.2/attempts/ubuntu-acceptance-20260714T180238508043Z/receipt.json",
+        "sha256": "b76c5f0ecf5ddec63829a40374bab00f6ba3096efbd79e1b0c80719c55820049",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T2.1"]
+    },
+    "T2.3": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t2.3/acceptance.json",
+        "sha256": "88b04e327bda876e3adba2b0223bc80c40fe62d78459e0b0b493f3b234acf7a4",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t2.3/attempts/ubuntu-acceptance-20260714T183641897055Z/receipt.json",
+        "sha256": "88b04e327bda876e3adba2b0223bc80c40fe62d78459e0b0b493f3b234acf7a4",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T2.2"]
+    },
+    "T2.4": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t2.4/acceptance.json",
+        "sha256": "1f425b8a9fec4fa4f57f38db005b358062d39c2c84302ace7ce695d8daa150b9",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t2.4/attempts/ubuntu-acceptance-20260715T064551590732Z/receipt.json",
+        "sha256": "1f425b8a9fec4fa4f57f38db005b358062d39c2c84302ace7ce695d8daa150b9",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T2.3"]
+    },
+    "T2.5": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t2.5/acceptance.json",
+        "sha256": "21095b9753913967c5e5d9d4678ec74e85ba426b9f79f4552913ddd5e7a45623",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t2.5/attempts/ubuntu-acceptance-20260715T102215831372Z/receipt.json",
+        "sha256": "21095b9753913967c5e5d9d4678ec74e85ba426b9f79f4552913ddd5e7a45623",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T2.4"]
+    },
+    "T2.6": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t2.6/acceptance.json",
+        "sha256": "0a69d11ed5897216b8ef31816aad33c02e2935a2ffe138e470d7fee24909fcfe",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t2.6/attempts/ubuntu-acceptance-20260715T132534101524Z/receipt.json",
+        "sha256": "0a69d11ed5897216b8ef31816aad33c02e2935a2ffe138e470d7fee24909fcfe",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T2.5"]
+    },
+    "T3.1": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.1/acceptance.json",
+        "sha256": "4a08454a0818b2665e2efd8c628db0e70f74f9f61da949185ec92cb9468522cd",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T2.6"]
+    },
+    "T3.2": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.2/acceptance.json",
+        "sha256": "a9a9bbcfbd5a9f9a33e38f40003d084dc4aabcad56ea81621efb063058e6a147",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": {
+        "path": "run_log/t3.2/build.json",
+        "sha256": "476706b252706e5de3dca22c336e1204c80f0f3d52ef10ae443ce01d78be7537",
+        "status": "passed",
+        "acceptance_status": "pending_shared_parser"
+      },
+      "latest_attempt": {
+        "path": "run_log/t3.2/attempts/ubuntu-acceptance-20260716T071331318201Z/receipt.json",
+        "sha256": "a9a9bbcfbd5a9f9a33e38f40003d084dc4aabcad56ea81621efb063058e6a147",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T3.1"]
+    },
+    "T3.3": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.3/acceptance.json",
+        "sha256": "53863c46496baac75666ce709ae1921a2523dd994ad03ff57921c18db690f791",
+        "status": "passed"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": {
+        "path": "run_log/t3.3/build.json",
+        "sha256": "024f60bbfcf3668c400556449a1505fe26a52381de31e311ce3be3dd15ff5ccb",
+        "status": "passed"
+      },
+      "latest_attempt": null,
+      "direct_prerequisites": ["T3.2"]
+    },
+    "T3.4": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.4/acceptance.json",
+        "sha256": "21a455936eeca3283815cc41c9b7db69a1056bc1387c366328d19346102539e0",
+        "status": "passed",
+        "gate_decision": "rejected",
+        "t3_5_authorized": false
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t3.4/audit.json",
+        "sha256": "2a5584a96c0c912906aaafe4847dcaaaa1d4647b2e70241c8debb6f81013b54a",
+        "status": "passed",
+        "gate_status": "pending_user_decision"
+      },
+      "direct_prerequisites": ["T3.3"]
+    },
+    "T3.3R1": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.3r1/acceptance.json",
+        "sha256": "651d26a03bb9806f5944050124fd77d4e82426ab753d6103059cb6a1ff19d396",
+        "status": "passed",
+        "t3_5_authorized": false,
+        "next_task": "T3.4R1"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": {
+        "path": "run_log/t3.3r1/build.json",
+        "sha256": "7067447eafea59005eb5ec7fb4420be5ad7d25360b64b452b5be5eb49567ea13",
+        "status": "passed",
+        "acceptance_status": "pending_independent_validation"
+      },
+      "latest_attempt": {
+        "path": "run_log/t3.3r1/acceptance.json",
+        "sha256": "651d26a03bb9806f5944050124fd77d4e82426ab753d6103059cb6a1ff19d396",
+        "status": "passed"
+      },
+      "direct_prerequisites": ["T3.4"]
+    },
+    "T3.4R1": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.4r1/acceptance.json",
+        "sha256": "1bd291a180a7e2f46a935dfc634766f11578bb08c0172781918441e662c784bf",
+        "status": "passed",
+        "gate_decision": "accepted_with_exclusions",
+        "t3_5_authorized": true
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t3.4r1/audit.json",
+        "sha256": "bef41e109e980a42997b016ea2220522c38c4cd3600e750597be6018332a555e",
+        "status": "passed",
+        "gate_status": "pending_user_decision",
+        "t3_5_authorized": false
+      },
+      "direct_prerequisites": ["T3.3R1"]
+    },
+    "T3.5": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.5/acceptance.json",
+        "sha256": "ed2cf650f862fcd102f9ba872f650da4a4c476c6198ade37def05a4b93f25042",
+        "status": "passed",
+        "t3_6_authorized": true,
+        "next_task": "T3.6"
+      },
+      "manual_acceptance_record": null,
+      "build_receipt": {
+        "path": "run_log/t3.5/build.json",
+        "sha256": "95f2623030ebce90bce058118c45ef5d3d4f8cb22a83c0191c431d24729bc680",
+        "status": "passed",
+        "part_count": 20,
+        "row_count": 3783154
+      },
+      "latest_attempt": {
+        "path": "run_log/t3.5/manifest.json",
+        "sha256": "8ef8f483e4825762c724245e11c69dbf4c3e59b458dec1dab856dc9fd341c7ef",
+        "status": "passed",
+        "attempt_logs": "run_log/t3.5/attempts/ubuntu-snapshot-replay-20260720T170954731592021Z"
+      },
+      "direct_prerequisites": ["T3.4R1"]
+    },
+    "T3.6": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.6/acceptance.json",
+        "sha256": "9e6249d65dfc7fab7a31d411c6fd27e18e3320edde0b823776d4261e31df69ca",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t3.6/user-acceptance.json",
+        "sha256": "0b32f716d71e35fac015c0cb05c33c58ac456be4187791311f2405793c2d1cf4",
+        "status": "passed",
+        "decision": "accepted",
+        "t3_7_authorized": true,
+        "next_task": "T3.7"
+      },
+      "build_receipt": {
+        "path": "run_log/t3.6/known-flow-split.parquet",
+        "sha256": "8137ce83b2d38424405f20ecc36f0e6227573b0f39aedf05043d4942c181d10a",
+        "status": "passed",
+        "row_count": 1504210,
+        "block_count": 2454
+      },
+      "latest_attempt": {
+        "path": "run_log/t3.6/loafo-manifest.json",
+        "sha256": "3b1a4a439b9c17de4e8ef824dda49f93330859f3427d820a28fb4738d4a6ebe4",
+        "status": "passed",
+        "holdout_families": 13
+      },
+      "direct_prerequisites": ["T3.5"]
+    },
+    "T3.7": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t3.7/acceptance.json",
+        "sha256": "c376b3314bd42cf42bec1fd701754c8f5a4ee3f487b6187425b3bb138217a391",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t3.7/user-acceptance.json",
+        "sha256": "5c429bdff0570cb96316da56320a1df7d2b509f68b158e223a9deda509eb9fbc",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_1_authorized": true,
+        "next_task": "T4.1"
+      },
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t3.7/rare-family-audit.json",
+        "sha256": "942d6b482834d57a69956ff833226a8dda2cdcbae60d334295d9db273175fa4e",
+        "status": "passed",
+        "macro_loafo_family_count": 9,
+        "case_study_family_count": 4,
+        "unavailable_family_count": 1
+      },
+      "direct_prerequisites": ["T3.6"]
+    },
+    "T4.1": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.1/acceptance.json",
+        "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.1/user-acceptance.json",
+        "sha256": "642ecaa7bec2312494aa870c2943476eb223b42e7a963806cb2995ecb9727b20",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_2_authorized": true,
+        "next_task": "T4.2",
+        "t4_2_started": false
+      },
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t4.1/acceptance.json",
+        "sha256": "ec2b16597620224850e1a1b0f6d5df87b82b8c92177536cf1dd4140db988217a",
+        "status": "passed",
+        "artifact_id": "nids.preprocessing.v1",
+        "checkpoint_count": 4,
+        "profile_count": 8
+      },
+      "direct_prerequisites": ["T3.7"]
+    },
+    "T4.2": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.2/acceptance.json",
+        "sha256": "720805a1cd25dab6b2129a125df1a65a3100d5ee891d0f40fc4742aac041b98d",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.2/user-acceptance.json",
+        "sha256": "7585ffca9f83dc6d0fdc9ad52fbbd10b3460bf692dfa197296a7d59e73e83b43",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_3_authorized": true,
+        "next_task": "T4.3",
+        "t4_3_started": false
+      },
+      "build_receipt": {
+        "path": "run_log/t4.2/rf-baseline-v1.joblib",
+        "sha256": "5bec1997d8bed9a3b3e53cc5fa9327d297a74ae4ddb44b77ae58a174d523de31",
+        "status": "passed",
+        "artifact_id": "nids.rf_baseline.v1",
+        "size_bytes": 140427861
+      },
+      "latest_attempt": {
+        "path": "run_log/t4.2/validation-predictions-v1.npz",
+        "sha256": "6a1107b33e753ca4afaef4a5ba4060825fc8344822c07b727e2f76fae95cfdcf",
+        "status": "passed",
+        "checkpoint_count": 4,
+        "validation_rows": 387228
+      },
+      "direct_prerequisites": ["T4.1"]
+    },
+    "T4.3": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.3/acceptance.json",
+        "sha256": "88599430c7739f29e454d95f57c34a5c24974159359795bacad8bd0b3f48266c",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.3/user-acceptance.json",
+        "sha256": "5239afa56a8749abfbc80da69b742db9d4c24c8e1d7bee0a7b0827362776c247",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_4_authorized": true,
+        "next_task": "T4.4",
+        "t4_4_started": false
+      },
+      "build_receipt": {
+        "path": "run_log/t4.3/anomaly-baseline-v1.joblib",
+        "sha256": "ba44692ef5de383a0eb8ad329d51d5e4a6cbcf8cc49aa9fe2f29c3d5529c3744",
+        "status": "passed",
+        "artifact_id": "nids.anomaly_baseline.v1",
+        "size_bytes": 14792842
+      },
+      "latest_attempt": {
+        "path": "run_log/t4.3/validation-predictions-v1.npz",
+        "sha256": "e6f4a5626e6201a60164d457edd2713eac82cd4a65cd503ac3935cc06b4cf46c",
+        "status": "passed",
+        "checkpoint_count": 4,
+        "model_count": 8,
+        "validation_rows": 387228
+      },
+      "direct_prerequisites": ["T4.2"]
+    },
+    "T4.4": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.4/acceptance.json",
+        "sha256": "691648e4b95f8e575ed032df43885aef7b97e7ff76e1df359568db293a69bc7c",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.4/user-acceptance.json",
+        "sha256": "ad9514357d01845c198f81d0d79f11eef581ca4bc885330a3ae5416f27345272",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_5_authorized": true,
+        "next_task": "T4.5",
+        "t4_5_started": false
+      },
+      "build_receipt": {
+        "path": "run_log/t4.4/oof-meta-features-v1.parquet",
+        "sha256": "77695a6b6f03df8e56c8d24789e1e9419b3d773a23573bcede4aa0cea6cd09e8",
+        "status": "passed",
+        "artifact_id": "cicids2017-oof-anomaly-meta-features",
+        "artifact_version": "1.0.0",
+        "size_bytes": 57873464,
+        "rows": 2629897
+      },
+      "latest_attempt": {
+        "path": "run_log/t4.4/acceptance.json",
+        "sha256": "691648e4b95f8e575ed032df43885aef7b97e7ff76e1df359568db293a69bc7c",
+        "status": "passed",
+        "checkpoint_count": 4,
+        "fold_count": 5,
+        "group_count": 2047,
+        "rows": 2629897
+      },
+      "direct_prerequisites": ["T4.3"]
+    },
+    "T4.5": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.5/acceptance.json",
+        "sha256": "ef94e26bcd04725b463466a34dc15bec58bce92dd75da3cae55881a89dea56d1",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.5/user-acceptance.json",
+        "sha256": "6956a3bff4420ec843e0652b25a4b2dffc9c287851b3153abb1e73372f2a05aa",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_6_authorized": true,
+        "next_task": "T4.6",
+        "t4_6_started": false
+      },
+      "build_receipt": {
+        "path": "run_log/t4.5/rf-stacker-v1.joblib",
+        "sha256": "1c7b53fd4151230bc2e95621645b772387500a430db8e0788582e6141326654a",
+        "status": "passed",
+        "artifact_id": "nids.rf_stacker.v1",
+        "size_bytes": 140518551
+      },
+      "latest_attempt": {
+        "path": "run_log/t4.5/validation-predictions-v1.npz",
+        "sha256": "60736d773b8ce8a70e0c0e2907172080a697c5a11066af4ebcca7114c7fae594",
+        "status": "passed",
+        "checkpoint_count": 4,
+        "validation_rows": 387228
+      },
+      "direct_prerequisites": ["T4.4"]
+    },
+    "T4.6": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.6/acceptance.json",
+        "sha256": "1b1d45a186b82a13d5d4f1958dc81dfa06efb8208b407497e69f0c1d3f43e42c",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.6/user-acceptance.json",
+        "sha256": "95f9988924550790e0da6dfea5b9e167eaf939f6fc8c075fa7bd302870c7a957",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_7_authorized": true,
+        "next_task": "T4.7",
+        "t4_7_started": false
+      },
+      "build_receipt": {
+        "path": "run_log/t4.6/known-family-rf-v1.joblib",
+        "sha256": "d279e9992cafe6a9c8d9c4d3a81e18ddb96c889c11b30907767e03926e938177",
+        "status": "passed",
+        "artifact_id": "nids.known_family_rf.v1",
+        "size_bytes": 149414107
+      },
+      "latest_attempt": {
+        "path": "run_log/t4.6/validation-predictions-v1.npz",
+        "sha256": "f34f23d46fb184cfea76913f7716d134bdc04eb583075ddb1d404c93bccab396",
+        "status": "passed",
+        "checkpoint_count": 4,
+        "validation_rows": 117494,
+        "class_count": 13
+      },
+      "direct_prerequisites": ["T4.5"]
+    },
+    "T4.7": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.7-rf300/acceptance.json",
+        "sha256": "481a8d0793febeb8e0330a245ad73def04b86675f876008d5b5c93b0ec85dc4e",
+        "status": "passed"
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.7-rf300/user-acceptance.json",
+        "sha256": "3cac230727a20e4398c71c55424e651ac8bc7f4ed7c0147e9505022631487837",
+        "status": "passed",
+        "decision": "accepted",
+        "t4_8_authorized": true,
+        "next_task": "T4.8",
+        "t4_8_started": false
+      },
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t4.7-rf300/report.vi.html",
+        "sha256": "c22040d2a5657c55cb2ae9973e2ca9c4753dfa77c2b824e24c926b01a6be3269",
+        "status": "passed",
+        "tree_count": 300,
+        "family_count": 13,
+        "macro_family_count": 9,
+        "case_study_family_count": 4,
+        "prediction_rows": 10652920
+      },
+      "direct_prerequisites": ["T4.6"]
+    },
+    "T4.8": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t4.8/acceptance.json",
+        "sha256": "9bd14e7195c7affc8d7477939826a9fa5299f46a522cf71eecb02bdad6a3c086",
+        "status": "passed",
+        "gate_decision": "pending_user_decision",
+        "recommended_binary_classifier": "flow_rf",
+        "stacker_improvement_claim_supported": false,
+        "t5_1_authorized": false
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t4.8/user-acceptance.json",
+        "sha256": "3ebdfb5c26985826707fe783e8f633c4a4a3da4611b53b807e7ae71c91f2bf8f",
+        "status": "passed",
+        "decision": "accepted",
+        "selected_binary_classifier": "flow_rf",
+        "t5_1_authorized": true,
+        "next_task": "T5.1",
+        "t5_1_started": false
+      },
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t4.8/report.vi.html",
+        "sha256": "2ca25ae23da38b63d63c483a5c2fbb2d78ac6e0a4499b2942fc89b40fca368d3",
+        "status": "passed",
+        "primary_delta": -0.023988099644081926,
+        "primary_ci95": [
+          -0.05936934369624705,
+          0.0009490188272534771
+        ],
+        "known_safeguards_passed": true,
+        "recommended_binary_classifier": "flow_rf"
+      },
+      "direct_prerequisites": ["T4.7"]
+    },
+    "T5.1": {
+      "status": "passed",
+      "final_acceptance_receipt": {
+        "path": "run_log/t5.1/acceptance.json",
+        "sha256": "fbd0ee96ac3a84a5f9caf8d30d80cf260cd25f3a5841b11fa2f5173c12320ace",
+        "status": "passed",
+        "gate_decision": "pending_user_decision",
+        "t5_2_authorized": false
+      },
+      "manual_acceptance_record": {
+        "path": "run_log/t5.1/user-acceptance.json",
+        "sha256": "8f2e8f5cd63f541b2265bda02f4d61e6d2ff3040ee11d8a064c1d44ff61c05a5",
+        "status": "passed",
+        "decision": "accepted",
+        "t5_2_design_survey_authorized": true,
+        "t5_2_implementation_authorized": false,
+        "next_task": "T5.2"
+      },
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t5.1/acceptance.json",
+        "sha256": "fbd0ee96ac3a84a5f9caf8d30d80cf260cd25f3a5841b11fa2f5173c12320ace",
+        "status": "passed",
+        "checkpoint_count": 4,
+        "bundle_count": 4,
+        "python_cpp_numeric_parity_deferred_to": "T5.3"
+      },
+      "direct_prerequisites": ["T4.8"]
+    },
+    "T5.2": {
+      "status": "in_progress",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T5.1"]
+    },
+    "T5.3": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T5.2"]
+    },
+    "T5.4": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T5.3"]
+    },
+    "T6.1": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T5.4"]
+    },
+    "T6.2": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T6.1"]
+    },
+    "T6.3": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T6.2"]
+    },
+    "T6.4": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T6.3"]
+    },
+    "T6.5": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T6.4"]
+    },
+    "T7.1": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T6.5"]
+    },
+    "T7.2": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T7.1"]
+    },
+    "T7.3": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T7.2"]
+    },
+    "T7.4": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T7.3"]
+    },
+    "T7.5": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T7.4"]
+    },
+    "T7.6": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T7.5"]
+    },
+    "T8.1": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T7.6"]
+    },
+    "T8.2": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T8.1"]
+    },
+    "T8.3": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T8.2"]
+    },
+    "T8.4": {
+      "status": "planned",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": null,
+      "direct_prerequisites": ["T8.3"]
+    },
+    "T8.5": {
+      "status": "passed_demo_critical_path",
+      "final_acceptance_receipt": null,
+      "manual_acceptance_record": null,
+      "build_receipt": null,
+      "latest_attempt": {
+        "path": "run_log/t8.5/demo-acceptance.json",
+        "sha256": "81222e3b772decc2e5c268aeb943a8a15c123b96b0f33a79301b0131132dacac",
+        "status": "passed",
+        "acceptance_scope": "demo_critical_path",
+        "formal_phase_8_acceptance": false,
+        "decision": "known_attack",
+        "known_family_candidate": "DDoS"
+      },
+      "direct_prerequisites": ["T8.4"],
+      "formal_prerequisite_chain_deferred_by_user": true
+    }
+  }
+}

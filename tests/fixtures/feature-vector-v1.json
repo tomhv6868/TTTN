@@ -1,0 +1,133 @@
+{
+  "fixture_id": "nids.feature_vectors.v1",
+  "fixture_version": "1.0.0",
+  "task": "T1.5",
+  "schema_references": {
+    "flow_feature_id": "nids.flow_features.v1",
+    "flow_feature_sha256": "69241cb5069ce68f941836332cfc556d15fba00253288eb6f985155bac1bc6eb",
+    "packet_sequence_id": "nids.packet_sequence.v1",
+    "packet_sequence_sha256": "50235d3c398ff5925ff953f17dee4e433f1db15e58a8fc79f76438b602daa6d6"
+  },
+  "review_decision": {
+    "mandatory_feature_count": 54,
+    "mandatory_feature_names": [
+      "flow_age_us", "packet_count", "forward_packet_count", "reverse_packet_count", "wire_byte_count", "forward_wire_byte_count",
+      "reverse_wire_byte_count", "packet_length_min", "packet_length_max", "packet_length_mean", "packet_length_std", "forward_packet_length_mean",
+      "forward_packet_length_std", "reverse_packet_length_mean", "reverse_packet_length_std", "flow_iat_min_us", "flow_iat_max_us", "flow_iat_mean_us",
+      "flow_iat_std_us", "forward_iat_mean_us", "forward_iat_std_us", "reverse_iat_mean_us", "reverse_iat_std_us", "packet_rate_per_second",
+      "wire_byte_rate_per_second", "forward_reverse_packet_ratio", "forward_reverse_wire_byte_ratio", "direction_change_count", "tcp_syn_count", "tcp_ack_count",
+      "tcp_fin_count", "tcp_rst_count", "tcp_psh_count", "tcp_syn_ack_ratio", "tcp_initial_forward_window", "tcp_initial_reverse_window",
+      "tcp_window_mean", "tcp_window_std", "ttl_min", "ttl_max", "ttl_mean", "ttl_std",
+      "payload_packet_count", "forward_payload_packet_count", "reverse_payload_packet_count", "payload_byte_count", "forward_payload_byte_count", "reverse_payload_byte_count",
+      "payload_length_min", "payload_length_max", "payload_length_mean", "payload_length_std", "header_length_mean", "header_length_std"
+    ],
+    "retransmission_and_out_of_order": "deferred",
+    "port_category": "ablation_only"
+  },
+  "comparison_policy": {
+    "integer_logical_types": "exact",
+    "float64_absolute_tolerance": 1e-12,
+    "float64_relative_tolerance": 1e-12
+  },
+  "feature_names": [
+    "flow_age_us", "packet_count", "forward_packet_count", "reverse_packet_count", "wire_byte_count", "forward_wire_byte_count",
+    "reverse_wire_byte_count", "packet_length_min", "packet_length_max", "packet_length_mean", "packet_length_std", "forward_packet_length_mean",
+    "forward_packet_length_std", "reverse_packet_length_mean", "reverse_packet_length_std", "flow_iat_min_us", "flow_iat_max_us", "flow_iat_mean_us",
+    "flow_iat_std_us", "forward_iat_mean_us", "forward_iat_std_us", "reverse_iat_mean_us", "reverse_iat_std_us", "packet_rate_per_second",
+    "wire_byte_rate_per_second", "forward_reverse_packet_ratio", "forward_reverse_wire_byte_ratio", "direction_change_count", "tcp_syn_count", "tcp_ack_count",
+    "tcp_fin_count", "tcp_rst_count", "tcp_psh_count", "tcp_syn_ack_ratio", "tcp_initial_forward_window", "tcp_initial_reverse_window",
+    "tcp_window_mean", "tcp_window_std", "ttl_min", "ttl_max", "ttl_mean", "ttl_std",
+    "payload_packet_count", "forward_payload_packet_count", "reverse_payload_packet_count", "payload_byte_count", "forward_payload_byte_count", "reverse_payload_byte_count",
+    "payload_length_min", "payload_length_max", "payload_length_mean", "payload_length_std", "header_length_mean", "header_length_std"
+  ],
+  "traces": [
+    {
+      "trace_id": "tcp_bidirectional_9",
+      "transport": "TCP",
+      "packets": [
+        {"timestamp_ns": 1000000000, "direction": "forward", "wire_length": 60, "payload_length": 0, "header_length": 54, "ttl": 64, "tcp_window": 1000, "tcp_flags": ["SYN"]},
+        {"timestamp_ns": 1001000000, "direction": "reverse", "wire_length": 74, "payload_length": 0, "header_length": 54, "ttl": 63, "tcp_window": 2000, "tcp_flags": ["SYN", "ACK"]},
+        {"timestamp_ns": 1000500000, "direction": "forward", "wire_length": 100, "payload_length": 40, "header_length": 60, "ttl": 62, "tcp_window": 1500, "tcp_flags": ["ACK"]},
+        {"timestamp_ns": 1002000000, "direction": "forward", "wire_length": 120, "payload_length": 60, "header_length": 60, "ttl": 61, "tcp_window": 2500, "tcp_flags": ["ACK", "PSH"]},
+        {"timestamp_ns": 1003500000, "direction": "reverse", "wire_length": 80, "payload_length": 20, "header_length": 54, "ttl": 60, "tcp_window": 3000, "tcp_flags": ["ACK"]},
+        {"timestamp_ns": 1001500000, "direction": "forward", "wire_length": 140, "payload_length": 80, "header_length": 60, "ttl": 59, "tcp_window": 3500, "tcp_flags": ["ACK", "PSH"]},
+        {"timestamp_ns": 1005000000, "direction": "reverse", "wire_length": 90, "payload_length": 30, "header_length": 60, "ttl": 58, "tcp_window": 4000, "tcp_flags": ["ACK"]},
+        {"timestamp_ns": 1004500000, "direction": "reverse", "wire_length": 110, "payload_length": 50, "header_length": 60, "ttl": 57, "tcp_window": 4500, "tcp_flags": ["ACK"]},
+        {"timestamp_ns": 1008000000, "direction": "forward", "wire_length": 130, "payload_length": 70, "header_length": 60, "ttl": 56, "tcp_window": 5000, "tcp_flags": ["FIN", "ACK"]}
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": "F3",
+          "packet_count": 3,
+          "expected_vector": [
+            1000.0, 3, 2, 1, 234, 160, 74, 60, 100, 78.0, 16.57307052620807, 80.0,
+            20.0, 74.0, 0.0, -500.0, 1000.0, 250.0, 750.0, 500.0, 0.0, 0.0,
+            0.0, 3000.0, 234000.0, 2.0, 2.1621621621621623, 2, 2, 2, 0, 0,
+            0, 1.0, 1000, 2000, 1500.0, 408.24829046386304, 62, 64, 63.0, 0.816496580927726,
+            1, 1, 0, 40, 40, 0, 0, 40, 13.333333333333334, 18.856180831641268,
+            56.0, 2.8284271247461903
+          ]
+        },
+        {
+          "checkpoint": "F5",
+          "packet_count": 5,
+          "expected_vector": [
+            3500.0, 5, 3, 2, 434, 280, 154, 60, 120, 86.8, 20.9990475974507, 93.33333333333333,
+            24.94438257849294, 77.0, 3.0, -500.0, 1500.0, 875.0, 819.6798155377502, 1000.0, 500.0, 2500.0,
+            0.0, 1428.5714285714287, 124000.0, 1.5, 1.8181818181818181, 3, 2, 4, 0, 0,
+            1, 0.5, 1000, 2000, 2000.0, 707.1067811865476, 60, 64, 62.0, 1.4142135623730951,
+            3, 2, 1, 120, 100, 20, 0, 60, 24.0, 23.323807579381203,
+            56.4, 2.939387691339814
+          ]
+        },
+        {
+          "checkpoint": "F7",
+          "packet_count": 7,
+          "expected_vector": [
+            5000.0, 7, 4, 3, 664, 420, 244, 60, 140, 94.85714285714286, 25.609309531767497, 105.0,
+            29.58039891549808, 81.33333333333333, 6.599663291074443, -2000.0, 3500.0, 833.3333333333334, 1724.0134054647667, 500.0, 816.496580927726, 2000.0,
+            500.0, 1400.0, 132800.0, 1.3333333333333333, 1.721311475409836, 5, 2, 6, 0, 0,
+            2, 0.3333333333333333, 1000, 2000, 2500.0, 1000.0, 58, 64, 61.0, 2.0,
+            5, 3, 2, 230, 180, 50, 0, 80, 32.857142857142854, 27.62725657973388,
+            57.42857142857143, 2.969229955832361
+          ]
+        },
+        {
+          "checkpoint": "F9",
+          "packet_count": 9,
+          "expected_vector": [
+            8000.0, 9, 5, 4, 904, 550, 354, 60, 140, 100.44444444444444, 25.329434397822236, 110.0,
+            28.284271247461902, 88.5, 13.665650368716449, -2000.0, 3500.0, 1000.0, 1820.0274723201296, 2000.0, 2692.582403567252, 1166.6666666666667,
+            1247.219128924647, 1125.0, 113000.0, 1.25, 1.5536723163841808, 6, 2, 8, 1, 0,
+            2, 0.25, 1000, 2000, 3000.0, 1290.9944487358057, 56, 64, 60.0, 2.581988897471611,
+            7, 4, 3, 350, 250, 100, 0, 80, 38.888888888888886, 27.261875880856216,
+            58.0, 2.8284271247461903
+          ]
+        }
+      ]
+    },
+    {
+      "trace_id": "udp_bidirectional_3",
+      "transport": "UDP",
+      "packets": [
+        {"timestamp_ns": 2000000000, "direction": "forward", "wire_length": 70, "payload_length": 28, "header_length": 42, "ttl": 128},
+        {"timestamp_ns": 2000000000, "direction": "forward", "wire_length": 90, "payload_length": 48, "header_length": 42, "ttl": 128},
+        {"timestamp_ns": 1999500000, "direction": "reverse", "wire_length": 80, "payload_length": 38, "header_length": 42, "ttl": 64}
+      ],
+      "checkpoints": [
+        {
+          "checkpoint": "F3",
+          "packet_count": 3,
+          "expected_vector": [
+            0.0, 3, 2, 1, 240, 160, 80, 70, 90, 80.0, 8.16496580927726, 80.0,
+            10.0, 80.0, 0.0, -500.0, 0.0, -250.0, 250.0, 0.0, 0.0, 0.0,
+            0.0, 0.0, 0.0, 2.0, 2.0, 1, 0, 0, 0, 0,
+            0, 0.0, 0, 0, 0.0, 0.0, 64, 128, 106.66666666666667, 30.169889330626027,
+            3, 2, 1, 114, 76, 38, 28, 48, 38.0, 8.16496580927726,
+            42.0, 0.0
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+flatbuffers==25.12.19
+joblib==1.5.2
+lightgbm==4.6.0
+ml_dtypes==0.5.3
+numpy==2.2.5
+onnx==1.20.1
+onnxmltools==1.16.0
+onnxruntime==1.27.0
+packaging==24.2
+protobuf==6.32.1
+pyarrow==23.0.1
+scikit-learn==1.7.2
+scipy==1.15.2
+skl2onnx==1.20.0
+threadpoolctl==3.6.0
+typing_extensions==4.14.1

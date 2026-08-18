@@ -1,0 +1,856 @@
+{
+  "schema_version": "1.1.0",
+  "task": "T9.1",
+  "phase": "model_v2_live_split_counts_locked_pending_capture_authorization",
+  "status": "in_progress",
+  "current_tag": "t91-f9-terminal-evidence-r1",
+  "handoff_updated_at": "2026-08-09T19:53:31.827099+07:00",
+  "mode": "demo_critical_path",
+  "priority": "urgent",
+  "objective": "Build a terminal-flow dataset, train and export a full-flow classifier, and connect native terminal inference for FTP-Patator and PortScan without changing the accepted F3/F5/F7/F9 pipeline.",
+  "execution_hosts": {
+    "dataset_export": "Ubuntu VMware 24.04 x86_64 with the locked CMake and libpcap toolchain",
+    "training_and_onnx_export": "Windows task-scoped virtual environment",
+    "live_sensor": "Ubuntu VMware 24.04 x86_64"
+  },
+  "runtime_target": "onnxruntime_cpp_1.27.1_cpu",
+  "wsl_is_execution_target": false,
+  "dependency_mutation_allowed": true,
+  "dependency_mutation_scope": "D:\\TTTN\\.venv-full-flow-v1 only",
+  "model_training_allowed": false,
+  "threshold_selection_allowed": false,
+  "threshold_selection_scope": "training and validation partitions only",
+  "test_partition_policy": "sealed until feature profile, algorithm, hyperparameters, and threshold are locked",
+  "new_task_contract_required": false,
+  "hooks_in_scope": false,
+  "authorized_by": {
+    "source": "conversation",
+    "implementation_authorized": true,
+    "model_v2_trainer_implementation_authorized": true,
+    "live_split_lock_implementation_authorized": true,
+    "live_split_claim_writer_implementation_authorized": true,
+    "max_speed_authorized": true,
+    "user_messages": [
+      "Implement the plan.",
+      "không cần phải nghiệm thu lằng nhằng, triển khai max speed cho tôi, tôi gấp lắm rồi",
+      "Phase kế tiếp nên chỉ cập nhật context/evidence index và bắt đầu ModelV2 trainer + live split lock.",
+      "duyệt"
+    ]
+  },
+  "artifacts": {
+    "root": "run_log/full-flow-v1",
+    "feature_schema": "config/terminal-flow-feature-schema-v1.json",
+    "requirements": "config/full-flow-reproducibility-requirements.txt",
+    "dataset_directory": "run_log/full-flow-v1/dataset",
+    "model_directory": "run_log/full-flow-v1/model",
+    "evaluation_directory": "run_log/full-flow-v1/evaluation",
+    "model_v2_root": "run_log/full-flow-v1/model-v2",
+    "model_v2_audit_contract": {
+      "path": "config/terminal-flow-model-v2-audit-contract.json",
+      "sha256": "0431f9e44923eb0805a2a1c82c772b4f6b690bbeb91878695ba88d0cb4a36c7b",
+      "schema_version": "1.1.0",
+      "audit_revision": "r2_physical_feature_suffix",
+      "status": "locked"
+    },
+    "model_v2_audit_receipt": {
+      "path": "run_log/full-flow-v1/model-v2/audit/model-v2-audit-r2.json",
+      "sha256": "188607e2ee12c2658c9e3b07311673507d0357143a8b8deb015e723e876fd038",
+      "schema_version": "1.1.0",
+      "audit_revision": "r2_physical_feature_suffix",
+      "status": "passed",
+      "gate_decision": "blocked_pending_next_phase"
+    },
+    "model_v2_live_split_policy": {
+      "path": "config/terminal-flow-model-v2-live-split-policy.json",
+      "sha256": "a9d3e2eb24427e2bbd9293edc87e2a234c21bca53b3dcae96a2f8dcd262daf25",
+      "schema_version": "1.0.0",
+      "status": "policy_locked_counts_pending",
+      "attempt_counts_status": "pending_user_lock"
+    },
+    "model_v2_live_split_lock": {
+      "path": "config/terminal-flow-model-v2-live-split-lock.json",
+      "sha256": "16da2b7a5e9a0b7e1e0306e9080f2d48413bb45205f71b292c6950d36505503f",
+      "schema_version": "1.0.0",
+      "status": "counts_locked_capture_not_authorized",
+      "locked_at_utc": "2026-07-29T21:04:06.1197933+07:00",
+      "required_per_campaign": {
+        "train": 3,
+        "validation": 2,
+        "holdout": 2
+      },
+      "reserve_per_campaign": {
+        "train": 1,
+        "validation": 1,
+        "holdout": 1
+      },
+      "slot_count": 40,
+      "required_slot_count": 28,
+      "reserve_slot_count": 12,
+      "gate_decision": "blocked_pending_capture_authorization"
+    },
+    "model_v2_trainer_boundary": {
+      "source": "python/nids_mvp/full_flow_v2_model.py",
+      "command": "check",
+      "status": "preflight_verified_counts_locked_execution_blocked",
+      "production_fit_authorized": false,
+      "threshold_selection_authorized": false,
+      "holdout_access_authorized": false,
+      "test_partition_may_be_opened": false
+    },
+    "model_v2_live_claim_writer": {
+      "core_source": "python/nids_mvp/full_flow_v2_split.py",
+      "core_sha256": "a338f1aaaf0e67aff1820a9019893ba90c1730e8d31ab7208564b751d811b2df",
+      "cli_source": "scripts/claim_t91_model_v2_live_slot.py",
+      "cli_sha256": "a3ae620c5f29a30f42b4501945974abc1e202e8ddcea648417de9d1c4430b515",
+      "receipt_root": "run_log/full-flow-v1/model-v2/live-split/claims",
+      "allowed_partitions": [
+        "train",
+        "validation"
+      ],
+      "allowed_role": "required",
+      "split_lock_sha256": "16da2b7a5e9a0b7e1e0306e9080f2d48413bb45205f71b292c6950d36505503f",
+      "write_semantics": "create_new_atomic_hard_link",
+      "writer_mutex": ".writer.lock",
+      "status": "windows_unit_verified_capture_not_authorized_hgfs_pending"
+    },
+    "superseded_invalid_model_v2_audit": {
+      "path": "run_log/full-flow-v2/audit/model-v2-audit.json",
+      "sha256": "925684b21a9fd83c5d9b200d22035f749327eb83f83a59d49972dadf3dfa0736",
+      "status": "invalid_reference_column_alignment",
+      "reuse_allowed": false
+    },
+    "legacy_checkpoint_schema": "config/flow-feature-schema-v1.json",
+    "legacy_pipeline_immutable": true
+  },
+  "implementation_decisions": [
+    "Emit exactly one terminal row for each closed or EOF-flushed TCP/UDP flow generation.",
+    "Keep legacy feature indices 0 through 53 unchanged and append terminal features at indices 54 through 69.",
+    "Keep identifiers, capture and dataset origin, raw IPs, absolute timestamps, labels, schedules, exact close reason, and partition out of model input.",
+    "Use causal first-packet context, first-observed ports, and a coarse exhaustive lifecycle one-hot.",
+    "Export the five PCAP inputs offline before adding live DPDK terminal inference.",
+    "Split by capture-aware groups; fit preprocessing and models on training only; choose thresholds on validation only.",
+    "Run native live inference through ONNX Runtime C++ with no Python sidecar.",
+    "Prioritize a working FTP-Patator and PortScan vertical slice before extended benchmark or report work.",
+    "Model V2 uses a binary Benign/Attack head and a 13-class attack-family head sourced from assigned_class.",
+    "Reference feature audit binds the exact physical 70-column Parquet suffix; duplicate names are never selected by name.",
+    "Production Model V2 fit and threshold selection remain blocked until a preregistered whole-attempt live split is locked.",
+    "The live-split policy is immutable; user-selected required and reserve attempt counts produce a separate deterministic split-lock artifact.",
+    "A slot is claimed with create-new semantics before capture; failed or aborted attempts consume their slot and may use only a preregistered reserve.",
+    "The Model V2 trainer currently exposes preflight check and label/profile projection only; it has no fit or threshold-selection command.",
+    "The user locked required attempts per campaign to train=3, validation=2, holdout=2, with one reserve slot in each partition.",
+    "The claim writer derives campaign, partition, and receipt path from an exact required slot; callers provide only the five locked identity scalars.",
+    "The claim ledger rejects holdout, reserve, unknown entries, identity reuse, cross-partition sessions, and overwrite attempts before traffic.",
+    "Each campaign is bound to an exact attempt-id prefix; the orchestrator must derive and hash the fixed run contract before invoking the path-free public claim API.",
+    "Atomic hard-link publication is unit-verified on Windows but remains blocked from live integration until the exact VMware HGFS path passes a bounded capability probe.",
+    "The exact split lock still blocks train and validation capture, so the production claim root remains absent."
+  ],
+  "critical_path": [
+    "terminal feature engine and one-row-per-generation exporter",
+    "five-PCAP labeled dataset and manifest",
+    "LightGBM baseline with profile ablation and ONNX export",
+    "native bundle guards and terminal inference",
+    "bounded FTP-Patator and PortScan smoke"
+  ],
+  "deferred_for_demo": [
+    "formal task contract",
+    "run_log/receipt-index.json updates",
+    "intermediate manual acceptance gates",
+    "extended performance benchmarking",
+    "reference-layer numeric parity claims",
+    "remaining attack-family live adapters after FTP-Patator and PortScan"
+  ],
+  "commands": {
+    "policy": "terminal_full_flow_exact_allowlist",
+    "allowed": [
+      "py -3.13 -m venv .venv-full-flow-v1",
+      ".\\.venv-full-flow-v1\\Scripts\\python.exe -m pip install -r config/full-flow-reproducibility-requirements.txt",
+      ".\\.venv-full-flow-v1\\Scripts\\python.exe -m pytest -q",
+      "py -3.13 scripts/claim_t91_model_v2_live_slot.py validate",
+      "cmake --preset windows-release",
+      "cmake --build --preset windows-release",
+      "ctest --preset windows-release --output-on-failure",
+      "cmake --preset ubuntu-release -DNIDS_BUILD_MODEL_RUNTIME=ON -DNIDS_BUILD_DPDK=ON",
+      "cmake --build --preset ubuntu-release -j 2"
+    ],
+    "privileged_allowlist": [],
+    "test_policy": "targeted tests for each critical-path component; broad suites only after the vertical slice works"
+  },
+  "latest_verification": {
+    "status": "passed_claim_writer_implemented_capture_blocked",
+    "verified_at": "2026-07-29T21:51:19.3992768+07:00",
+    "production_preflight": {
+      "runner": "py -3.13 -m nids_mvp.full_flow_v2_model check (workdir=python)",
+      "status": "passed_blocked_capture_authorization",
+      "audit_contract_sha256": "0431f9e44923eb0805a2a1c82c772b4f6b690bbeb91878695ba88d0cb4a36c7b",
+      "audit_receipt_sha256": "188607e2ee12c2658c9e3b07311673507d0357143a8b8deb015e723e876fd038",
+      "audit_revision": "r2_physical_feature_suffix",
+      "feature_count": 70,
+      "profile_ids": [
+        "V2A",
+        "V2B",
+        "V2C"
+      ],
+      "train_parts": 5,
+      "train_rows": 1602243,
+      "validation_parts": 5,
+      "validation_rows": 262232,
+      "live_split_attempt_counts_status": "locked",
+      "live_split_lock_sha256": "16da2b7a5e9a0b7e1e0306e9080f2d48413bb45205f71b292c6950d36505503f",
+      "live_split_slot_count": 40,
+      "live_split_required_slot_count": 28,
+      "live_split_reserve_slot_count": 12
+    },
+    "targeted_tests": {
+      "path": "tests/test_t91_full_flow_v2_model.py",
+      "sha256": "b8672c3593c623710f2e00b3ce4a581637bbc6899dbb1767d34e3929963f335c",
+      "runner": "py -3.13 tests/test_t91_full_flow_v2_model.py",
+      "tests_run": 22,
+      "result": "passed"
+    },
+    "python_compile": "passed",
+    "claim_writer": {
+      "fixed_cli_path_flags_rejected": true,
+      "public_core_path_arguments_rejected": true,
+      "campaign_attempt_prefix_binding_verified": true,
+      "train_validation_create_new_verified": true,
+      "duplicate_and_concurrent_reuse_rejected": true,
+      "unexpected_entry_rejected_before_open": true,
+      "malformed_duplicate_key_and_filename_mismatch_rejected": true,
+      "symlink_and_junction_recheck_after_mkdir": true,
+      "stale_writer_lock_fail_closed": true,
+      "hgfs_hard_link_capability_verified": false,
+      "production_check_blocked_by_capture_gate": true,
+      "production_claim_validation_count": 0,
+      "production_claim_root_exists": false,
+      "production_claim_publish_count": 0
+    },
+    "holdout_resolve_stat_hash_open_count": 0,
+    "test_partition_resolve_stat_hash_open_count": 0,
+    "production_fit_count": 0,
+    "threshold_selection_count": 0
+  },
+  "handoff": {
+    "phase_files": [
+      "python/nids_mvp/full_flow_v2_split.py",
+      "scripts/claim_t91_model_v2_live_slot.py",
+      "tests/test_t91_full_flow_v2_model.py",
+      "config/agent/current-task.json"
+    ],
+    "resume_from": "authorize_and_integrate_train_validation_claim_guard_before_live_sender",
+    "after_current_phase": "authorize_and_integrate_train_validation_claim_guard_before_live_sender",
+    "do_not_run": [
+      "production_model_fit",
+      "threshold_selection",
+      "holdout_capture_or_access",
+      "sealed_test_partition_access"
+    ]
+  },
+  "gate": {
+    "decision": "blocked_pending_capture_authorization",
+    "vertical_slice_authorized": true,
+    "implementation_authorized": true,
+    "training_implementation_authorized": true,
+    "live_split_lock_implementation_authorized": true,
+    "live_split_claim_writer_implementation_authorized": true,
+    "training_authorized": false,
+    "threshold_selection_authorized": false,
+    "train_validation_capture_authorized": false,
+    "holdout_capture_authorized": false,
+    "holdout_access_authorized": false,
+    "test_partition_may_be_opened": false,
+    "dependency_install_authorized": true,
+    "intermediate_manual_acceptance_required": false,
+    "next_phase": "implement_train_validation_capture_claims",
+    "blockers": [
+      "train_validation_capture_authorization_and_orchestrator_claim_guard_are_pending",
+      "fixed_run_contract_hash_binding_and_hgfs_hard_link_capability_probe_are_pending",
+      "reserve_slot_failure_completion_validation_is_not_implemented",
+      "production_training_and_threshold_selection_are_not_authorized",
+      "v2_model_fit_bundle_and_native_runtime_are_not_implemented",
+      "historical_attempt_has_no_persisted_windows_post_status"
+    ]
+  },
+  "side_work_t85_f9_replay_evidence": {
+    "note": "Runs alongside T9.1; touches no Model V2 artifact, no training, no threshold. Recorded here because it is the live evidence the dashboard now serves.",
+    "session_date": "2026-08-08",
+    "run_id": "20260808-194942",
+    "objective": "Replay every model-available CICIDS family through the live DPDK sensor, stream the alerts to the dashboard, and produce an online-vs-offline comparison on a matched sample.",
+    "path_split": {
+      "raw_receipts": "run_log/t8.5/scenarios/20260808-194942/ (kali/, ubuntu/, pcap/, scenario.json)",
+      "raw_receipts_reason": "scripts/kali_t85_scenario_replay.py:33 and scripts/run_t85_scenario_sensor_ubuntu.sh:32 hardcode run_log/t8.5/scenarios/<run_id>",
+      "dashboard_stream": "run_log/full-flow-v1/live-detection-f9.jsonl",
+      "per_run_archive": "run_log/full-flow-v1/replay-runs/20260808-194942/f9.jsonl"
+    },
+    "methodology_decisions": [
+      "Ground truth comes from the scenario pcap manifest (case_id, label, oracle flow_id), not from a 5-tuple lookup into label_row: that lookup collides on 48% of flows.",
+      "Online and offline results cannot be joined by 5-tuple: the reconstruction renumbers source ports (0 of 5343 sensor ports appear in the oracle) although IPs are preserved.",
+      "Ground-truth labels are read from the manifest rather than a hardcoded table; the oracle writes en-dash labels (\"Web Attack – XSS\") and a hyphen copy silently scored the three web families as wrong (offline read 9/12 instead of 12/12).",
+      "Online and offline accuracy must be reported over the same family set; a 5-of-14 online figure against a 12-of-12 offline figure is not a comparison."
+    ],
+    "new_scripts": [
+      "scripts/run_t85_pending_replays.py",
+      "scripts/watch_scenario_alerts.py",
+      "scripts/run_t85_full_replay_stream.py",
+      "scripts/run_t85_offline_f9.py",
+      "scripts/summarize_sensor_log.py",
+      "scripts/build_f9_online_offline_table.py",
+      "scripts/compare_replay_pacing.py"
+    ],
+    "docs_written": [
+      "docs/t85-online-offline-evidence-spec.vi.md",
+      "docs/rebuild-changelog.md (entries 20:0x-22:5x and 23:2x-23:5x)"
+    ],
+    "capture_loss_root_cause": {
+      "symptom": "pass r2 recorded packets_seen=4 on 11 of 14 families; the same number on families with nothing in common",
+      "cause": "kali_t85_golden_sender.py set_link() bounced the NIC (down -> mtu -> up) unconditionally immediately before the nine-frame send, and vmnet swallowed roughly the first five frames while the link converged",
+      "why_it_hid_in_pass_1": "six families replayed a full multi-hundred-thousand-packet PCAP, where losing the opening frames does not matter; it only surfaced once every case was normalised to nine frames",
+      "fix": [
+        "set_link() returns early when the MTU and link state already match, and sleeps 2 seconds after any link-up it does perform",
+        "run_t85_pending_replays.py parks the Kali data NIC at the replay MTU once via prepare_link(), so the per-replay call is a no-op",
+        "an attempt with packets_seen < 9 is retried in a brand new sensor session, up to 3 tries"
+      ],
+      "rejected_fix_and_why": "Sending the nine frames again into the live sensor was proposed and is wrong. F9 fires once per flow at packet 9, and the replay rewrites only the MAC header, so a second send repeats the same 5-tuple: the engine appends to the flow that already passed its checkpoint, no second alert is produced, and the duplicated packets corrupt packet-count and inter-arrival-time - the very features under investigation for the GoldenEye divergence."
+    },
+    "resume_here_next_session": {
+      "must_check_first": "apache2 on the Ubuntu sensor was stopped to free hugepages and the VM powered off before it could be restarted. Run: sudo systemctl start apache2 && systemctl is-enabled apache2. If a sensor run reports 'EAL: Not enough memory! Requested: 256MB, available: 250MB', apache2 holding hugepages via /anon_hugepage is the cause - config/dpdk-passive.json declares exactly 128 pages = 256MB with no headroom.",
+      "offline_side": "done - run_log/full-flow-v1/replay-runs/20260808-194942/offline-f9-results.json, 14/14 alerts and 12/13 correct among model-available families, raw_stdout kept per case",
+      "online_side_family_window": "done this afternoon - run_log/full-flow-v1/replay-runs/20260808-155731/f9-per-replay-family-DEMO.md, six families, carries the GoldenEye 6.7% online vs 100% offline finding",
+      "online_side_nine_frame": "incomplete - only 6 of 10 families captured. The DPDK sensor's port_ipackets is 0 or 4 on most attempts and 13-36 on a few, with no pattern by family, destination MAC, or MTU. tcpdump on the kernel interface sees all nine frames, so the path is fine; the unreliability is in the DPDK bind over vmnet. This table is a supplementary presentation, not a new result.",
+      "refuted_hypotheses": [
+        "link flap swallowing the first frames - loss is all-or-nothing, not partial",
+        "two concurrent r3 processes - the matching CreationDate was a parent/child pair",
+        "the nine replayed frames failing to parse - parser_errors were the IPv6/mDNS/ARP noise; a retry showed seen=4 parsed=4 errors=0",
+        "four families permanently blocked by jumbo frames - the afternoon family-window replay measured all four",
+        "vmnet not forwarding unicast to a DPDK-bound port - a broadcast-addressed replay also gave port_ipackets=0"
+      ],
+      "merged_table_done": "run_log/full-flow-v1/replay-runs/20260808-194942/f9-online-offline-comparison.md is the single document that holds all three measurements plus the six-family head-to-head. Rebuild it with: python scripts/build_f9_online_offline_table.py",
+      "open_items": [
+        "apache2 on the Ubuntu sensor still not restarted (kept off deliberately while the sensor runs)",
+        "watch_scenario_alerts.py duplicate rows - cause not confirmed, not fixed"
+      ],
+      "goldeneye_question_closed": "Resolved 2026-08-09: the divergence is lab throughput, measured at x0.28 pacing for GoldenEye. See goldeneye_divergence_resolved. No further investigation needed unless the lab link is upgraded.",
+      "nine_frame_side": "done - 10/14, every sendable family. See nine_frame_table_completed."
+    },
+    "operational_notes": [
+      "Some tooling writes JSON with a UTF-8 BOM; read those files with encoding=utf-8-sig.",
+      "The dashboard backend dies silently when started as a Bash background job on Windows; use PowerShell Start-Process.",
+      "vite.config.js proxies /api to 127.0.0.1:8000, so the backend must listen on 8000."
+    ],
+    "offline_f9_result_is_not_evidence": {
+      "claim_previously_reported": "offline F9 identified 12 of 13 model-available families",
+      "verified_on_disk": false,
+      "why": "run_log/t8.5/scenarios/20260808-194942/offline-flows/offline-f9-results.json holds status=error and raw=\"\" for all 14 cases; the script that produced the 12/13 figure (build_3way_confusion.py) does not exist on disk and had the numbers typed into a hardcoded dict from console output.",
+      "consequence": "The offline side of the comparison must be re-run so the numbers come from a file, not from a transcript.",
+      "also_missing_from_disk": [
+        "scripts/build_3way_confusion.py",
+        "scripts/build_manifest_confusion.py",
+        "scripts/build_flow_confusion.py",
+        "scripts/cut_full_flows.py",
+        "scripts/ubuntu_offline_flows.sh"
+      ],
+      "resolved_on": "2026-08-08",
+      "resolved_by": "scripts/run_t85_offline_f9.py re-ran the offline side and wrote run_log/full-flow-v1/replay-runs/20260808-194942/offline-f9-results.json, which keeps raw_stdout per case. The 14/14-alert and 12-correct figures now come from that file. This block is kept because the broken artifact it describes is still on disk at run_log/t8.5/scenarios/20260808-194942/offline-flows/offline-f9-results.json and must not be mistaken for the good one."
+    },
+    "dashboard_changes": [
+      "dashboard/server/app.py: NIDS_LIVE_DIR env override, /api/confusion endpoint",
+      "dashboard/web/src/views/ModelEvaluation.jsx: Confusion tab",
+      "dashboard/web/src/styles.css: .pill.high"
+    ],
+    "environment_facts": [
+      "Both lab VMs were powered off at session start and were restarted with vmrun.",
+      "Kali eth1 192.168.252.128, Ubuntu ens160 192.168.252.129 (MAC 00:0c:29:30:b9:d3); management ens33 192.168.100.130 stays reachable.",
+      "nids_demo_replay exits 1 while still emitting a valid nids_alert on stdout; parsers must read stdout regardless of exit code.",
+      "Running binaries directly off /mnt/hgfs is too slow; copy to /tmp first.",
+      "The original CICIDS captures are PCAPNG, not classic pcap; the nine-packet cuts are classic pcap."
+    ],
+    "online_alert_counts_run_20260808_194942": {
+      "bot": 3,
+      "ddos": 68,
+      "dos-goldeneye": 4127,
+      "dos-hulk": 6086,
+      "dos-slowhttptest": 0,
+      "dos-slowloris": 1,
+      "ftp-patator": 209,
+      "portscan": 0,
+      "ssh-patator": 160
+    },
+    "in_flight": {
+      "owner": "batch runner (heavy work delegated)",
+      "families_pending": [
+        "infiltration",
+        "web-brute-force",
+        "web-sql-injection",
+        "web-xss",
+        "heartbleed"
+      ],
+      "output": "run_log/t8.5/scenarios/20260808-194942/confusion/pending-replay-results.json"
+    },
+    "open_questions": [
+      "DoS GoldenEye scores 6.7% online but 100% offline; working hypothesis is that tcpreplay does not preserve inter-packet timing, corrupting inter-arrival-time features. Not yet validated.",
+      "dos-slowhttptest produces no offline F9 alert either; its nine packets span roughly 20-second gaps.",
+      "portscan produces zero alerts because its SYN-scan flows never reach the nine-packet F9 checkpoint."
+    ],
+    "next_steps": [
+      "Rebuild the evidence file over a matched 13-family sample once the pending replays land.",
+      "Replay the Terminal V1 model the same way.",
+      "Runtime features still outstanding: sharded workers (T7.1), async alert queue (T6.5), deduplication/incident tracker."
+    ],
+    "merged_comparison_table": {
+      "built_at": "2026-08-09",
+      "request": "gop bang - merge the three measurements into one table",
+      "output": [
+        "run_log/full-flow-v1/replay-runs/20260808-194942/f9-online-offline-comparison.json",
+        "run_log/full-flow-v1/replay-runs/20260808-194942/f9-online-offline-comparison.md"
+      ],
+      "builder": "scripts/build_f9_online_offline_table.py",
+      "reads_raw_not_stream": "The builder reads ubuntu/f9-*/sensor.jsonl directly and ignores live-detection-f9.jsonl, because the derived stream over-counts (see stream_duplicate_bug below).",
+      "three_units_are_not_addable": {
+        "offline": "one case = one scenario PCAP through nids_demo_replay; 14/14 alerts, 12 correct",
+        "online_nine_frame": "one attempt = one flow = 9 packets = one F9 checkpoint; 6/14 families produced a verified alert, 3 correct",
+        "online_family_window": "one alert per flow reaching F9 inside a whole-family PCAP; 10650 alerts, 5426 correct"
+      },
+      "head_to_head_is_the_real_result": {
+        "comparable_families": 6,
+        "agree": 5,
+        "agree_while_both_wrong": 2,
+        "disagree": 1,
+        "reading": "Five of six families reach the same verdict online and offline, including two that are wrong in exactly the same way. Identical wrongness is the evidence that the transport is faithful: a transport that corrupted features would produce two different kinds of error.",
+        "only_divergence": "Web Attack - Sql Injection: offline Sql Injection (0.597) vs online Brute Force (0.603). The two confidences are adjacent, so this is two neighbouring classes swapping order under a small feature shift, not a broken model."
+      },
+      "correction_to_an_earlier_conclusion": "The four families blocked by jumbo frames (ddos, dos-goldeneye, dos-hulk, portscan) are exactly the four measured in the family-window pass. Their empty cells in the nine-frame column are therefore not a data gap; the same families do have online numbers, at a different sample unit."
+    },
+    "alert_attribution_guard": {
+      "problem": "An attempt directory name does not establish which family produced an alert.",
+      "evidence": "f9-ddos-r8t3 holds an alert for an FTP-Patator flow on port 21, and the Kali side has no ddos.f9-ddos-r8t3.json receipt, so no ddos replay ran in that attempt.",
+      "guard": "Every alert is matched against the 5-tuple recorded in pcap/manifest.json for that case. A mismatch is reported as foreign_flow and never scored.",
+      "second_guard": "Six attempt directories inside run 194942 (f9-ddos, f9-ftp-patator, f9-ssh-patator, f9-dos-hulk, f9-dos-goldeneye, f9-portscan) carry mtimes of 15:2x-15:5x although the run opened at 19:49: they are the afternoon family-window captures, copied in with mtime preserved. Attempts written before the run started are excluded, using the timestamp decoded from the run id.",
+      "field_name_trap": "The candidate is at evidence.known_family.top_candidate. Reading 'candidate' or 'name' yields None for every row, which renders as a full table of wrong answers rather than as an error."
+    },
+    "stream_duplicate_bug": {
+      "status": "found, recorded, NOT fixed",
+      "symptom": "live-detection-f9.jsonl holds two rows for bot-r2 and two for heartbleed-r2, while each sensor.jsonl holds exactly one nids_alert.",
+      "ruled_out": "CRLF line endings - the sensor logs contain zero CRLF, so the byte-offset accounting in watch_scenario_alerts.py is not miscounting.",
+      "leading_hypothesis": "Two watcher processes ran concurrently against the same output file. The duplicate timestamps are 1.11 s apart while the poll interval is 2.0 s, which fits two instances out of phase.",
+      "impact": "None on the comparison table, which reads the raw sensor logs. It does inflate any count taken from the stream.",
+      "suggested_fix": "Single-instance lock in watch_scenario_alerts.py, or dedupe on (attempt, 5-tuple, candidate) when reading the stream."
+    },
+    "goldeneye_divergence_resolved": {
+      "question": "DoS GoldenEye scored 6.7% online against 100% offline. Which stage caused it?",
+      "answered_on": "2026-08-09",
+      "method": "scripts/compare_replay_pacing.py compares elapsed time in the source PCAP against elapsed time at the sensor, over the same flows joined by direction-insensitive 5-tuple.",
+      "two_corrections_needed_before_the_number_meant_anything": [
+        "Every family-window sensor run ended with stop_reason=signal, killed at about 180s rather than finishing the PCAP. The source must be truncated to the packet count the sensor actually saw (packets_seen), otherwise the measurement reports the kill, not the pacing.",
+        "The source clock is unix epoch and the sensor clock is monotonic; only elapsed values are comparable, each normalised to its own first event."
+      ],
+      "measurement": {
+        "dos-goldeneye": {
+          "source_pps": 1330,
+          "sensor_pps": 538,
+          "pacing": 0.55,
+          "rx_drop": 0.422,
+          "online_accuracy": 0.067
+        },
+        "dos-hulk": {
+          "source_pps": 2085,
+          "sensor_pps": 607,
+          "pacing": 0.71,
+          "rx_drop": 0.46,
+          "online_accuracy": 0.776
+        },
+        "ddos": {
+          "source_pps": 1107,
+          "sensor_pps": 808,
+          "pacing": 0.77,
+          "rx_drop": 0.064,
+          "online_accuracy": 0.838
+        },
+        "ssh-patator": {
+          "source_pps": 48,
+          "sensor_pps": 47,
+          "pacing": 0.99,
+          "rx_drop": 0.0,
+          "online_accuracy": 1.0
+        },
+        "ftp-patator": {
+          "source_pps": 32,
+          "sensor_pps": 32,
+          "pacing": 1.0,
+          "rx_drop": 0.0,
+          "online_accuracy": 1.0
+        }
+      },
+      "cause": "The vmnet path sustains roughly 550-800 packets per second. A family whose capture rate exceeds that is stretched: GoldenEye's 102135 packets span 50.7s in the source and 189.8s at the sensor, so every inter-arrival gap is multiplied by 3.6. F9 reads inter-arrival time, so a fast flood is presented to the model as a slow one - and GoldenEye's dominant confusion is DoS Hulk (3175), another HTTP DoS with a different timing profile.",
+      "proof_it_is_not_the_model": "The same packets replayed offline, with the original timing intact, score 100% at confidence 1.000.",
+      "earlier_hypothesis_was_backwards": "The changelog previously suspected tcpreplay of COMPRESSING time. It stretches it: the sender cannot keep up, rather than running too fast. The root cause (distorted timing features) was right, the direction was wrong.",
+      "consistency_with_the_nine_frame_result": "Not a contradiction. Nine frames never congest the link, so the nine-frame pass agrees with offline and proves the wire is faithful in content and ordering. The pacing measurement proves it is not faithful in throughput under load. Both hold, and together they close the online/offline gap.",
+      "suspects_eliminated": {
+        "wire corrupts content or ordering": "eliminated by the nine-frame head-to-head",
+        "engine segments flows differently from CICIDS": "eliminated - 3380 of 4127 alerted flows join to the source by 5-tuple",
+        "model is weak on real traffic": "eliminated - same packets, correct timing, 100% offline",
+        "family window contains non-GoldenEye traffic": "still open, but cannot explain the pacing correlation",
+        "lab throughput too low, inter-arrival times stretched": "CONFIRMED, measured at x0.28"
+      },
+      "reporting_consequence": "The family-window figures (77.6% / 6.7% / 83.8%) must not be presented as model capability. They measure the model plus a congested link. An honest online figure for high-rate families needs either more lab throughput or a presentation limited to the nine-frame and offline sides.",
+      "artifacts": [
+        "run_log/full-flow-v1/replay-runs/20260808-194942/replay-pacing-comparison.json",
+        "run_log/full-flow-v1/replay-runs/20260808-194942/f9-online-offline-comparison.md (pacing section)"
+      ],
+      "correction_2026_08_09": {
+        "what_was_wrong": "The first pacing measurement truncated the source at packets_seen and reported GoldenEye at x0.28, Hulk at x0.36. That charged dropped packets to the clock.",
+        "evidence": "port_ipackets 176791 = port_imissed 74656 + packets_seen 102135, exactly, on every family. port_ipackets is what arrived; packets_seen is what survived the RX ring.",
+        "corrected": "Source truncated at port_ipackets. GoldenEye x0.55 pacing with 42.2% RX drop; Hulk x0.71 with 46.0%; DDoS x0.77 with 6.4%; ftp-patator x1.00 and ssh-patator x0.99, both with 0.0%.",
+        "which_effect_dominates": "RX drop tracks accuracy more closely than pacing does. Zero drop gives 100% on both families that had it; 6.4% gives 83.8%; 42-46% gives the two worst results. The lab ceiling is around 800 packets per second - below it nothing is dropped.",
+        "why_drop_is_worse_than_stretch": "A dropped packet does not stretch a flow, it removes a sample. The nine packets F9 scores become nine survivors rather than the flow's first nine, so packet_count and every inter-arrival feature are computed over the wrong set of packets.",
+        "nine_frame_unaffected": "port_imissed is 0 on every nine-frame attempt - nine packets never overflow the RX ring. That is why the nine-frame pass agrees with offline, and equally why it does NOT demonstrate the system holds up under real load."
+      }
+    },
+    "nine_frame_table_completed": {
+      "date": "2026-08-09",
+      "result": "10 of 14 families now have a verified nine-frame online alert - every family that can physically be sent. The remaining four are blocked by LRO/TSO jumbo frames in the capture, which is a property of the PCAP, not a measurement.",
+      "totals": {
+        "offline": "14/14 alerts, 12 correct, 85.7%",
+        "online_nine_frame": "10/14 alerts, 7 correct, 70.0%",
+        "online_family_window": "10650 alerts, 5426 correct, 50.9%"
+      },
+      "head_to_head": "9 of 10 comparable families agree between online and offline, including two that are wrong in exactly the same way. Up from 5 of 6. The only divergence remains Web Attack - Sql Injection (0.597 offline vs 0.603 online), two adjacent classes swapping order.",
+      "root_cause_of_the_earlier_failures": "Not unexplained DPDK/vmnet RX flakiness. Two orchestration bugs: pkill without sudo never killed the previous sensor, so later attempts could not bind the port; and the sudo fix matched its own ssh command line and killed the collect step, making every attempt report packets_seen=0. Fixed with the bracket pattern [n]ids_dpdk_live. Three of four families then succeeded on try 3 - retries always worked, the earlier passes just never reached a clean third try.",
+      "artifacts": [
+        "run_log/full-flow-v1/replay-runs/20260808-194942/r12-replay-results.json",
+        "run_log/full-flow-v1/replay-runs/20260808-194942/f9-online-offline-comparison.md"
+      ]
+    }
+  },
+  "terminal_portscan_offline_evidence": {
+    "tag": "t91-terminal-portscan-offline-scored-r1",
+    "status": "scorer_and_full_family_window_complete_comparison_in_progress",
+    "correction": "The export has 84223 JSONL lines but only 84222 terminal_flow records; the last line is kind=summary and declares exported_flows=84222.",
+    "result": {
+      "flows": 84222,
+      "portscan": 82414,
+      "benign": 1808,
+      "gated_portscan_recall": 0.9785329248889839,
+      "raw_argmax_portscan": 84217
+    },
+    "locked_inputs": {
+      "profile": "A",
+      "feature_count": 54,
+      "threshold": 0.9984837643022101,
+      "test_partition": "sealed_zero_reads"
+    },
+    "evidence": [
+      "run_log/full-flow-v1/offline-portscan/20260809-full-pcap/summary.json",
+      "run_log/full-flow-v1/offline-portscan/20260809-full-pcap/portscan-terminal-scores.jsonl"
+    ],
+    "implementation": [
+      "scripts/score_terminal_flows_onnx.py",
+      "tests/test_score_terminal_flows_onnx.py"
+    ],
+    "sha256": {
+      "summary": "12d5c8a129d3714f90264a517adb8e50baac275a5e709575cd8966415f5c7163",
+      "scores": "2c4e38b74faac24b98cc9833a1de0541f601baa4fdb1d7170b9d127b5812b471",
+      "scorer": "097d694bc8901826f5db95cbc03610c7403568a79456eb2b711b889efc9e8ed9",
+      "tests": "de8a79449edec8ca2213731eb49c687dc8189b09f85d0830d9828c78ba3227e6"
+    },
+    "verification": "python -m unittest tests.test_score_terminal_flows_onnx => 5/5 passed",
+    "next": "Finish matched live/timing comparison; do not use the preliminary all-flow median because 68/77 live records are one-packet EOF flushes with flow_age_us=0."
+  },
+  "terminal_portscan_matched_live_evidence": {
+    "tag": "t91-terminal-portscan-matched-live-r1",
+    "status": "complete_with_lab_limitations",
+    "accepted_attempt": "run_log/full-flow-v1/live/portscan-replay/t91-portscan-pcap-r3-20260809142208-27532754",
+    "preserved_failed_attempts": {
+      "r1": "arm_timeout_before_sender; 0 packets",
+      "r2": "scoped_idle_timeout inside 71-second source timestamp gap; partial only"
+    },
+    "result": {
+      "source_packets_sent": 169265,
+      "port_ipackets": 169277,
+      "port_imissed": 44617,
+      "rx_drop_rate": 0.26357390549218146,
+      "packets_seen": 124660,
+      "inferences": 64951,
+      "portscan": 28422,
+      "dos": 438,
+      "benign": 36091,
+      "portscan_over_inferences": 0.4375914150667426,
+      "shutdown_complete": false
+    },
+    "interpretation": "Same PCAP isolates traffic-generator representation. Offline recall is 97.8533%, while live is degraded by measured RX loss and incomplete synchronous EOF processing. The live ratio is not model accuracy.",
+    "timing_correction": "The earlier 39x claim used one outlier; median flow_age_us across nine live tcp_reset flows is 66.002 us versus 47 us offline, or 1.404x.",
+    "evidence": [
+      "run_log/full-flow-v1/offline-portscan/20260809-full-pcap/comparison.json",
+      "run_log/full-flow-v1/offline-portscan/20260809-full-pcap/comparison.md"
+    ],
+    "sha256": {
+      "comparison_json": "78a47f7b64bac312ee560d8dcfc716f321edf9a474bb9a9739966ad3e067dd6b",
+      "comparison_md": "7011e233f76621ee14c8aa3480a3d59a6061a10a4b4923abf1f21eb3b3e7f03c",
+      "accepted_sensor_log": "44940a19a552ebf113aab5c5f10ec848d1f5074b5b23c9a718b6bba9c5c612a3"
+    },
+    "cleanup": {
+      "ubuntu_rollback": "passed",
+      "driver": "vmxnet3",
+      "interface": "ens160",
+      "hugepages": "128/128",
+      "temporary_tcpreplay_sudoers": "removed"
+    },
+    "test_partition": "sealed_zero_reads",
+    "next": "P2 FTP-Patator decision"
+  },
+  "terminal_ftp_patator_support_decision": {
+    "tag": "t91-ftp-patator-unsupported-r1",
+    "status": "complete",
+    "decision": "unsupported",
+    "observed": {
+      "windows_feature": "Web-Ftp-Server available but not installed",
+      "service": "FTPSVC does not exist; error 1060",
+      "tcp_21": "closed"
+    },
+    "reporting": "Missing target service is an environment support limitation, not a model detection failure. Terminal V1 live presentation covers PortScan only.",
+    "evidence": [
+      "run_log/full-flow-v1/live/ftp-patator/unsupported-20260809/decision.json",
+      "run_log/full-flow-v1/live/ftp-patator/unsupported-20260809/decision.md"
+    ],
+    "sha256": {
+      "decision_json": "667694b95004cd7688ee892871bad33722c4dfac6ceab00bf0a80ce4cc2ffcdc",
+      "decision_md": "b60638cc88f90cf67b10e70408e27af606840d59529ff8b6a59317961c6233fd"
+    },
+    "next": "P3 terminal dashboard bridge"
+  },
+  "terminal_dashboard_bridge": {
+    "tag": "t91-terminal-dashboard-bridge-r1",
+    "status": "complete",
+    "implementation": [
+      "scripts/bridge_terminal_to_dashboard.py",
+      "tests/test_bridge_terminal_to_dashboard.py"
+    ],
+    "output": {
+      "path": "run_log/full-flow-v1/live-detection-terminal.jsonl",
+      "rows": 28937,
+      "sha256": "314e479a5697244cb6e1c14dbcf719fd28545c9108cc1f887a04b707c943c8bc"
+    },
+    "inputs": {
+      "nmap_decisions": 77,
+      "matched_live_alerts": 28860
+    },
+    "dedupe_semantics": "Prefer decision events when present; otherwise use alerts-only events, preventing decision plus alert double counting.",
+    "dashboard_verification": {
+      "endpoint": "http://127.0.0.1:8080/api/alerts/tail?offset=0&model=terminal",
+      "source_kind": "real",
+      "model": "terminal",
+      "events": 28937
+    },
+    "tests": "3/3 passed plus py_compile",
+    "sha256": {
+      "bridge": "0df37b5ff30f5546d2f0ae80188bc79345bf8d1daa3ca7b994b057379779f0c0",
+      "tests": "334984312935e19969536464eab5e3a4b853aa0cdeb7205ff9d37f408382ddc9"
+    },
+    "next": "P4 watcher single-instance lock"
+  },
+  "f9_watcher_duplicate_fix": {
+    "tag": "t85-f9-watcher-single-instance-r1",
+    "status": "complete",
+    "implementation": {
+      "script": "scripts/watch_scenario_alerts.py",
+      "test": "tests/test_watch_scenario_alerts.py",
+      "single_instance": "non-blocking OS file lock scoped to output stream",
+      "dedupe_key": "attempt plus 5-tuple plus candidate plus decision"
+    },
+    "verification": {
+      "unit_tests": "3/3 passed",
+      "py_compile": "passed",
+      "contention_smoke": "first watcher completed cleanly; second watcher on same lock exited 3"
+    },
+    "preservation": "Historical duplicate rows remain preserved as evidence; no old stream row was deleted or rewritten.",
+    "sha256": {
+      "script": "25ee4c042c16612c5e4224e5f13f2cbfde6f80f22737860c1326607b16ba6c55",
+      "test": "6faa41376720b8584146964ddce5acd3f3dbaa3b77c3a19179237946799bfd0d"
+    },
+    "next": "P5 final validation and environment cleanup"
+  },
+  "terminal_portscan_handoff_completion": {
+    "tag": "t91-terminal-portscan-handoff-complete-r1",
+    "status": "complete",
+    "completed_scope": [
+      "P1 locked ONNX offline scoring and matched live comparison",
+      "P2 FTP-Patator unsupported decision",
+      "P3 Terminal dashboard bridge",
+      "P4 F9 watcher single-instance and dedupe",
+      "P5 validation, thesis evidence index, and lab cleanup"
+    ],
+    "thesis_evidence_index": {
+      "json": "run_log/full-flow-v1/thesis-evidence/terminal-portscan-20260809.json",
+      "json_sha256": "7dfbfe252cfd810b5ef679a8ac9d0b30d2f3a5d04b213ecfd6f7e67e9432682a",
+      "markdown": "run_log/full-flow-v1/thesis-evidence/terminal-portscan-20260809.md",
+      "markdown_sha256": "4046a898d25499d40e90a5a6aef8d362bb79cfc823d5427d35d78eb9f2e2e51d",
+      "members": 17
+    },
+    "cleanup_receipt": {
+      "path": "run_log/full-flow-v1/cleanup/20260809-final/receipt.json",
+      "sha256": "ec2a09df402db37f4d024f79996f0472c883fe5e9de6935bad66948a779dd357",
+      "apache2": "active_enabled",
+      "ens160": "vmxnet3",
+      "hugepages": 128,
+      "temporary_tcpreplay_sudoers": "removed",
+      "portscan_campaign_sudoers": "removed"
+    },
+    "final_verification": {
+      "unit_tests": "11/11 passed",
+      "py_compile": "4/4 passed",
+      "json": "valid",
+      "dashboard_terminal": "source_kind=real model=terminal events=28937"
+    },
+    "top_level_task_note": "The broader Model V2 phase remains in_progress and capture-not-authorized; this completed side-work does not change that gate.",
+    "test_partition": "sealed_zero_reads"
+  },
+  "dashboard_model_toggle_label_fix": {
+    "tag": "t91-dashboard-model-toggle-labels-r1",
+    "status": "complete",
+    "scope": "Overview and Live Detection presentation contract only; no model, schema, threshold, PCAP, or preserved detection stream was modified.",
+    "behavior": {
+      "f9_toggle": "F9 semantic decisions retain their existing labels and colors.",
+      "terminal_toggle": "Terminal class labels are displayed directly; non-Benign classes are critical/red and Benign is green.",
+      "overview": "Benign is filtered case-insensitively before candidate-family aggregation.",
+      "bridge": "New Terminal rows use semantic decision plus terminal_class; legacy rows remain readable through frontend normalization.",
+      "notifications": "Initial historical backlog emits no toast storm; newly tailed events still notify."
+    },
+    "legacy_stream": {
+      "path": "run_log/full-flow-v1/live-detection-terminal.jsonl",
+      "preserved": true,
+      "rows": 28937,
+      "normalized_attack": 28860,
+      "normalized_benign": 77,
+      "excluded_false_ftp_bar": "68 Benign rows with FTP-Bruteforce as top attack candidate"
+    },
+    "verification": {
+      "frontend_unit_tests": "3/3 passed",
+      "bridge_unit_tests": "3/3 passed",
+      "vite_build": "passed",
+      "py_compile": "passed"
+    },
+    "thesis_archive": {
+      "json": "run_log/full-flow-v1/thesis-evidence/dashboard-terminal-label-fix-20260809.json",
+      "json_sha256": "3a658b8c8d4fbf3211832387ea2d2c3c98ccf159c9c75d3ff9efbcfc00c7ab2d",
+      "markdown": "run_log/full-flow-v1/thesis-evidence/dashboard-terminal-label-fix-20260809.md",
+      "markdown_sha256": "50ead5260a1c8b41b1a537becee123d76f98f3fcf4e492902cb054e6ed02212a"
+    },
+    "test_partition": "sealed_zero_reads"
+  },
+  "stop_conditions": [
+    "The legacy 54-feature schema or accepted F3/F5/F7/F9 path would be modified.",
+    "A source PCAP or label database would be mutated.",
+    "The sealed test partition would be read before model and threshold lock.",
+    "Production Model V2 training or threshold selection would run before the live split lock is accepted.",
+    "The superseded R1 Model V2 audit receipt would be reused or indexed as valid evidence.",
+    "The live path would require a Python sidecar.",
+    "A phase would modify more than five files.",
+    "Hook source, hook tests, or hook output would be read, edited, run, or used as evidence."
+  ],
+  "terminal_matched_replay_all_families": {
+    "tag": "t91-terminal-matched-replay-all-families-r1",
+    "status": "complete_with_documented_lab_limitations",
+    "run_id": "20260809-r3",
+    "coverage": {
+      "attack_pcap_cases_replayed": 13,
+      "attack_cases_with_offline_and_live_summary": 13,
+      "terminal_output_labels": 6,
+      "official_sensor_receipts": 8,
+      "complete_unpublished_summaries": 6
+    },
+    "scope_limitations": {
+      "bot": "zero target_ip-scoped packets; not a model false negative",
+      "infiltration": "zero target_ip-scoped packets; not a model false negative",
+      "benign": "control excluded because cut PCAP endpoints do not match target scope"
+    },
+    "evidence": {
+      "comparison_json": "run_log/full-flow-v1/matched-terminal-20260809/terminal-matched-comparison.json",
+      "comparison_json_sha256": "ae4eec5ec1e163714cb3dd1db10e7841b6e44fe60a510fe338353627e5f6e001",
+      "comparison_markdown": "run_log/full-flow-v1/matched-terminal-20260809/terminal-matched-comparison.md",
+      "comparison_markdown_sha256": "669ce4181ee34ebbe2283a61ad5db3f6a155e3dbaedf6b5105dce43aeb308a04",
+      "thesis_index": "run_log/full-flow-v1/thesis-evidence/terminal-matched-replay-20260809.json",
+      "thesis_index_sha256": "505a6a60dd63849c47c0b6d65fc98aafe995c5e5ab06fd643fc31e8a8db0c222",
+      "members": 60
+    },
+    "verification": {
+      "unit_tests": "11/11 passed",
+      "py_compile": "4/4 passed",
+      "comparison_assertions": "passed",
+      "lab_cleanup": "passed"
+    },
+    "cleanup": "run_log/full-flow-v1/cleanup/20260809-terminal-matched/receipt.json",
+    "interpretation": "Live expected-label share is diagnostic, not model accuracy when RX loss or flow reconstruction differs.",
+    "test_partition": "sealed_zero_reads"
+  },
+  "terminal_offline_limitations_evidence": {
+    "tag": "t91-terminal-offline-limitations-evidence-r1",
+    "status": "complete",
+    "objective": "Preserve thesis-ready, evidence-traceable reasons why Terminal V1 offline coverage and correct rates are not complete.",
+    "evidence": {
+      "markdown": "run_log/full-flow-v1/thesis-evidence/terminal-offline-limitations-20260809.md",
+      "markdown_sha256": "2d9f94809dc4cf5013a194c6de2f9bcf8a972c368099a885b7ac6d7f85985bc2",
+      "json": "run_log/full-flow-v1/thesis-evidence/terminal-offline-limitations-20260809.json",
+      "json_sha256": "aa77aa7eaa05bde3bbbb22b2cfad945ce24d36cd7e9a4030de18a21d3b7043e4",
+      "supporting_sources": 18
+    },
+    "direct_causes": [
+      "locked attack gate 0.9984837643022101",
+      "six-label taxonomy collapses original CICIDS families",
+      "Other training support is 576 rows versus 1296000 Benign",
+      "selection contract targets FTP-Bruteforce and PortScan",
+      "densest family-window and oracle/Terminal flow counts use different scope and units",
+      "Heartbleed has zero accepted snapshot"
+    ],
+    "not_established": "No feature-level cause for Web Attack errors is claimed without a separate ablation/error-analysis experiment.",
+    "verification": {
+      "unit_tests": "3/3 passed",
+      "py_compile": "passed",
+      "archive_members": 55
+    },
+    "test_partition": "sealed_zero_reads"
+  },
+  "f9_terminal_mermaid_evidence_flow": {
+    "tag": "t91-f9-terminal-mermaid-evidence-flow-r1",
+    "status": "complete",
+    "artifacts": {
+      "mermaid": "docs/generated/f9-terminal-pcap-replay-evidence-flow.mmd",
+      "mermaid_sha256": "874d535f539574c9680122fb99bf5068d7ef6f99097da99967807cfc404b6953",
+      "markdown": "docs/generated/f9-terminal-pcap-replay-evidence-flow.md",
+      "markdown_sha256": "e32a5e5dc16b4ea0db3b3b524cea38eafde0ece1770916ab4ab259abe5f270eb",
+      "thesis_archive": "run_log/full-flow-v1/thesis-evidence/terminal-matched-replay-20260809.json",
+      "archive_members": 58
+    },
+    "coverage": [
+      "raw CICIDS PCAP plus accepted hashes and label join",
+      "F9 selector, exact nine-packet cut, offline replay, live replay, receipts and comparison",
+      "Terminal densest family-window cut, offline terminal scoring, live DPDK replay, receipts and comparison",
+      "cross-branch interpretation boundaries and dashboard evidence boundary"
+    ],
+    "comparison_rule": "Compare online versus offline only on the same PCAP and ground truth; never merge F9 checkpoint samples and Terminal closed-flow generations into one accuracy.",
+    "verification": {
+      "unit_tests": "3/3 passed",
+      "markdown_source_equivalence": "passed",
+      "subgraph_balance": "4/4",
+      "required_boundaries": "passed"
+    },
+    "test_partition": "sealed_zero_reads"
+  },
+  "latest_handoff": {
+    "tag": "t91-f9-terminal-evidence-r1",
+    "status": "complete",
+    "canonical_entry": "docs/handoff-latest-2026-08-09.md (noi bo, khong dua len git)",
+    "canonical_entry_sha256": "7d2374c9473f39881f04f7d4f55fbf02027c347945a15f5ce451688d76495301",
+    "historical_handoff": "docs/handoff-2026-08-09.md (noi bo, khong dua len git)",
+    "historical_handoff_sha256": "26d2e9879ba1cb9ded84494c485314eb8f64f45af84a0f4ff4529f4550b83a94",
+    "contents": [
+      "current F9 and Terminal workflow",
+      "allowed thesis conclusions and exact evidence paths",
+      "HGFS, RX loss, scope mismatch and counting-unit limitations",
+      "cleanup state, immutable boundaries and safe resume rules"
+    ],
+    "verification": {
+      "unit_tests": "3/3 passed",
+      "archive_members": 60,
+      "archive_hashes": "60/60 passed"
+    },
+    "test_partition": "sealed_zero_reads"
+  }
+}

@@ -1,0 +1,95 @@
+%%{init: {"flowchart": {"htmlLabels": true, "padding": 12}}}%%
+flowchart TB
+    subgraph SRC["1 · Nguồn dữ liệu dùng chung"]
+        direction LR
+        A["PCAP gốc CICIDS2017<br/>đã khóa SHA-256"]
+        C["DB nhãn T3.3<br/>nhãn · 5-tuple · giờ"]
+        D["Snapshot F9 đã duyệt<br/>T3.5 · có nhãn gán"]
+        C --> D
+    end
+
+    subgraph F9["2A · Nhánh F9 — chốt nhãn tại packet thứ 9"]
+        F1["B1 · Chọn 1 flow<br/>đại diện mỗi họ"]
+        F2["B2 · Cắt đúng 9 packet<br/>của flow đó"]
+        F3["B3 · PCAP ca F9<br/>+ manifest đáp án<br/>+ SHA-256"]
+        F4["B4a · OFFLINE<br/>lần 3 · 19:49<br/>nids_demo_replay<br/>14/14 alert · 12 đúng"]
+        F5["B4b · LIVE 9 frame<br/>lần 1 · 14:xx<br/>chạy lại ở lần 3<br/>10/14 có alert"]
+        F6["B5 · PHÉP SO CHÍNH ★<br/>chỉ ghép B4a + B4b<br/>cùng đơn vị 9 packet<br/>10 so được · 9 khớp<br/>2 ca cùng sai"]
+        F7["B6 · Bảng kết quả ★<br/>f9-online-offline<br/>-comparison"]
+        F8["B4c · LIVE diện rộng<br/>lần 2 · 15:57<br/>family-window 180 giây<br/>KHÔNG có vế offline"]
+        FW["Bảng family-window ★<br/>10.650 alert · 5 họ<br/>chỉ làm sức nặng<br/>thống kê"]
+
+        F1 -->|"tra 5-tuple"| F2
+        F2 -->|"ghi file + hash"| F3
+        F3 -->|"nạp bundle F9"| F4
+        F3 -->|"chép sang Kali"| F5
+        F5 -->|"chạy lại 2–11 lần"| F5
+        F4 -->|"nhãn offline"| F6
+        F5 -->|"chọn lần hợp lệ"| F6
+        F6 -->|"xuất json + md"| F7
+        F8 -->|"đếm alert từng họ"| FW
+        FW -.->|"KHÔNG ghép vào so"| F6
+    end
+
+    subgraph TERM["2B · Nhánh Terminal V1 — chốt nhãn khi flow đóng"]
+        T1["B1 · Khoanh traffic<br/>theo lịch tấn công"]
+        T2["B2 · Cắt cửa sổ dày<br/>thường 180 giây"]
+        T3["B3 · PCAP<br/>family-window<br/>13 họ + 1 Benign"]
+        T4["B4a · OFFLINE<br/>flow 70 → model 54<br/>184.571 flow<br/>95,56%"]
+        T5["B4b · LIVE<br/>tcpreplay-edit 1×<br/>passive 1 RX / 0 TX"]
+        T6["B5 · PHÉP SO CHÍNH ★<br/>cùng PCAP, cùng flow<br/>6 ca mất 0 packet<br/>cho kết quả trùng"]
+        T7["B6 · Gộp 13 họ<br/>về 6 nhãn"]
+        T8["B7 · Bảng kết quả ★<br/>terminal-matched<br/>-comparison"]
+
+        T1 -->|"lọc rồi trượt cửa sổ"| T2
+        T2 -->|"ghi file + hash"| T3
+        T3 -->|"dựng flow, chấm ONNX"| T4
+        T3 -->|"phát lại 1× nhịp gốc"| T5
+        T4 -->|"đếm flow đúng nhãn"| T6
+        T5 -->|"đếm suy luận + mất"| T6
+        T6 -->|"áp bảng ánh xạ"| T7
+        T7 -->|"xuất json + md"| T8
+    end
+
+    D -->|"đọc snapshot duyệt"| F1
+    A -->|"quét packet khớp"| F2
+    C -->|"truy vấn nhãn + giờ"| T1
+    A -->|"quét PCAP gốc"| T2
+    T3 -->|"cùng PCAP, bundle F9"| F8
+
+    subgraph CMP["3 · Bằng chứng luận văn — không gộp mẫu F9 với Terminal thành một accuracy"]
+        E1["ĐỘ CHÍNH XÁC ★<br/>lấy từ vế OFFLINE<br/>Terminal 95,56% /flow<br/>72,91% /họ<br/>F9 12/14 ca"]
+        E2["CHI PHÍ CHẠY THẬT ★<br/>= chênh lệch off↔live<br/>mất 0 packet: trùng<br/>mất 34–41%: tụt 32–56"]
+        E3["ĐIỂM YẾU THẬT ★<br/>Web BF 10,71%<br/>XSS 2,86%<br/>sai cả 2 vế, mất 0"]
+        E4["GIỚI HẠN phải ghi ★<br/>PortScan ngoài F9<br/>F9 thiếu vế offline<br/>GoldenEye chưa rõ"]
+        Z["BẤT BIẾN<br/>không sửa bundle<br/>không sửa ngưỡng<br/>test partition luôn sealed"]
+        R["QUY TẮC TRÌNH BÀY<br/>ghi rõ đơn vị mẫu<br/>ghi mẫu số, ai bị loại<br/>số từ receipt đã hash"]
+
+        E1 --> R
+        E2 --> R
+        E3 --> R
+        E4 --> R
+        Z --> R
+    end
+
+    F7 -->|"★ trích luận văn"| E1
+    T8 -->|"★ trích luận văn"| E1
+    T6 -->|"★ chênh lệch"| E2
+    F6 -->|"★ chênh lệch"| E2
+    T4 -.->|"★ ca mất 0 packet"| E3
+    FW -.->|"★ giới hạn PortScan"| E4
+    F8 -.->|"★ thiếu vế offline"| E4
+
+    classDef source fill:#E8F1FF,stroke:#255AA8,color:#102A43,stroke-width:1.5px;
+    classDef f9 fill:#FFF4D6,stroke:#A66B00,color:#4A3300,stroke-width:1.5px;
+    classDef terminal fill:#E8F7EF,stroke:#287A4B,color:#123D27,stroke-width:1.5px;
+    classDef compare fill:#F3E8FF,stroke:#7042A1,color:#32184F,stroke-width:1.5px;
+    classDef guard fill:#FFE9E9,stroke:#A33A3A,color:#541C1C,stroke-width:1.5px;
+    classDef evid stroke-width:3.5px;
+
+    class A,C,D source;
+    class Z guard;
+    class F1,F2,F3,F4,F5,F6,F7,F8,FW f9;
+    class T1,T2,T3,T4,T5,T6,T7,T8 terminal;
+    class E1,E2,E3,E4,R compare;
+    class F6,F7,FW,T6,T8 evid;

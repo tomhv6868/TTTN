@@ -1,0 +1,374 @@
+{
+  "kind": "manifest_confusion",
+  "methodology": "manifest-ground-truth: case_id label from reconstruction manifest (flow_id + tuple + start/end ns) used as ground truth for F9 replay output. 3-way comparison planned: online F9 vs manifest vs offline F9.",
+  "model": "F9",
+  "data_sources": {
+    "manifest": "run_log\\t8.5\\scenarios\\rebuild-20260808\\pcap\\manifest.json",
+    "sensor_root": "run_log\\t8.5\\scenarios\\rebuild-20260808\\ubuntu",
+    "oracle": "run_log/t3.3/label-join.sqlite3",
+    "class_consensus": "run_log/t3.3r1/class-consensus.sqlite3"
+  },
+  "attempt_case_map": {
+    "f9-ftp-patator": "ftp-patator",
+    "f9-ssh-patator": "ssh-patator",
+    "f9-dos-goldeneye": "dos-goldeneye",
+    "f9-ddos": "ddos",
+    "f9-portscan": "portscan",
+    "fh-hulk": "dos-hulk",
+    "dos-hulk": "dos-hulk"
+  },
+  "attempt_results": {
+    "f9-ftp-patator": {
+      "case_id": "ftp-patator",
+      "gt_label": "FTP-Patator",
+      "sensor_alerts": 209,
+      "summary": {
+        "status": "passed",
+        "duration_ms": 184770,
+        "active_s": 180.556026194,
+        "idle_before_s": 4.213973806,
+        "offset_ns": 1.7861730083130706e+18,
+        "first_cp_ns": 5990366663221,
+        "last_cp_ns": 6170741654004,
+        "alerts": 209,
+        "decisions": {
+          "known_attack": 209,
+          "unknown_candidate": 0,
+          "uncertain": 0,
+          "benign": 7
+        },
+        "packets_seen": 5842,
+        "stop_reason": "signal"
+      },
+      "candidates": {
+        "FTP-Patator": 209
+      },
+      "decisions": {
+        "known_attack": 209
+      }
+    },
+    "f9-ssh-patator": {
+      "case_id": "ssh-patator",
+      "gt_label": "SSH-Patator",
+      "sensor_alerts": 160,
+      "summary": {
+        "status": "passed",
+        "duration_ms": 187362,
+        "active_s": 185.440510376,
+        "idle_before_s": 1.921489624,
+        "offset_ns": 1.7861730014976228e+18,
+        "first_cp_ns": 6218887843631,
+        "last_cp_ns": 6399835373310,
+        "alerts": 160,
+        "decisions": {
+          "known_attack": 160,
+          "unknown_candidate": 0,
+          "uncertain": 0,
+          "benign": 5
+        },
+        "packets_seen": 8717,
+        "stop_reason": "signal"
+      },
+      "candidates": {
+        "SSH-Patator": 160
+      },
+      "decisions": {
+        "known_attack": 160
+      }
+    },
+    "f9-dos-goldeneye": {
+      "case_id": "dos-goldeneye",
+      "gt_label": "DoS GoldenEye",
+      "sensor_alerts": 4127,
+      "summary": {
+        "status": "passed",
+        "duration_ms": 189807,
+        "active_s": 185.139492179,
+        "idle_before_s": 4.667507821,
+        "offset_ns": 1.786173007815987e+18,
+        "first_cp_ns": 5288410247390,
+        "last_cp_ns": 5469351317396,
+        "alerts": 4127,
+        "decisions": {
+          "known_attack": 4092,
+          "unknown_candidate": 6,
+          "uncertain": 29,
+          "benign": 806
+        },
+        "packets_seen": 102135,
+        "stop_reason": "signal"
+      },
+      "candidates": {
+        "DoS Hulk": 3175,
+        "DoS slowloris": 359,
+        "FTP-Patator": 283,
+        "DoS GoldenEye": 278,
+        "SSH-Patator": 28
+      },
+      "decisions": {
+        "known_attack": 4092,
+        "uncertain": 29,
+        "unknown_candidate": 6
+      }
+    },
+    "f9-ddos": {
+      "case_id": "ddos",
+      "gt_label": "DDoS",
+      "sensor_alerts": 68,
+      "summary": {
+        "status": "passed",
+        "duration_ms": 198139,
+        "active_s": 193.198230443,
+        "idle_before_s": 4.940769557,
+        "offset_ns": 1.7861730068378004e+18,
+        "first_cp_ns": 5521489686141,
+        "last_cp_ns": 5703524801447,
+        "alerts": 68,
+        "decisions": {
+          "known_attack": 0,
+          "unknown_candidate": 13,
+          "uncertain": 55,
+          "benign": 13017
+        },
+        "packets_seen": 160129,
+        "stop_reason": "signal"
+      },
+      "candidates": {
+        "DDoS": 57,
+        "Bot": 10,
+        "DoS Slowhttptest": 1
+      },
+      "decisions": {
+        "uncertain": 55,
+        "unknown_candidate": 13
+      }
+    },
+    "f9-portscan": {
+      "case_id": "portscan",
+      "gt_label": "PortScan",
+      "sensor_alerts": 0,
+      "summary": {
+        "status": "passed",
+        "duration_ms": 197975,
+        "active_s": 188.33668189,
+        "idle_before_s": 9.63831811,
+        "offset_ns": 1.7861787686130926e+18,
+        "first_cp_ns": null,
+        "last_cp_ns": null,
+        "alerts": 0,
+        "decisions": {
+          "known_attack": 0,
+          "unknown_candidate": 0,
+          "uncertain": 0,
+          "benign": 0
+        },
+        "packets_seen": 168338,
+        "stop_reason": "signal"
+      },
+      "candidates": {},
+      "decisions": {}
+    },
+    "fh-hulk": {
+      "case_id": "dos-hulk",
+      "gt_label": "DoS Hulk",
+      "sensor_alerts": 6086,
+      "summary": {
+        "status": "passed",
+        "duration_ms": 292517,
+        "active_s": 243.029635522,
+        "idle_before_s": 49.487364478,
+        "offset_ns": 1.786173024628563e+18,
+        "first_cp_ns": 4317667031461,
+        "last_cp_ns": 4509951858553,
+        "alerts": 6086,
+        "decisions": {
+          "known_attack": 6022,
+          "unknown_candidate": 3,
+          "uncertain": 61,
+          "benign": 1552
+        },
+        "packets_seen": 177665,
+        "stop_reason": "signal"
+      },
+      "candidates": {
+        "DoS Hulk": 4722,
+        "DoS slowloris": 493,
+        "DoS GoldenEye": 450,
+        "FTP-Patator": 381,
+        "SSH-Patator": 32
+      },
+      "decisions": {
+        "known_attack": 6022,
+        "uncertain": 61,
+        "unknown_candidate": 3
+      }
+    }
+  },
+  "match_notes": "manifest maps case_id → ground_truth label. Each sensor.jsonl corresponds to one case replay. Ground truth is NOT from oracle 5-tuple lookup (which has port renumbering issue).",
+  "rows": [
+    {
+      "ground_truth": "DoS Hulk",
+      "total_alerts": 6086,
+      "correct": 4722,
+      "accuracy": 0.7759,
+      "top_outputs": [
+        [
+          "DoS Hulk",
+          4722
+        ],
+        [
+          "DoS slowloris",
+          493
+        ],
+        [
+          "DoS GoldenEye",
+          450
+        ],
+        [
+          "FTP-Patator",
+          381
+        ],
+        [
+          "SSH-Patator",
+          32
+        ]
+      ],
+      "decisions": {
+        "known_attack": 6022,
+        "uncertain": 61,
+        "unknown_candidate": 3
+      },
+      "ts_cp_ns_start": 4317667031461,
+      "ts_cp_ns_end": 4509951858553,
+      "ts_iso_start": "1970-01-01T01:11:57.667031Z",
+      "ts_iso_end": "1970-01-01T01:15:09.951859Z"
+    },
+    {
+      "ground_truth": "DoS GoldenEye",
+      "total_alerts": 4127,
+      "correct": 278,
+      "accuracy": 0.0674,
+      "top_outputs": [
+        [
+          "DoS Hulk",
+          3175
+        ],
+        [
+          "DoS slowloris",
+          359
+        ],
+        [
+          "FTP-Patator",
+          283
+        ],
+        [
+          "DoS GoldenEye",
+          278
+        ],
+        [
+          "SSH-Patator",
+          28
+        ]
+      ],
+      "decisions": {
+        "known_attack": 4092,
+        "uncertain": 29,
+        "unknown_candidate": 6
+      },
+      "ts_cp_ns_start": 5288410247390,
+      "ts_cp_ns_end": 5469351317396,
+      "ts_iso_start": "1970-01-01T01:28:08.410247Z",
+      "ts_iso_end": "1970-01-01T01:31:09.351317Z"
+    },
+    {
+      "ground_truth": "DDoS",
+      "total_alerts": 68,
+      "correct": 57,
+      "accuracy": 0.8382,
+      "top_outputs": [
+        [
+          "DDoS",
+          57
+        ],
+        [
+          "Bot",
+          10
+        ],
+        [
+          "DoS Slowhttptest",
+          1
+        ]
+      ],
+      "decisions": {
+        "uncertain": 55,
+        "unknown_candidate": 13
+      },
+      "ts_cp_ns_start": 5521489686141,
+      "ts_cp_ns_end": 5703524801447,
+      "ts_iso_start": "1970-01-01T01:32:01.489686Z",
+      "ts_iso_end": "1970-01-01T01:35:03.524801Z"
+    },
+    {
+      "ground_truth": "FTP-Patator",
+      "total_alerts": 209,
+      "correct": 209,
+      "accuracy": 1.0,
+      "top_outputs": [
+        [
+          "FTP-Patator",
+          209
+        ]
+      ],
+      "decisions": {
+        "known_attack": 209
+      },
+      "ts_cp_ns_start": 5990366663221,
+      "ts_cp_ns_end": 6170741654004,
+      "ts_iso_start": "1970-01-01T01:39:50.366663Z",
+      "ts_iso_end": "1970-01-01T01:42:50.741654Z"
+    },
+    {
+      "ground_truth": "SSH-Patator",
+      "total_alerts": 160,
+      "correct": 160,
+      "accuracy": 1.0,
+      "top_outputs": [
+        [
+          "SSH-Patator",
+          160
+        ]
+      ],
+      "decisions": {
+        "known_attack": 160
+      },
+      "ts_cp_ns_start": 6218887843631,
+      "ts_cp_ns_end": 6399835373310,
+      "ts_iso_start": "1970-01-01T01:43:38.887844Z",
+      "ts_iso_end": "1970-01-01T01:46:39.835373Z"
+    },
+    {
+      "ground_truth": "PortScan",
+      "total_alerts": 0,
+      "correct": 0,
+      "accuracy": 0.0,
+      "top_outputs": [],
+      "decisions": {},
+      "ts_cp_ns_start": null,
+      "ts_cp_ns_end": null,
+      "ts_iso_start": null,
+      "ts_iso_end": null
+    },
+    {
+      "ground_truth": "BENIGN",
+      "total_alerts": 0,
+      "correct": 0,
+      "accuracy": 0.0,
+      "top_outputs": [],
+      "decisions": {},
+      "ts_cp_ns_start": null,
+      "ts_cp_ns_end": null,
+      "ts_iso_start": null,
+      "ts_iso_end": null
+    }
+  ]
+}

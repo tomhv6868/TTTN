@@ -1,0 +1,153 @@
+[
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A24]",
+    "props": {
+      "text": "Giao diện giám sát phân biệt rõ ngữ nghĩa của hai nhánh. Nhánh checkpoint F9 hiển thị bốn mức quyết định: known_attack, unknown_candidate, uncertain và benign; nhánh terminal hiển thị sáu lớp Benign, FTP-Bruteforce, SSH-Bruteforce, PortScan, DoS và Other. Dữ liệu lịch sử vẫn được giữ nguyên, còn lớp trình bày chỉ chuẩn hóa nhãn theo đúng mô hình. Vì vậy, một flow Benign dù có ứng viên đứng đầu là FTP-Bruteforce cũng không bị hiển thị thành cảnh báo FTP. Bảng điều khiển chỉ phục vụ quan sát; số liệu trong báo cáo được lấy từ các biên nhận có mã băm.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A26]",
+    "props": {
+      "text": "Khi phát lại dữ liệu, hai nhánh sử dụng đơn vị quan sát khác nhau. Nhánh F9 chọn một flow và lấy đúng chín gói tin để tạo checkpoint F9. Nhánh terminal chọn cửa sổ thời gian có mật độ cao nhất của từng họ tấn công (family-window), thường dài 180 giây, sau đó tạo flow hai chiều và chỉ đưa ra quyết định khi flow đóng hoặc khi đọc hết tệp. Vì khác nhau về đơn vị quan sát, kết quả của hai nhánh được báo cáo riêng, không gộp thành một tỷ lệ chính xác chung.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A28]",
+    "props": {
+      "text": "Bộ bằng chứng về độ trễ phân biệt ba đại lượng: thời gian chờ trước suy luận, thời gian suy luận và độ trễ cảnh báo đầu-cuối. Trên 10.665 mẫu F9, thời gian từ lúc gói tin chạm checkpoint đến ngay trước khi pipeline được gọi có các phân vị p50/p95/p99 lần lượt là 1,36/4,16/10,90 µs. Đây chỉ là thời gian chờ trước suy luận, không phải toàn bộ độ trễ phát hiện.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A2A]",
+    "props": {
+      "text": "Trong lượt 20260809-latency-f9-r3 với kịch bản DoS Hulk, cảm biến tạo 7.899 snapshot F9 và 7.509 cảnh báo. Giai đoạn suy luận, tính từ thời điểm bắt đầu dựng đặc trưng đến khi pipeline trả kết quả, có p50/p95/p99 là 7,76/11,86/14,84 ms; độ trễ cảnh báo đầu-cuối tương ứng là 7,81/11,99/14,92 ms. Lượt chạy mất 54,05% gói tin, nên các số liệu này phản ánh trạng thái quá tải trong phòng thí nghiệm VMware, không đại diện cho độ trễ vận hành thông thường. Nhánh terminal V1 chưa có mốc thời gian phát cảnh báo độc lập, do đó báo cáo chưa công bố độ trễ của nhánh này.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A2C]",
+    "props": {
+      "text": "3.8 Đánh giá nhánh terminal full-flow",
+      "style": "Heading2",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt",
+      "bold": "true"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A2E]",
+    "props": {
+      "text": "Nhánh terminal full-flow (Terminal V1) được đánh giá độc lập trên 13 họ tấn công bằng các cửa sổ thời gian theo họ và gói mô hình đã khóa. Ở nhánh ngoại tuyến, 176.383 trong tổng số 184.571 flow do bộ sinh terminal tạo ra được gán đúng nhãn, tương ứng độ chính xác gộp theo flow là 95,56%; độ chính xác trung bình theo họ đạt 72,91%. Hai chỉ số cần được trình bày đồng thời vì riêng PortScan chiếm 45,63% tổng số mẫu và là họ được mô hình xử lý tốt. Phân vùng kiểm thử T9.1 vẫn được niêm phong và không tham gia tạo các số liệu này.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A30]",
+    "props": {
+      "text": "Trong năm ca trực tuyến không mất gói, kết quả gần như trùng với nhánh ngoại tuyến: FTP-Patator đạt 75,40% ở ngoại tuyến và 75,17% ở trực tuyến; SSH-Patator cùng đạt 87,57%; Web Brute Force cùng đạt 10,71%; Web SQL Injection cùng đạt 76,92%; Web XSS cùng đạt 2,86%. Chênh lệch tuyệt đối lớn nhất là 0,23 điểm phần trăm. Kết quả cho thấy đường triển khai DPDK không làm thay đổi đáng kể quyết định của mô hình trong các ca không mất gói. Đồng thời, kết quả thấp của Web Brute Force và Web XSS xuất hiện ở cả hai nhánh, cho thấy đây là hạn chế của mô hình chứ không phải lỗi riêng của đường xử lý trực tuyến.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A32]",
+    "props": {
+      "text": "Trong các ca có mất gói, tỷ lệ gán nhãn trực tuyến chịu ảnh hưởng đồng thời của mô hình, đường thu nhận và cơ chế đóng flow, nên không thể xem là độ chính xác riêng của mô hình. Chẳng hạn, PortScan đạt 82.414/84.222 flow ở nhánh ngoại tuyến, trong khi nhánh trực tuyến chỉ có 24.464/58.495 lượt suy luận mang nhãn PortScan khi xảy ra mất gói ở chiều nhận (RX). Đối với Bot và Infiltration, không có gói tin nào thuộc địa chỉ đích đã cấu hình (target_ip); vì vậy, 0 lượt suy luận phản ánh lệch phạm vi kịch bản, không phải âm tính giả. Sáu ca trực tuyến có tệp tạm summary.json.tmp hoàn chỉnh nhưng thiếu biên nhận chính thức do lỗi đổi tên trên HGFS. Các tệp này được giữ làm bằng chứng lịch sử, không được coi là biên nhận chính thức.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A34]",
+    "props": {
+      "text": "Mô hình terminal V1 có sáu nhãn đầu ra: Benign, FTP-Bruteforce, SSH-Bruteforce, PortScan, DoS và Other. Dữ liệu huấn luyện mất cân bằng rõ rệt: nhãn Other chỉ có 576 mẫu, trong khi Benign có 1.296.000 mẫu. Với Web Brute Force, quyết định argmax thô chỉ gán 13/112 flow vào Other; với Web XSS, tỷ lệ này là 3/105. Vì vậy, ngưỡng quyết định cao không phải nguyên nhân duy nhất gây sai số. Heartbleed không có snapshot terminal được chấp nhận nên nằm ngoài phạm vi mô hình V1. Bộ bằng chứng hiện có chưa bao gồm thí nghiệm loại bỏ từng nhóm đặc trưng (feature ablation), do đó chưa đủ cơ sở quy sai số cho một đặc trưng cụ thể.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7FFA7A36]",
+    "props": {
+      "text": "Đối với nhánh F9, phép phát lại ngoại tuyến cho 12/14 ca đúng. Tuy nhiên, mỗi ca chỉ đại diện cho một flow gồm chín gói tin, nên kết quả này chỉ xác nhận quy trình kỹ thuật chạy đầu-cuối, không phải độ chính xác thống kê. Flow PortScan ngắn hơn ngưỡng chín gói tin nên được ghi là không áp dụng, không phải 0%. Mọi số liệu trực tuyến trong mục này chỉ có giá trị trong phạm vi phòng thí nghiệm VMware. Bảng điều khiển chỉ là lớp trình bày; số liệu của luận văn được truy xuất từ biên nhận và chỉ mục mã băm SHA-256 tương ứng.",
+      "style": "Normal",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=7955FCB7]",
+    "props": {
+      "text": "3.9 Thảo luận",
+      "style": "Heading2",
+      "align": "justify",
+      "font.latin": "Times New Roman",
+      "font.ea": "Times New Roman",
+      "font.cs": "Times New Roman",
+      "size": "13pt",
+      "bold": "true"
+    }
+  },
+  {
+    "command": "set",
+    "path": "/body/p[@paraId=19F223D9]",
+    "find": "Đối chiếu hai kịch bản tấn công live",
+    "replace": "Đối chiếu hai kịch bản tấn công trực tuyến"
+  }
+]
